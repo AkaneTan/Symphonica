@@ -1,0 +1,37 @@
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="191dp"
+    android:height="191dp"
+    android:viewportWidth="191"
+    android:viewportHeight="191">
+    <group>
+        <clip-path android:pathData="M0,0h191v191h-191z" />
+        <path
+            android:fillColor="?attr/colorSecondary"
+            android:pathData="M1,1h189v189h-189z" />
+        <path
+            android:fillColor="?attr/colorPrimary"
+            android:fillType="evenOdd"
+            android:pathData="M1,190 L1,1 190,190Z" />
+        <path
+            android:fillColor="?attr/colorSurface"
+            android:fillType="evenOdd"
+            android:pathData="M162.32,162.32C125.42,199.23 65.58,199.23 28.68,162.32 -8.23,125.42 -8.23,65.58 28.68,28.68 46.4,10.96 70.44,1 95.5,1Z" />
+    </group>
+</vector>
