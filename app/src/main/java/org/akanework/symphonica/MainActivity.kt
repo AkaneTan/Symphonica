@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -16,8 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.akanework.symphonica.logic.util.Song
 import org.akanework.symphonica.logic.util.getAllSongs
@@ -25,10 +30,16 @@ import org.akanework.symphonica.ui.fragment.LibraryGridFragment
 import org.akanework.symphonica.ui.fragment.LibraryListFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.util.Album
 import org.akanework.symphonica.logic.util.getAllAlbums
+import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
+import kotlin.reflect.typeOf
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var songList: List<Song>
         lateinit var albumList: List<Album>
         lateinit var navigationView: NavigationView
+        lateinit var libraryViewModel: LibraryViewModel
 
         fun switchNavigationView() {
             if (navigationView.isGone) {
@@ -51,13 +63,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         songList = listOf()
         albumList = listOf()
+        libraryViewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
 
         setContentView(R.layout.activity_main)
 
@@ -110,13 +124,25 @@ class MainActivity : AppCompatActivity() {
                 PERMISSION_REQUEST_CODE
             )
         } else {
-            runOnUiThread {
-                if (songList.size == 0) {
-                    songList = getAllSongs(this)
-                    LibraryListFragment.updateRecyclerView(songList)
+            coroutineScope.launch {
+                if (libraryViewModel.librarySongList.isEmpty()) {
+                    withContext(Dispatchers.IO) {
+                        if (songList.isEmpty()) {
+                            songList = getAllSongs(context)
+                            libraryViewModel.librarySongList = songList
+                        }
+                        if (albumList.isEmpty()) {
+                            albumList = getAllAlbums(this@MainActivity, songList)
+                            libraryViewModel.libraryAlbumList = albumList
+                        }
+                    }
+                } else {
+                    albumList = libraryViewModel.libraryAlbumList
+                    songList = libraryViewModel.librarySongList
                 }
-                if (albumList.size == 0) {
-                    albumList = getAllAlbums(this@MainActivity, songList)
+
+                withContext(Dispatchers.Main) {
+                    LibraryListFragment.updateRecyclerView(songList)
                     LibraryGridFragment.updateRecyclerView(albumList)
                 }
             }
@@ -149,5 +175,46 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /*
+    data class AlbumListWrapper(val albums: List<Album>)
+    data class SongListWrapper(val songs: List<Song>)
+
+    // onSaveInstanceState method
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val gson = Gson()
+
+        val albumListWrapper = AlbumListWrapper(albumList)
+        val albumListJson = gson.toJson(albumListWrapper)
+        outState.putString("ALBUM_LIST", albumListJson)
+
+        val songListWrapper = SongListWrapper(songList)
+        val songListJson = gson.toJson(songListWrapper)
+        outState.putString("SONG_LIST", songListJson)
+    }
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val gson = Gson()
+
+        val albumListJson = savedInstanceState.getString("ALBUM_LIST")
+        if (albumListJson != null && albumListJson.isNotEmpty()) {
+            val albumListWrapper = gson.fromJson(albumListJson, AlbumListWrapper::class.java)
+            albumList = albumListWrapper.albums
+        }
+
+        val songListJson = savedInstanceState.getString("SONG_LIST")
+        if (songListJson != null && songListJson.isNotEmpty()) {
+            val songListWrapper = gson.fromJson(songListJson, SongListWrapper::class.java)
+            songList = songListWrapper.songs
+        }
+    }
+
+
+     */
 
 }

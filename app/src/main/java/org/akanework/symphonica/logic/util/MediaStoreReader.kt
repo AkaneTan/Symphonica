@@ -47,7 +47,7 @@ fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
 
     for ((albumKey, songList) in albumsMap) {
         val (albumTitle, artist) = albumKey.split("_")
-        val cover = if (songList.isNotEmpty()) songList[0].cover else AppCompatResources.getDrawable(context, R.drawable.ic_album_default_cover)!!
+        val cover = songList[0].cover
         val album = Album(albumTitle, artist, cover, songList)
         albums.add(album)
     }
