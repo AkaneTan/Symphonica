@@ -24,13 +24,13 @@ data class Song(
     val album: String,
     val duration: Long,
     val path: String,
-    val cover: Drawable
+    val cover: Drawable?
 )
 
 data class Album(
     val title: String,
     val artist: String,
-    val cover: Drawable,
+    val cover: Drawable?,
     val songList: List<Song>
 )
 
@@ -47,7 +47,7 @@ fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
 
     for ((albumKey, songList) in albumsMap) {
         val (albumTitle, artist) = albumKey.split("_")
-        val cover = songList[0].cover
+        val cover = if (songList[0].cover != null) songList[0].cover else null
         val album = Album(albumTitle, artist, cover, songList)
         albums.add(album)
     }
@@ -101,13 +101,13 @@ fun getAllSongs(context: Context): List<Song> {
     return songs
 }
 
-fun getSongCover(context: Context, mUri: Uri): Drawable {
+fun getSongCover(context: Context, mUri: Uri): Drawable? {
     val mmr = android.media.MediaMetadataRetriever()
     try {
         mmr.setDataSource(context, mUri)
     } catch (e: Exception) {
         if (e is IllegalArgumentException) {
-            return AppCompatResources.getDrawable(context, R.drawable.ic_album_default_cover)!!
+            return null
         }
     }
     val mAlbumThumbNailCoded = mmr.embeddedPicture
@@ -116,5 +116,5 @@ fun getSongCover(context: Context, mUri: Uri): Drawable {
         mmr.release()
         return BitmapDrawable(mAlbumThumbNailBitmap)
     }
-    return AppCompatResources.getDrawable(context, R.drawable.ic_album_default_cover)!!
+    return null
 }
