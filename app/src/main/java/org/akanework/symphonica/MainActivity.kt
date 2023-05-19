@@ -41,6 +41,8 @@ import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.data.loadDataFromCache
+import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.util.getAllAlbums
 import org.akanework.symphonica.logic.util.loadLibrarySongList
 import org.akanework.symphonica.logic.util.saveLibrarySongList
@@ -91,25 +93,10 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("library_data", Context.MODE_PRIVATE)
 
         coroutineScope.launch {
-            if (libraryViewModel.librarySongList.isEmpty()) {
-                withContext(Dispatchers.IO) {
-                    songList = loadLibrarySongList(sharedPreferences)
-                    libraryViewModel.librarySongList = songList
-                }
-                withContext(Dispatchers.Main) {
-                    LibraryListFragment.updateRecyclerView(songList)
-                    albumList = getAllAlbums(this@MainActivity, songList)
-                    libraryViewModel.libraryAlbumList = albumList
-                }
+            if (sharedPreferences.getString("song_list", null) == null) {
+                loadDataFromDisk()
             } else {
-                songList = libraryViewModel.librarySongList
-                albumList = libraryViewModel.libraryAlbumList
-            }
-            withContext(Dispatchers.Main) {
-                LibraryListFragment.dismissPrompt()
-                LibraryListFragment.updateRecyclerView(songList)
-                LibraryGridFragment.dismissPrompt()
-                LibraryGridFragment.updateRecyclerView(albumList)
+                loadDataFromCache()
             }
         }
 
@@ -176,76 +163,7 @@ class MainActivity : AppCompatActivity() {
 
         // 检查请求码
         coroutineScope.launch {
-            if (libraryViewModel.librarySongList.isEmpty()) {
-                withContext(Dispatchers.IO) {
-                    if (songList.isEmpty()) {
-                        songList = getAllSongs(context)
-                        libraryViewModel.librarySongList = songList
-                    }
-                }
-                withContext(Dispatchers.Main) {
-                    if (albumList.isEmpty()) {
-                        albumList = getAllAlbums(this@MainActivity, songList)
-                        libraryViewModel.libraryAlbumList = albumList
-                    }
-                }
-            } else {
-                albumList = libraryViewModel.libraryAlbumList
-                songList = libraryViewModel.librarySongList
-            }
-
-            withContext(Dispatchers.Main) {
-                LibraryListFragment.dismissPrompt()
-                LibraryListFragment.updateRecyclerView(songList)
-                LibraryGridFragment.dismissPrompt()
-                LibraryGridFragment.updateRecyclerView(albumList)
-            }
-
-            withContext(Dispatchers.IO) {
-                saveLibrarySongList(songList, sharedPreferences)
-            }
+            loadDataFromDisk()
         }
     }
-
-    /*
-    data class AlbumListWrapper(val albums: List<Album>)
-    data class SongListWrapper(val songs: List<Song>)
-
-    // onSaveInstanceState method
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        val gson = Gson()
-
-        val albumListWrapper = AlbumListWrapper(albumList)
-        val albumListJson = gson.toJson(albumListWrapper)
-        outState.putString("ALBUM_LIST", albumListJson)
-
-        val songListWrapper = SongListWrapper(songList)
-        val songListJson = gson.toJson(songListWrapper)
-        outState.putString("SONG_LIST", songListJson)
-    }
-
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val gson = Gson()
-
-        val albumListJson = savedInstanceState.getString("ALBUM_LIST")
-        if (albumListJson != null && albumListJson.isNotEmpty()) {
-            val albumListWrapper = gson.fromJson(albumListJson, AlbumListWrapper::class.java)
-            albumList = albumListWrapper.albums
-        }
-
-        val songListJson = savedInstanceState.getString("SONG_LIST")
-        if (songListJson != null && songListJson.isNotEmpty()) {
-            val songListWrapper = gson.fromJson(songListJson, SongListWrapper::class.java)
-            songList = songListWrapper.songs
-        }
-    }
-
-
-     */
-
 }
