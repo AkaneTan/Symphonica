@@ -1,5 +1,6 @@
 package org.akanework.symphonica.ui.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import org.akanework.symphonica.LibraryAlbumDisplayer
 import org.akanework.symphonica.MainActivity.Companion.albumList
+import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Album
@@ -45,6 +51,20 @@ class LibraryGridAdapter(private val albumList: List<Album>) :
             holder.songCover.setImageResource(R.drawable.ic_album_default_cover)
         } else {
             holder.songCover.setImageDrawable(song.cover)
+        }
+
+        val albumBundle = Bundle().apply {
+            putInt("Position", position)
+        }
+        val albumFragment = LibraryAlbumDisplayer().apply {
+            arguments = albumBundle
+        }
+
+        holder.itemView.setOnClickListener {
+            customFragmentManager.beginTransaction()
+                .replace(R.id.egfrag, albumFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 

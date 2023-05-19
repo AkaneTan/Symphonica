@@ -12,13 +12,13 @@ import org.akanework.symphonica.ui.fragment.LibraryGridFragment
 import org.akanework.symphonica.ui.fragment.LibraryListFragment
 
 suspend fun loadDataFromCache() {
+    LibraryListFragment.switchPrompt(0)
     if (MainActivity.libraryViewModel.librarySongList.isEmpty()) {
         withContext(Dispatchers.IO) {
             MainActivity.songList = loadLibrarySongList(MainActivity.sharedPreferences)
             MainActivity.libraryViewModel.librarySongList = MainActivity.songList
         }
         withContext(Dispatchers.Main) {
-            LibraryListFragment.updateRecyclerView(MainActivity.songList)
             MainActivity.albumList = getAllAlbums(SymphonicaApplication.context, MainActivity.songList)
             MainActivity.libraryViewModel.libraryAlbumList = MainActivity.albumList
         }
@@ -27,16 +27,14 @@ suspend fun loadDataFromCache() {
         MainActivity.albumList = MainActivity.libraryViewModel.libraryAlbumList
     }
     withContext(Dispatchers.Main) {
-        if (!MainActivity.songList.isEmpty()) {
-            LibraryListFragment.dismissPrompt()
-            LibraryListFragment.updateRecyclerView(MainActivity.songList)
-            LibraryGridFragment.dismissPrompt()
-            LibraryGridFragment.updateRecyclerView(MainActivity.albumList)
+        if (MainActivity.songList.isNotEmpty()) {
+            reloadRecyclerView()
         }
     }
 }
 
 suspend fun loadDataFromDisk() {
+    LibraryListFragment.switchPrompt(0)
     if (MainActivity.libraryViewModel.librarySongList.isEmpty()) {
         withContext(Dispatchers.IO) {
             if (MainActivity.songList.isEmpty()) {
@@ -56,13 +54,16 @@ suspend fun loadDataFromDisk() {
     }
 
     withContext(Dispatchers.Main) {
-        LibraryListFragment.dismissPrompt()
-        LibraryListFragment.updateRecyclerView(MainActivity.songList)
-        LibraryGridFragment.dismissPrompt()
-        LibraryGridFragment.updateRecyclerView(MainActivity.albumList)
+        reloadRecyclerView()
     }
 
     withContext(Dispatchers.IO) {
         saveLibrarySongList(MainActivity.songList, MainActivity.sharedPreferences)
     }
+}
+
+fun reloadRecyclerView() {
+    LibraryListFragment.switchPrompt(1)
+    LibraryListFragment.updateRecyclerView(MainActivity.songList)
+    LibraryGridFragment.updateRecyclerView(MainActivity.albumList)
 }

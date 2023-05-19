@@ -6,16 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.transition.MaterialFade
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.songList
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.saveLibrarySongList
 import org.akanework.symphonica.ui.adapter.LibraryGridAdapter
 import org.akanework.symphonica.ui.adapter.LibraryListAdapter
+import java.lang.IllegalArgumentException
 
 class LibraryListFragment : Fragment() {
 
@@ -27,16 +31,22 @@ class LibraryListFragment : Fragment() {
             if (::libraryListView.isInitialized) {
                 val adapter = LibraryListAdapter(newSongList)
                 libraryListView.adapter = adapter
-                adapter.notifyDataSetChanged()
+                adapter.notifyItemRangeInserted(0, songList.size)
             }
         }
 
-        fun dismissPrompt() {
-            val materialFade = MaterialFade().apply {
-                duration = 84L
+        fun switchPrompt(operation: Int) {
+            if (::loadingPrompt.isInitialized) {
+                if (operation == 0) {
+                    if (libraryListView.size == 0) {
+                        loadingPrompt.visibility = View.VISIBLE
+                    }
+                } else if (operation == 1) {
+                    loadingPrompt.visibility = View.GONE
+                } else {
+                    throw IllegalArgumentException()
+                }
             }
-            TransitionManager.beginDelayedTransition(loadingPrompt, materialFade)
-            loadingPrompt.visibility = View.GONE
         }
     }
 

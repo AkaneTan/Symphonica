@@ -29,4 +29,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="sheet_now_playing">Now Playing</string>
     <string name="loading_your_library">Loading your library.</string>
+    <string name="more_information">Information</string>
+    <string name="library_album_displayer_album">Album</string>
+    <string name="library_album_displayer_unknown_album">Unknown Album</string>
+    <string name="library_album_displayer_unknown_year">Unknown Year</string>
+    <string name="library_album_displayer_unknown_artist">Unknown Artist</string>
+    <string name="default_album_number">0</string>
 </resources>

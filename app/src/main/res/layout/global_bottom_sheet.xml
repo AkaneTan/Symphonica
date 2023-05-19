@@ -70,22 +70,42 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_gravity="end"
-                    android:id="@+id/sheet_song_info"
-                    android:layout_width="48dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_more_vert"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
-                    app:iconSize="30sp"
-                    app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    android:layout_gravity="end">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sheet_playlist"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:icon="@drawable/ic_playlist"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:iconGravity="textStart"
+                        app:iconTint="?attr/colorControlNormal"
+                        app:iconSize="30sp"
+                        app:iconPadding="0dp"
+                        android:elevation="0dp"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sheet_song_info"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:icon="@drawable/ic_more_vert"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:iconGravity="textStart"
+                        app:iconTint="?attr/colorControlNormal"
+                        app:iconSize="30sp"
+                        app:iconPadding="0dp"
+                        android:elevation="0dp"/>
+                </LinearLayout>
+
             </FrameLayout>
 
 
@@ -108,7 +128,6 @@
                     android:clipToOutline="true"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"

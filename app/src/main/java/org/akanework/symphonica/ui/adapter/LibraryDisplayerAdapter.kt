@@ -10,26 +10,26 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
+import org.akanework.symphonica.logic.util.getTrackNumber
 
-class LibraryListAdapter(private val songList: List<Song>) :
-    RecyclerView.Adapter<LibraryListAdapter.ViewHolder>() {
+class LibraryDisplayerAdapter(private val songList: List<Song>) :
+    RecyclerView.Adapter<LibraryDisplayerAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val songCover: ImageView = view.findViewById(R.id.song_cover)
         val songTitle: TextView = view.findViewById(R.id.song_title)
-        val songMeta: TextView = view.findViewById(R.id.song_meta)
         val songDuration: TextView = view.findViewById(R.id.song_duration)
+        val songTrackNumber: TextView = view.findViewById(R.id.track_number)
         val songUri: TextView = view.findViewById(R.id.song_uri)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.library_list_card, parent, false)
+            .inflate(R.layout.library_displayer_card, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,19 +41,16 @@ class LibraryListAdapter(private val songList: List<Song>) :
 
         // 设置歌曲标题和元数据
         holder.songTitle.text = songList[position].title
-        holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
         holder.songDuration.text = convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
-
-        if (songList[position].cover == null) {
-            holder.songCover.setImageResource(R.drawable.ic_album_default_cover)
-        } else {
-            holder.songCover.setImageDrawable(songList[position].cover)
+        val trackNumber = getTrackNumber(songList[position].path)
+        if (trackNumber != null) {
+            holder.songTrackNumber.text = trackNumber
         }
 
         holder.itemView.setOnClickListener {
-            playlistViewModel.currentLocation = position
-            playlistViewModel.playList = songList
+            MainActivity.playlistViewModel.currentLocation = position
+            MainActivity.playlistViewModel.playList = songList
         }
     }
 

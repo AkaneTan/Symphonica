@@ -18,11 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.transition.TransitionManager
 import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.transition.MaterialFade
@@ -46,7 +48,9 @@ import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.util.getAllAlbums
 import org.akanework.symphonica.logic.util.loadLibrarySongList
 import org.akanework.symphonica.logic.util.saveLibrarySongList
+import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
+import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 import java.io.File
 import kotlin.reflect.typeOf
 import kotlin.time.ExperimentalTime
@@ -61,9 +65,12 @@ class MainActivity : AppCompatActivity() {
         lateinit var albumList: List<Album>
         lateinit var navigationView: NavigationView
         lateinit var libraryViewModel: LibraryViewModel
+        lateinit var playlistViewModel: PlaylistViewModel
         lateinit var cacheDirDrawable: File
             private set
         lateinit var sharedPreferences: SharedPreferences
+        lateinit var customFragmentManager: FragmentManager
+        lateinit var playlistButton: MaterialButton
 
         fun switchNavigationView() {
             if (navigationView.isGone) {
@@ -71,9 +78,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 navigationView.visibility = GONE
             }
-        }
-        fun switchBottomSheet() {
-
         }
     }
 
@@ -86,11 +90,15 @@ class MainActivity : AppCompatActivity() {
         cacheDirDrawable = File(applicationContext.cacheDir, "cache") // 内部缓存目录下的名为 "cache" 的子目录
         cacheDirDrawable.mkdirs() // 创建目录
 
+        customFragmentManager = supportFragmentManager
+
         songList = listOf()
 
         albumList = listOf()
-        libraryViewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
+        libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
+        playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         sharedPreferences = getSharedPreferences("library_data", Context.MODE_PRIVATE)
+        playlistButton = findViewById(R.id.sheet_playlist)
 
         coroutineScope.launch {
             if (sharedPreferences.getString("song_list", null) == null) {
@@ -104,7 +112,8 @@ class MainActivity : AppCompatActivity() {
 
         navigationView = findViewById(R.id.navigation_view)
 
-        val playerBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
+        val playerBottomSheetBehavior =
+            BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
         playerBottomSheetBehavior.isHideable = false
 
         val bottomPlayerPreview: FrameLayout = findViewById(R.id.bottom_player)

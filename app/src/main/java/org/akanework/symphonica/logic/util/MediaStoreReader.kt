@@ -15,6 +15,8 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import kotlinx.coroutines.CoroutineScope
 import org.akanework.symphonica.R
+import org.akanework.symphonica.SymphonicaApplication
+import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 import java.lang.Exception
@@ -48,7 +50,8 @@ fun getAllSongs(context: Context): List<Song> {
         MediaStore.Audio.Media.ARTIST,
         MediaStore.Audio.Media.ALBUM,
         MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.DATA
+        MediaStore.Audio.Media.DATA,
+        MediaStore.Audio.Media.YEAR
     )
     val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
 
@@ -76,12 +79,13 @@ fun getAllSongs(context: Context): List<Song> {
             val album = it.getString(albumColumn)
             val duration = it.getLong(durationColumn)
             val path = it.getString(pathColumn)
-
             val cover = getSongCover(context, path.toUri())
+
             val song = Song(id, title, artist, album, duration, path, cover)
             songs.add(song)
         }
     }
+    cursor?.close()
 
     return songs
 }
@@ -102,4 +106,56 @@ fun getSongCover(context: Context, mUri: Uri): Drawable? {
         return BitmapDrawable(mAlbumThumbNailBitmap)
     }
     return null
+}
+
+fun getTrackNumber(songUri: String): String? {
+    val projection = arrayOf(MediaStore.Audio.Media.TRACK)
+    val selection = "${MediaStore.Audio.Media.DATA} = ?"
+    val selectionArgs = arrayOf(songUri)
+    val cursor = context.contentResolver.query(
+        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        projection,
+        selection,
+        selectionArgs,
+        null
+    )
+
+    var trackNumber: String? = null
+    cursor?.use {
+        if (cursor.moveToFirst()) {
+            trackNumber = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
+        }
+    }
+
+    cursor?.close()
+
+    if(trackNumber != null && trackNumber.toString().length == 4) {
+        return trackNumber!!.substring(1).trimStart('0')
+    } else if (trackNumber != null) {
+        return trackNumber!!.trimStart('0')
+    }
+    return null
+}
+
+fun getYear(songUri: String): String? {
+    val projection = arrayOf(MediaStore.Audio.Media.YEAR)
+    val selection = "${MediaStore.Audio.Media.DATA} = ?"
+    val selectionArgs = arrayOf(songUri)
+    val cursor = context.contentResolver.query(
+        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        projection,
+        selection,
+        selectionArgs,
+        null
+    )
+
+    var trackNumber: String? = null
+    cursor?.use {
+        if (cursor.moveToFirst()) {
+            trackNumber = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
+        }
+    }
+
+    cursor?.close()
+    return trackNumber
 }

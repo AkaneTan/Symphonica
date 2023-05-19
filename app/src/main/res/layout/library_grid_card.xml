@@ -26,7 +26,7 @@
             android:id="@+id/song_cover"
             android:clipToOutline="true"
             android:background="@drawable/ic_album_cover_ripple"
-            android:scaleType="centerCrop" />
+            android:transitionName="album_imageview"/>
 
         <LinearLayout
             android:layout_gravity="center_horizontal"
@@ -44,6 +44,7 @@
                 android:textColor="?attr/colorOnSurface"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:transitionName="album_name"
                 android:textSize="16sp" />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:textSize="14sp"
                 android:maxEms="10"
                 android:singleLine="true"
+                android:transitionName="album_artist"
                 android:text="@string/unknown_album_and_artist" />
 
         </LinearLayout>

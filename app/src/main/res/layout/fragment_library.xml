@@ -50,7 +50,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Note: A RecyclerView can also be used -->
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/fragmentSwitch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
