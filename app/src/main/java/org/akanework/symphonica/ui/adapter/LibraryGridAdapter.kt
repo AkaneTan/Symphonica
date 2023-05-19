@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
-import org.akanework.symphonica.logic.util.Album
-import org.akanework.symphonica.logic.util.Song
+import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 
 class LibraryGridAdapter(private val albumList: List<Album>) :
@@ -43,7 +42,7 @@ class LibraryGridAdapter(private val albumList: List<Album>) :
         holder.songMeta.text = song.artist
         holder.songUri.text = position.toString()
         if (song.cover == null) {
-            holder.songCover.setImageDrawable(AppCompatResources.getDrawable(SymphonicaApplication.context, R.drawable.ic_album_default_cover))
+            holder.songCover.setImageResource(R.drawable.ic_album_default_cover)
         } else {
             holder.songCover.setImageDrawable(song.cover)
         }

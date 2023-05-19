@@ -1,6 +1,7 @@
 package org.akanework.symphonica
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
@@ -19,24 +20,32 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.TransitionManager
+import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.transition.MaterialFade
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
-import org.akanework.symphonica.logic.util.Song
 import org.akanework.symphonica.logic.util.getAllSongs
 import org.akanework.symphonica.ui.fragment.LibraryGridFragment
 import org.akanework.symphonica.ui.fragment.LibraryListFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
-import org.akanework.symphonica.logic.util.Album
+import org.akanework.symphonica.logic.data.Album
+import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.getAllAlbums
+import org.akanework.symphonica.logic.util.loadLibrarySongList
+import org.akanework.symphonica.logic.util.saveLibrarySongList
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
+import java.io.File
 import kotlin.reflect.typeOf
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
@@ -50,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         lateinit var albumList: List<Album>
         lateinit var navigationView: NavigationView
         lateinit var libraryViewModel: LibraryViewModel
+        lateinit var cacheDirDrawable: File
+            private set
+        lateinit var sharedPreferences: SharedPreferences
 
         fun switchNavigationView() {
             if (navigationView.isGone) {
@@ -69,9 +81,37 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        cacheDirDrawable = File(applicationContext.cacheDir, "cache") // 内部缓存目录下的名为 "cache" 的子目录
+        cacheDirDrawable.mkdirs() // 创建目录
+
         songList = listOf()
+
         albumList = listOf()
         libraryViewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
+        sharedPreferences = getSharedPreferences("library_data", Context.MODE_PRIVATE)
+
+        coroutineScope.launch {
+            if (libraryViewModel.librarySongList.isEmpty()) {
+                withContext(Dispatchers.IO) {
+                    songList = loadLibrarySongList(sharedPreferences)
+                    libraryViewModel.librarySongList = songList
+                }
+                withContext(Dispatchers.Main) {
+                    LibraryListFragment.updateRecyclerView(songList)
+                    albumList = getAllAlbums(this@MainActivity, songList)
+                    libraryViewModel.libraryAlbumList = albumList
+                }
+            } else {
+                songList = libraryViewModel.librarySongList
+                albumList = libraryViewModel.libraryAlbumList
+            }
+            withContext(Dispatchers.Main) {
+                LibraryListFragment.dismissPrompt()
+                LibraryListFragment.updateRecyclerView(songList)
+                LibraryGridFragment.dismissPrompt()
+                LibraryGridFragment.updateRecyclerView(albumList)
+            }
+        }
 
         setContentView(R.layout.activity_main)
 
@@ -123,29 +163,6 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(android.Manifest.permission.READ_MEDIA_AUDIO),
                 PERMISSION_REQUEST_CODE
             )
-        } else {
-            coroutineScope.launch {
-                if (libraryViewModel.librarySongList.isEmpty()) {
-                    withContext(Dispatchers.IO) {
-                        if (songList.isEmpty()) {
-                            songList = getAllSongs(context)
-                            libraryViewModel.librarySongList = songList
-                        }
-                        if (albumList.isEmpty()) {
-                            albumList = getAllAlbums(this@MainActivity, songList)
-                            libraryViewModel.libraryAlbumList = albumList
-                        }
-                    }
-                } else {
-                    albumList = libraryViewModel.libraryAlbumList
-                    songList = libraryViewModel.librarySongList
-                }
-
-                withContext(Dispatchers.Main) {
-                    LibraryListFragment.updateRecyclerView(songList)
-                    LibraryGridFragment.updateRecyclerView(albumList)
-                }
-            }
         }
     }
 
@@ -158,21 +175,34 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         // 检查请求码
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                runOnUiThread {
-                    if (songList.size == 0) {
-                        songList = getAllSongs(this)
-                        LibraryListFragment.updateRecyclerView(songList)
+        coroutineScope.launch {
+            if (libraryViewModel.librarySongList.isEmpty()) {
+                withContext(Dispatchers.IO) {
+                    if (songList.isEmpty()) {
+                        songList = getAllSongs(context)
+                        libraryViewModel.librarySongList = songList
                     }
-                    if (albumList.size == 0) {
+                }
+                withContext(Dispatchers.Main) {
+                    if (albumList.isEmpty()) {
                         albumList = getAllAlbums(this@MainActivity, songList)
-                        LibraryGridFragment.updateRecyclerView(albumList)
+                        libraryViewModel.libraryAlbumList = albumList
                     }
                 }
             } else {
-                // 用户拒绝了权限，可以显示一个提示或采取其他操作
-                // ...
+                albumList = libraryViewModel.libraryAlbumList
+                songList = libraryViewModel.librarySongList
+            }
+
+            withContext(Dispatchers.Main) {
+                LibraryListFragment.dismissPrompt()
+                LibraryListFragment.updateRecyclerView(songList)
+                LibraryGridFragment.dismissPrompt()
+                LibraryGridFragment.updateRecyclerView(albumList)
+            }
+
+            withContext(Dispatchers.IO) {
+                saveLibrarySongList(songList, sharedPreferences)
             }
         }
     }

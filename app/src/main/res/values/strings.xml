@@ -28,4 +28,5 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="sheet_now_playing">Now Playing</string>
+    <string name="loading_your_library">Loading your library.</string>
 </resources>

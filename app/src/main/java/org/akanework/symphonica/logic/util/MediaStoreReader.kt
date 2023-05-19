@@ -15,24 +15,9 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import kotlinx.coroutines.CoroutineScope
 import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.data.Album
+import org.akanework.symphonica.logic.data.Song
 import java.lang.Exception
-
-data class Song(
-    val id: Long,
-    val title: String,
-    val artist: String,
-    val album: String,
-    val duration: Long,
-    val path: String,
-    val cover: Drawable?
-)
-
-data class Album(
-    val title: String,
-    val artist: String,
-    val cover: Drawable?,
-    val songList: List<Song>
-)
 
 fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
