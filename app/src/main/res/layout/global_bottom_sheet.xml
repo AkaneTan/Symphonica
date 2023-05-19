@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
+        style="@style/StandardBottomSheetDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_peekHeight="76dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <LinearLayout
+            android:layout_marginTop="32dp"
+            android:id="@+id/full_size_sheet_player"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sheet_extract_player"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        app:icon="@drawable/ic_arrow_down"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:iconGravity="textStart"
+                        app:iconTint="?attr/colorControlNormal"
+                        app:iconSize="30sp"
+                        app:iconPadding="0dp"
+                        android:elevation="0dp"/>
+
+                    <LinearLayout
+                        android:layout_marginStart="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:text="@string/sheet_now_playing"
+                            android:textSize="18sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/sheet_song_mini"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:text="@string/unknown_song"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_gravity="end"
+                    android:id="@+id/sheet_song_info"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_more_vert"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="30sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+            </FrameLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+
+                <ImageView
+                    android:id="@+id/sheet_cover"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/ic_album_cover_ripple"
+                    android:src="@drawable/ic_album_default_cover"
+                    android:clipToOutline="true"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="1dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/sheet_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unknown_song"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
+                    android:textSize="24sp"/>
+                <TextView
+                    android:id="@+id/sheet_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:text="Unknown Author"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/sheet_album"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:text="Unknown Album"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sheet_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:thumbRadius="6dp"
+                android:enabled="false"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp">
+                <TextView
+                    android:id="@+id/sheet_now_time"
+                    android:layout_gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_play_time"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                <TextView
+                    android:id="@+id/sheet_end_time"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_play_time"
+                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_gravity="end"
+                    android:id="@+id/sheet_loop"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_repeat"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="30sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_gravity="end"
+                    android:id="@+id/sheet_previous_song"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_sheet_previous"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="30sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/sheet_mid_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_sheet_play"
+                    style="?attr/floatingActionButtonLargeStyle"
+                    app:elevation="0dp"
+                    app:fabCustomSize="72dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_gravity="end"
+                    android:id="@+id/sheet_next_song"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_sheet_next"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="30sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_gravity="end"
+                    android:id="@+id/sheet_random"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_shuffle"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="30sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/bottom_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clipToOutline="true">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:id="@+id/sheet_album_cover"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="14dp"
+                    android:background="@drawable/ic_album_cover_ripple"
+                    android:src="@drawable/ic_album_default_cover"
+                    android:clipToOutline="true"/>
+
+                <LinearLayout
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_song_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="@string/sheet_no_playing"
+                        android:textColor="?attr/colorOnSurface"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_artist_album"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:textSize="12sp"
+                        android:text="@string/unknown_album_and_artist" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical|end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bottom_sheet_play"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="?attr/colorSecondaryContainer"
+                    app:icon="@drawable/ic_sheet_play"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorOnSecondaryContainer"
+                    app:iconSize="24sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bottom_sheet_next"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="?attr/colorSurface"
+                    app:icon="@drawable/ic_sheet_next"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/colorControlNormal"
+                    app:iconSize="24sp"
+                    app:iconPadding="0dp"
+                    android:elevation="0dp"/>
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </FrameLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+
+
+
+
+    </FrameLayout> -->
