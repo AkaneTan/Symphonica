@@ -1,6 +1,7 @@
 package org.akanework.symphonica.logic.data
 
 import android.graphics.drawable.Drawable
+import android.net.Uri
 
 data class Song(
     val id: Long,
@@ -9,7 +10,7 @@ data class Song(
     val album: String,
     val duration: Long,
     val path: String,
-    val cover: Drawable?
+    val imgUri: Uri?
 )
 
 data class Album(

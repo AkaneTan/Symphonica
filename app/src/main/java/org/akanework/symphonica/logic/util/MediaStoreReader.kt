@@ -2,24 +2,11 @@ package org.akanework.symphonica.logic.util
 
 import android.content.ContentUris
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.net.toUri
-import kotlinx.coroutines.CoroutineScope
-import org.akanework.symphonica.R
-import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
-import java.lang.Exception
 
 fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
@@ -34,7 +21,7 @@ fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
 
     for ((albumKey, songList) in albumsMap) {
         val (albumTitle, artist) = albumKey.split("_")
-        val cover = if (songList[0].cover != null) songList[0].cover else null
+        val cover = null
         val album = Album(albumTitle, artist, cover, songList)
         albums.add(album)
     }
@@ -51,7 +38,8 @@ fun getAllSongs(context: Context): List<Song> {
         MediaStore.Audio.Media.ALBUM,
         MediaStore.Audio.Media.DURATION,
         MediaStore.Audio.Media.DATA,
-        MediaStore.Audio.Media.YEAR
+        MediaStore.Audio.Media.YEAR,
+        MediaStore.Audio.Media.ALBUM_ID
     )
     val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
 
@@ -71,6 +59,7 @@ fun getAllSongs(context: Context): List<Song> {
         val albumColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
         val durationColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
         val pathColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+        val albumIdColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
 
         while (it.moveToNext()) {
             val id = it.getLong(idColumn)
@@ -79,33 +68,21 @@ fun getAllSongs(context: Context): List<Song> {
             val album = it.getString(albumColumn)
             val duration = it.getLong(durationColumn)
             val path = it.getString(pathColumn)
-            val cover = getSongCover(context, path.toUri())
+            val albumId = it.getLong(albumIdColumn)
 
-            val song = Song(id, title, artist, album, duration, path, cover)
+            val sArtworkUri = Uri.parse("content://media/external/audio/albumart")
+            val imgUri = ContentUris.withAppendedId(
+                sArtworkUri,
+                albumId
+            )
+
+            val song = Song(id, title, artist, album, duration, path, imgUri)
             songs.add(song)
         }
     }
     cursor?.close()
 
     return songs
-}
-
-fun getSongCover(context: Context, mUri: Uri): Drawable? {
-    val mmr = android.media.MediaMetadataRetriever()
-    try {
-        mmr.setDataSource(context, mUri)
-    } catch (e: Exception) {
-        if (e is IllegalArgumentException) {
-            return null
-        }
-    }
-    val mAlbumThumbNailCoded = mmr.embeddedPicture
-    if (mAlbumThumbNailCoded != null) {
-        val mAlbumThumbNailBitmap = BitmapFactory.decodeByteArray(mAlbumThumbNailCoded, 0, mAlbumThumbNailCoded.size)
-        mmr.release()
-        return BitmapDrawable(mAlbumThumbNailBitmap)
-    }
-    return null
 }
 
 fun getTrackNumber(songUri: String): String? {

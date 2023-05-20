@@ -64,9 +64,9 @@ fun convertToSong(storageSong: StorageSong, cover: Drawable?): Song {
         title = storageSong.title,
         artist = storageSong.artist,
         album = storageSong.album,
+        imgUri = null,
         duration = storageSong.duration,
-        path = storageSong.path,
-        cover = cover
+        path = storageSong.path
     )
 }
 
@@ -91,7 +91,7 @@ fun saveLibrarySongList(songList: List<Song>, sharedPreferences: SharedPreferenc
     val transformedSongList = mutableListOf<StorageSong>()
     for (i in songList) {
         transformedSongList.add(convertToStorageSong(i))
-        saveDrawableToFile(i.id.toString(), i.cover)
+        // saveDrawableToFile(i.id.toString(), i.cover)
     }
     val json = Gson().toJson(transformedSongList)
     sharedPreferences.edit().putString("song_list", json).apply()

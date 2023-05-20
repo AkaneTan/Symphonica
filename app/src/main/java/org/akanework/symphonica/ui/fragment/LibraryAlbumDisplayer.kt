@@ -10,9 +10,11 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
+import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
@@ -65,9 +67,12 @@ class LibraryAlbumDisplayer : Fragment() {
         if (albumList.isEmpty()) {
             albumList = libraryViewModel.libraryAlbumList
         }
-        if (albumList[position!!].cover != null) {
-            albumCover.setImageDrawable(albumList[position!!].cover)
-        }
+        Glide.with(requireContext())
+            .load(albumList[position!!].songList.first().imgUri)
+            .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
+            .placeholder(R.drawable.ic_album_default_cover)
+            .into(albumCover)
+
         albumName.text = albumList[position!!].title
         albumArtist.text = albumList[position!!].artist
         val year = getYear(albumList[position!!].songList.first().path)

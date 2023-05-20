@@ -112,7 +112,32 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp">
+                android:layout_marginTop="32dp"
+                android:background="@drawable/ic_album_cover_ripple"
+                android:clipToOutline="true">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/ic_album_cover_ripple"
+                    android:clipToOutline="true" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_note"/>
 
                 <ImageView
                     android:id="@+id/sheet_cover"
@@ -123,8 +148,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:background="@drawable/ic_album_cover_ripple"
-                    android:src="@drawable/ic_album_default_cover"
                     android:clipToOutline="true"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -292,15 +315,35 @@
                 android:layout_gravity="center_vertical"
                 android:clipToOutline="true">
 
-                <ImageView
-                    android:layout_width="56dp"
-                    android:id="@+id/sheet_album_cover"
-                    android:layout_height="56dp"
-                    android:layout_gravity="center_vertical"
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:background="@drawable/ic_album_cover_ripple"
-                    android:src="@drawable/ic_album_default_cover"
-                    android:clipToOutline="true"/>
+                    android:clipToOutline="true">
+
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_album_cover_ripple"
+                        android:clipToOutline="true"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_note"/>
+
+                    <ImageView
+                        android:layout_width="56dp"
+                        android:id="@+id/sheet_album_cover"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center_vertical" />
+
+                </FrameLayout>
+
 
                 <LinearLayout
                     android:layout_marginStart="16dp"

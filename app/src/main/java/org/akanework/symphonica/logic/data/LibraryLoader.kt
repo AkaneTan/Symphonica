@@ -11,26 +11,6 @@ import org.akanework.symphonica.logic.util.saveLibrarySongList
 import org.akanework.symphonica.ui.fragment.LibraryGridFragment
 import org.akanework.symphonica.ui.fragment.LibraryListFragment
 
-suspend fun loadDataFromCache() {
-    LibraryListFragment.switchPrompt(0)
-    if (MainActivity.libraryViewModel.librarySongList.isEmpty()) {
-        withContext(Dispatchers.IO) {
-            MainActivity.songList = loadLibrarySongList(MainActivity.sharedPreferences)
-            MainActivity.libraryViewModel.librarySongList = MainActivity.songList
-        }
-        withContext(Dispatchers.Main) {
-            MainActivity.albumList = getAllAlbums(SymphonicaApplication.context, MainActivity.songList)
-            MainActivity.libraryViewModel.libraryAlbumList = MainActivity.albumList
-        }
-    } else {
-        MainActivity.songList = MainActivity.libraryViewModel.librarySongList
-        MainActivity.albumList = MainActivity.libraryViewModel.libraryAlbumList
-    }
-    withContext(Dispatchers.Main) {
-        reloadRecyclerView()
-    }
-}
-
 suspend fun loadDataFromDisk() {
     LibraryListFragment.switchPrompt(0)
     if (MainActivity.libraryViewModel.librarySongList.isEmpty()) {

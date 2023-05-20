@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.media.Image
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +26,8 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -38,8 +41,8 @@ import kotlinx.coroutines.launch
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
-import org.akanework.symphonica.logic.data.loadDataFromCache
 import org.akanework.symphonica.logic.data.loadDataFromDisk
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updatePlaybackState
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
@@ -49,6 +52,7 @@ import org.akanework.symphonica.ui.component.PlaylistBottomSheet
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
 import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 import java.io.File
+import java.io.FileNotFoundException
 import kotlin.time.ExperimentalTime
 
 
@@ -71,6 +75,23 @@ class MainActivity : AppCompatActivity() {
         lateinit var fullSheetShuffleButton: MaterialButton
         lateinit var managerSymphonica: NotificationManager
         lateinit var channelSymphonica: NotificationChannel
+        var diskCacheStrategyCustom = DiskCacheStrategy.NONE!!
+        lateinit var sheetAlbumCover: ImageView
+        lateinit var fullSheetCover: ImageView
+        fun updateAlbumView() {
+            sheetAlbumCover.setImageResource(R.drawable.ic_album_default_cover)
+            Glide.with(context)
+                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(sheetAlbumCover)
+            fullSheetCover.setImageResource(R.drawable.ic_album_default_cover)
+            Glide.with(context)
+                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(fullSheetCover)
+        }
+
+
         var isShuffleEnabled = false
         var isLoopEnabled = false
         var actuallyPlaying = false
@@ -105,11 +126,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("library_data", Context.MODE_PRIVATE)
 
         coroutineScope.launch {
-            if (sharedPreferences.getString("song_list", null) == null) {
-                loadDataFromDisk()
-            } else {
-                loadDataFromCache()
-            }
+            loadDataFromDisk()
         }
 
         setContentView(R.layout.activity_main)
@@ -139,8 +156,9 @@ class MainActivity : AppCompatActivity() {
         // Register handler for updating metadata
         val handler = Handler(Looper.getMainLooper())
         val playlistBottomSheet = PlaylistBottomSheet()
+        sheetAlbumCover = findViewById(R.id.sheet_album_cover)
+        fullSheetCover = findViewById(R.id.sheet_cover)
 
-        val sheetAlbumCover = findViewById<ImageView>(R.id.sheet_album_cover)
         val bottomSheetSongName = findViewById<TextView>(R.id.bottom_sheet_song_name)
         val bottomSheetArtistAndAlbum = findViewById<TextView>(R.id.bottom_sheet_artist_album)
         val bottomSheetControlButton = findViewById<MaterialButton>(R.id.bottom_sheet_play)
@@ -165,7 +183,7 @@ class MainActivity : AppCompatActivity() {
             val rootView = MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
                 .setTitle("Song Info")
                 .setView(R.layout.alert_dialog_song)
-                .setNeutralButton("Dismiss") { dialog, which ->
+                .setNeutralButton("Dismiss") { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
@@ -180,13 +198,13 @@ class MainActivity : AppCompatActivity() {
                 dialogID.setText(song.id.toString())
                 dialogPath.setText(song.path)
                 dialogDuration.setText(song.duration.toString())
-                if (!song.title.isEmpty()) {
+                if (song.title.isNotEmpty()) {
                     dialogName.setText(song.title)
                 }
-                if (!song.artist.isEmpty()) {
+                if (song.artist.isNotEmpty()) {
                     dialogArtist.setText(song.artist)
                 }
-                if (!song.album.isEmpty()) {
+                if (song.album.isNotEmpty()) {
                     dialogAlbum.setText(song.album)
                 }
             }
@@ -207,8 +225,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         bottomSheetControlButton.setOnClickListener {
-            changePlayer()
-            updatePlaybackState()
+            if (musicPlayer != null) {
+                changePlayer()
+                updatePlaybackState()
+            }
         }
 
         bottomSheetNextButton.setOnClickListener {
@@ -224,8 +244,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         fullSheetControlButton.setOnClickListener {
-            changePlayer()
-            updatePlaybackState()
+            if (musicPlayer != null) {
+                changePlayer()
+                updatePlaybackState()
+            }
         }
 
         fullSheetBackButton.setOnClickListener {
@@ -256,14 +278,15 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 if (musicPlayer != null && playlistViewModel.currentLocation !=
                     playlistViewModel.playList.size) {
+                    /*
                     if (playlistViewModel.playList[playlistViewModel.currentLocation].cover != null) {
                         sheetAlbumCover.setImageDrawable(playlistViewModel.playList[playlistViewModel.currentLocation].cover)
                         fullSheetCover.setImageDrawable(playlistViewModel.playList[playlistViewModel.currentLocation].cover)
                     }
-                    else {
-                        sheetAlbumCover.setImageResource(R.drawable.ic_album_default_cover)
-                        fullSheetCover.setImageResource(R.drawable.ic_album_default_cover)
-                    }
+                    */
+
+                    //else {
+                    //}
                     bottomSheetSongName.text = playlistViewModel.playList[playlistViewModel.currentLocation].title
                     fullSheetSongName.text = playlistViewModel.playList[playlistViewModel.currentLocation].title
                     bottomSheetArtistAndAlbum.text = "${playlistViewModel.playList[playlistViewModel.currentLocation].artist} • ${playlistViewModel.playList[playlistViewModel.currentLocation].album}"
@@ -339,7 +362,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -350,6 +372,14 @@ class MainActivity : AppCompatActivity() {
         // 检查请求码
         coroutineScope.launch {
             loadDataFromDisk()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (playlistViewModel.playList.size != 0) {
+            updateMetadata()
+            updateAlbumView()
         }
     }
 }

@@ -1,21 +1,29 @@
 package org.akanework.symphonica.ui.adapter
 
+import android.content.ContentUris
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
-import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
+import java.io.File
+
 
 class LibraryListAdapter(private val songList: List<Song>) :
     RecyclerView.Adapter<LibraryListAdapter.ViewHolder>() {
@@ -46,11 +54,11 @@ class LibraryListAdapter(private val songList: List<Song>) :
         holder.songDuration.text = convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
 
-        if (songList[position].cover == null) {
-            holder.songCover.setImageResource(R.drawable.ic_album_default_cover)
-        } else {
-            holder.songCover.setImageDrawable(songList[position].cover)
-        }
+        Glide.with(holder.songCover.context)
+            .load(songList[position].imgUri)
+            .diskCacheStrategy(diskCacheStrategyCustom)
+            .placeholder(R.drawable.ic_album_default_cover)
+            .into(holder.songCover)
 
         holder.itemView.setOnClickListener {
             playlistViewModel.currentLocation = position

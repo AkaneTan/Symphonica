@@ -1,7 +1,9 @@
 package org.akanework.symphonica.ui.viewmodel
 
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,5 +19,4 @@ class LibraryViewModel: ViewModel() {
     var librarySongList: List<Song> = listOf()
 
     var libraryAlbumList: List<Album> = listOf()
-
 }

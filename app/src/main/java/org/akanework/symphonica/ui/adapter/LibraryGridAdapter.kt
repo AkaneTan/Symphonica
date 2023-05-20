@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayer
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Album
 
@@ -39,11 +42,12 @@ class LibraryGridAdapter(private val albumList: List<Album>) :
         holder.songTitle.text = song.title
         holder.songMeta.text = song.artist
         holder.songUri.text = position.toString()
-        if (song.cover == null) {
-            holder.songCover.setImageResource(R.drawable.ic_album_default_cover)
-        } else {
-            holder.songCover.setImageDrawable(song.cover)
-        }
+
+        Glide.with(holder.songCover.context)
+            .load(song.songList.first().imgUri)
+            .diskCacheStrategy(diskCacheStrategyCustom)
+            .placeholder(R.drawable.ic_album_default_cover)
+            .into(holder.songCover)
 
         val albumBundle = Bundle().apply {
             putInt("Position", position)

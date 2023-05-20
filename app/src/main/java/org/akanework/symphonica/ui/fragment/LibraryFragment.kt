@@ -26,9 +26,6 @@ import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.songList
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationView
 import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.loadDataFromCache
-import org.akanework.symphonica.logic.data.loadDataFromDisk
-import org.akanework.symphonica.logic.data.reloadRecyclerView
 import org.akanework.symphonica.ui.adapter.NavFragmentPageAdapter
 import kotlin.concurrent.thread
 

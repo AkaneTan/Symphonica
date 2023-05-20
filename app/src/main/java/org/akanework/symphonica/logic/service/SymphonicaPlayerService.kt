@@ -3,20 +3,29 @@ package org.akanework.symphonica.logic.service
 import android.app.Notification
 import android.app.Service
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.IBinder
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.actuallyPlaying
 import org.akanework.symphonica.MainActivity.Companion.isLoopEnabled
 import org.akanework.symphonica.MainActivity.Companion.isShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.MainActivity.Companion.updateAlbumView
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.util.changePlayer
@@ -53,6 +62,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
                 mediaSession.setPlaybackState(playbackStateBuilder.build())
             }
+            updateAlbumView()
         }
 
         val mediaSession = MediaSession(context, "PlayerService")
@@ -65,6 +75,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
 
         fun updateMetadata() {
+            /*
             if (playlistViewModel.playList[playlistViewModel.currentLocation].cover != null) {
                 mediaSession.setMetadata(
                     MediaMetadata.Builder()
@@ -75,6 +86,36 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                         .build()
                 )
             } else {
+
+             */
+            var initialized = false
+            lateinit var bitmapResource: Bitmap
+            Glide.with(context)
+                 .asBitmap()
+                 .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                 .placeholder(R.drawable.ic_album_default_cover)
+                 .into(object : CustomTarget<Bitmap>(){
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        bitmapResource = resource
+                        initialized = true
+                        mediaSession.setMetadata(
+                            MediaMetadata.Builder()
+                                .putString(MediaMetadata.METADATA_KEY_TITLE, playlistViewModel.playList[playlistViewModel.currentLocation].title)
+                                .putString(MediaMetadata.METADATA_KEY_ARTIST, playlistViewModel.playList[playlistViewModel.currentLocation].artist)
+                                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmapResource)
+                                .putLong(MediaMetadata.METADATA_KEY_DURATION, playlistViewModel.playList[playlistViewModel.currentLocation].duration)
+                                .build()
+                        )
+                    }
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // this is called when imageView is cleared on lifecycle call or for
+                        // some other reason.
+                        // if you are referencing the bitmap somewhere else too other than this imageView
+                        // clear it here as you can no longer have the bitmap
+                    }
+                })
+            // }
+            if (initialized == false) {
                 mediaSession.setMetadata(
                     MediaMetadata.Builder()
                         .putString(MediaMetadata.METADATA_KEY_TITLE, playlistViewModel.playList[playlistViewModel.currentLocation].title)
