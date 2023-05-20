@@ -224,8 +224,8 @@ class MainActivity : AppCompatActivity() {
                         fullSheetCover.setImageDrawable(playlistViewModel.playList[playlistViewModel.currentLocation].cover)
                     }
                     else {
-                        sheetAlbumCover.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_album_default_cover))
-                        fullSheetCover.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_album_default_cover))
+                        sheetAlbumCover.setImageResource(R.drawable.ic_album_default_cover)
+                        fullSheetCover.setImageResource(R.drawable.ic_album_default_cover)
                     }
                     bottomSheetSongName.text = playlistViewModel.playList[playlistViewModel.currentLocation].title
                     fullSheetSongName.text = playlistViewModel.playList[playlistViewModel.currentLocation].title
