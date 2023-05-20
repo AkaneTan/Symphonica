@@ -56,17 +56,19 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
             jumpTo(holder.adapterPosition)
         }
         holder.dismissButton.setOnClickListener {
-            val buttonPosition = holder.adapterPosition
-            if (buttonPosition == playlistViewModel.currentLocation) {
-                thisSong()
-            }
-            if (buttonPosition != RecyclerView.NO_POSITION) {
-                Log.d("TAGTAG", "Previous: ${playlistViewModel.playList.size}")
-                // 从列表中删除对应项
-                songList.removeAt(buttonPosition)
-                notifyItemRemoved(buttonPosition)
-                if (buttonPosition < playlistViewModel.currentLocation) {
-                    playlistViewModel.currentLocation --
+            if (playlistViewModel.playList.size != 1) {
+                val buttonPosition = holder.adapterPosition
+                if (buttonPosition == playlistViewModel.currentLocation) {
+                    thisSong()
+                }
+                if (buttonPosition != RecyclerView.NO_POSITION) {
+                    Log.d("TAGTAG", "Previous: ${playlistViewModel.playList.size}")
+                    // 从列表中删除对应项
+                    songList.removeAt(buttonPosition)
+                    notifyItemRemoved(buttonPosition)
+                    if (buttonPosition < playlistViewModel.currentLocation) {
+                        playlistViewModel.currentLocation --
+                    }
                 }
             }
         }
