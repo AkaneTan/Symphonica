@@ -224,7 +224,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
             mediaSession.setCallback(mediaSessionCallback)
         }
-        updateMetadata()
     }
 
     private fun prevSongDecisionMaker() {

@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomSheetControlButton.setOnClickListener {
             changePlayer()
+            updatePlaybackState()
         }
 
         bottomSheetNextButton.setOnClickListener {
@@ -189,6 +190,7 @@ class MainActivity : AppCompatActivity() {
 
         fullSheetControlButton.setOnClickListener {
             changePlayer()
+            updatePlaybackState()
         }
 
         fullSheetBackButton.setOnClickListener {
