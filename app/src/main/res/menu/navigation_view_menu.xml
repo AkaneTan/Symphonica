@@ -8,16 +8,4 @@
         android:checkable="true"
         android:checked="true"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/home_item"
-        android:icon="@drawable/ic_drawer_home"
-        android:title="@string/navigation_view_home"
-        android:checkable="true"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/settings_item"
-        android:icon="@drawable/ic_drawer_settings"
-        android:title="@string/navigation_view_settings"
-        android:checkable="true"
-        app:showAsAction="ifRoom"/>
 </menu>

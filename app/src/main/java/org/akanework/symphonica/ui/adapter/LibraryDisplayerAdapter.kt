@@ -16,6 +16,7 @@ import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.getTrackNumber
+import org.akanework.symphonica.logic.util.replacePlaylist
 
 class LibraryDisplayerAdapter(private val songList: List<Song>) :
     RecyclerView.Adapter<LibraryDisplayerAdapter.ViewHolder>() {
@@ -50,7 +51,8 @@ class LibraryDisplayerAdapter(private val songList: List<Song>) :
 
         holder.itemView.setOnClickListener {
             MainActivity.playlistViewModel.currentLocation = position
-            MainActivity.playlistViewModel.playList = songList
+            MainActivity.playlistViewModel.playList = songList.toMutableList()
+            replacePlaylist(songList.toMutableList(), position)
         }
     }
 

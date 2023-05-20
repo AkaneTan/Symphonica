@@ -61,7 +61,7 @@
                             android:textColor="?attr/colorOnSurface"
                             android:textStyle="bold"/>
                         <TextView
-                            android:id="@+id/sheet_song_mini"
+                            android:id="@+id/sheet_song_location"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:text="@string/unknown_song"
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:text="Unknown Author"
+                    android:text="Unknown Artist"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/sheet_album"
@@ -163,6 +163,10 @@
                 android:id="@+id/sheet_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="100.0"
+                android:value="0"
+                app:labelBehavior="gone"
                 app:thumbRadius="6dp"
                 android:enabled="false"/>
 
@@ -206,7 +210,8 @@
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
+                    app:iconTint="@color/sl_check_button"
+                    android:checkable="true"
                     app:iconSize="30sp"
                     app:iconPadding="0dp"
                     android:elevation="0dp"/>
@@ -266,7 +271,8 @@
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
+                    app:iconTint="@color/sl_check_button"
+                    android:checkable="true"
                     app:iconSize="30sp"
                     app:iconPadding="0dp"
                     android:elevation="0dp"/>
@@ -306,7 +312,7 @@
 
                     <TextView
                         android:id="@+id/bottom_sheet_song_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
                         android:text="@string/sheet_no_playing"

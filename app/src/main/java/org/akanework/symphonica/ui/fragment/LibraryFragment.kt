@@ -83,6 +83,7 @@ class LibraryFragment : Fragment() {
                 else -> "Unknown"
             }
         }.attach()
+        fragmentPager.offscreenPageLimit = 2
         return rootView
     }
 

@@ -6,19 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.transition.platform.MaterialContainerTransform
-import org.akanework.symphonica.LibraryAlbumDisplayer
-import org.akanework.symphonica.MainActivity.Companion.albumList
+import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayer
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.R
-import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Album
-import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 
 class LibraryGridAdapter(private val albumList: List<Album>) :
     RecyclerView.Adapter<LibraryGridAdapter.ViewHolder>() {

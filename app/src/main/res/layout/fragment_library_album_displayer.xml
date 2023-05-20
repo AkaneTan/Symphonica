@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LibraryAlbumDisplayer">
+    tools:context=".ui.fragment.LibraryAlbumDisplayer">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -104,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/displayer_play"
                     android:layout_marginEnd="8dp"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -112,6 +113,7 @@
                     app:icon="@drawable/ic_sheet_play"
                     app:iconSize="24dp"/>
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/displayer_shuffle"
                     android:layout_marginStart="8dp"
                     android:layout_width="0dp"
                     android:layout_height="50dp"

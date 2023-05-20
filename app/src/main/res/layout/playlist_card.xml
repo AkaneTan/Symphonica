@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:longClickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_marginStart="24dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.01"
+                android:text="@string/unknown_song"
+                android:textColor="?attr/colorOnSurface"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_marginStart="8dp"
+                android:id="@+id/song_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:maxEms="10"
+                android:singleLine="true"
+                android:text="@string/unknown_album_and_artist" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="end|center_vertical"
+        android:id="@+id/playlist_delete"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:icon="@drawable/ic_clear"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:iconGravity="textStart"
+        app:iconTint="?attr/colorControlNormal"
+        app:iconSize="24sp"
+        app:iconPadding="0dp"
+        android:elevation="0dp"/>
+
+</FrameLayout>
