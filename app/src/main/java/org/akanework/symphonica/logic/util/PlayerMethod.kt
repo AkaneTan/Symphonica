@@ -30,6 +30,9 @@ fun jumpTo(index: Int) {
 }
 
 fun nextSong() {
+    if (musicPlayer != null && !musicPlayer!!.isPlaying) {
+        thisSong()
+    }
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_NEXT"
     SymphonicaApplication.context.startService(intent)
