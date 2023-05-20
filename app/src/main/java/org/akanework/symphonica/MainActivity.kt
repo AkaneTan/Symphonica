@@ -1,5 +1,7 @@
 package org.akanework.symphonica
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -35,6 +37,7 @@ import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromCache
 import org.akanework.symphonica.logic.data.loadDataFromDisk
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updatePlaybackState
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -63,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         lateinit var playlistButton: MaterialButton
         lateinit var fullSheetLoopButton: MaterialButton
         lateinit var fullSheetShuffleButton: MaterialButton
+        lateinit var managerSymphonica: NotificationManager
+        lateinit var channelSymphonica: NotificationChannel
         var isShuffleEnabled = false
         var isLoopEnabled = false
         var actuallyPlaying = false
@@ -105,6 +110,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_main)
+
+        managerSymphonica = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        channelSymphonica = NotificationChannel("channel_symphonica", "Symphonica", NotificationManager.IMPORTANCE_DEFAULT)
+        managerSymphonica.createNotificationChannel(channelSymphonica)
+
 
         navigationView = findViewById(R.id.navigation_view)
 
@@ -194,6 +204,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 musicPlayer?.seekTo((slider.value * 1000).toInt())
+                updatePlaybackState()
                 isUserTracking = false
             }
         }

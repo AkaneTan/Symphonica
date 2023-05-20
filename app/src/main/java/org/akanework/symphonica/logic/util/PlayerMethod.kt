@@ -11,8 +11,8 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     playlistViewModel.playList = targetPlaylist
+    playlistViewModel.currentLocation = index
     intent.action = "ACTION_REPLACE_AND_PLAY"
-    intent.putExtra("Position", index)
     SymphonicaApplication.context.startService(intent)
     actuallyPlaying = true
 }
