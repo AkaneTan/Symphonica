@@ -27,9 +27,7 @@ suspend fun loadDataFromCache() {
         MainActivity.albumList = MainActivity.libraryViewModel.libraryAlbumList
     }
     withContext(Dispatchers.Main) {
-        if (MainActivity.songList.isNotEmpty()) {
-            reloadRecyclerView()
-        }
+        reloadRecyclerView()
     }
 }
 

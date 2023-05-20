@@ -194,15 +194,15 @@
             </FrameLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_gravity="end"
                     android:id="@+id/sheet_loop"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:backgroundTint="?attr/colorSurface"
                     app:icon="@drawable/ic_repeat"
                     android:insetLeft="0dp"
@@ -219,8 +219,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_gravity="end"
                     android:id="@+id/sheet_previous_song"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:backgroundTint="?attr/colorSurface"
                     app:icon="@drawable/ic_sheet_previous"
                     android:insetLeft="0dp"
@@ -240,13 +240,13 @@
                     android:src="@drawable/ic_sheet_play"
                     style="?attr/floatingActionButtonLargeStyle"
                     app:elevation="0dp"
-                    app:fabCustomSize="72dp"/>
+                    app:fabCustomSize="64dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_gravity="end"
                     android:id="@+id/sheet_next_song"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:backgroundTint="?attr/colorSurface"
                     app:icon="@drawable/ic_sheet_next"
                     android:insetLeft="0dp"
@@ -262,8 +262,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_gravity="end"
                     android:id="@+id/sheet_random"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:backgroundTint="?attr/colorSurface"
                     app:icon="@drawable/ic_shuffle"
                     android:insetLeft="0dp"

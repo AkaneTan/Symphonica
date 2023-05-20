@@ -1,5 +1,6 @@
 package org.akanework.symphonica
 
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -26,9 +27,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.slider.Slider
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -154,8 +157,40 @@ class MainActivity : AppCompatActivity() {
         val fullSheetSlider = findViewById<Slider>(R.id.sheet_slider)
         val fullSheetDuration = findViewById<TextView>(R.id.sheet_end_time)
         val fullSheetTimeStamp = findViewById<TextView>(R.id.sheet_now_time)
+        val fullSheetSongInfo = findViewById<MaterialButton>(R.id.sheet_song_info)
         fullSheetLoopButton = findViewById(R.id.sheet_loop)
         fullSheetShuffleButton = findViewById(R.id.sheet_random)
+
+        fullSheetSongInfo.setOnClickListener {
+            val rootView = MaterialAlertDialogBuilder(this, com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered)
+                .setTitle("Song Info")
+                .setView(R.layout.alert_dialog_song)
+                .setNeutralButton("Dismiss") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+                val dialogID: TextInputEditText = rootView.findViewById(R.id.dialog_id)!!
+                val dialogName: TextInputEditText = rootView.findViewById(R.id.dialog_song)!!
+                val dialogArtist: TextInputEditText = rootView.findViewById(R.id.dialog_artist)!!
+                val dialogAlbum: TextInputEditText = rootView.findViewById(R.id.dialog_album)!!
+                val dialogDuration: TextInputEditText = rootView.findViewById(R.id.dialog_duration)!!
+                val dialogPath: TextInputEditText = rootView.findViewById(R.id.dialog_path)!!
+            if (actuallyPlaying) {
+                val song = playlistViewModel.playList[playlistViewModel.currentLocation]
+                dialogID.setText(song.id.toString())
+                dialogPath.setText(song.path)
+                dialogDuration.setText(song.duration.toString())
+                if (!song.title.isEmpty()) {
+                    dialogName.setText(song.title)
+                }
+                if (!song.artist.isEmpty()) {
+                    dialogArtist.setText(song.artist)
+                }
+                if (!song.album.isEmpty()) {
+                    dialogAlbum.setText(song.album)
+                }
+            }
+        }
 
         fullSheetLoopButton.addOnCheckedChangeListener { _, isChecked ->
             if (isShuffleEnabled) {
@@ -264,8 +299,9 @@ class MainActivity : AppCompatActivity() {
         playlistButton = findViewById(R.id.sheet_playlist)
 
         playlistButton.setOnClickListener {
-            playlistBottomSheet.show(supportFragmentManager, PlaylistBottomSheet.TAG)
-
+            if (!playlistBottomSheet.isAdded) {
+                playlistBottomSheet.show(supportFragmentManager, PlaylistBottomSheet.TAG)
+            }
         }
 
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
