@@ -24,6 +24,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
@@ -53,6 +55,7 @@ class LibraryFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_library, container, false)
 
         val topAppBar: MaterialToolbar = rootView.findViewById(R.id.topAppBar)
+        val libraryTabLayout: TabLayout = rootView.findViewById(R.id.library_tablayout)
         fragmentPager = rootView.findViewById(R.id.fragmentSwitch)
 
         topAppBar.setNavigationOnClickListener {
@@ -63,6 +66,15 @@ class LibraryFragment : Fragment() {
 
         // Set the offscreenPageLimit to 2 to avoid stuttering.
         fragmentPager.offscreenPageLimit = 2
+
+        TabLayoutMediator(libraryTabLayout, fragmentPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "List"
+                1 -> "Album"
+                else -> "Unknown"
+            }
+        }.attach()
+
         return rootView
     }
 
