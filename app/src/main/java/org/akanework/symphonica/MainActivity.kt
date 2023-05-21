@@ -63,8 +63,8 @@ import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromDisk
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updatePlaybackState
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -335,7 +335,6 @@ class MainActivity : AppCompatActivity() {
         bottomSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
                 changePlayer()
-                updatePlaybackState()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -366,7 +365,6 @@ class MainActivity : AppCompatActivity() {
         fullSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
                 changePlayer()
-                updatePlaybackState()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -459,7 +457,6 @@ class MainActivity : AppCompatActivity() {
                 // used the duration directly) we might encounter
                 // some performance problem.
                 musicPlayer?.seekTo((slider.value * 1000).toInt())
-                updatePlaybackState()
                 isUserTracking = false
             }
         }
@@ -487,10 +484,6 @@ class MainActivity : AppCompatActivity() {
                             fullSheetTimeStamp.text =
                                 convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
                         }
-
-                        bottomSheetControlButton.icon =
-                            ContextCompat.getDrawable(context, R.drawable.ic_pause)
-                        fullSheetControlButton.setImageResource(R.drawable.ic_pause)
                     }
                 }
                 // Update it per 200ms.
@@ -615,7 +608,12 @@ class MainActivity : AppCompatActivity() {
                         playlistViewModel.playList.size.toString()
                     )
 
+                bottomSheetControlButton.icon =
+                    ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
+                fullSheetControlButton.setImageResource(R.drawable.ic_pause)
+
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
+                setPlaybackState(0)
             }
         }
     }
@@ -633,6 +631,7 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
             fullSheetSlider.isEnabled = false
+            setPlaybackState(1)
         }
 
     }
@@ -648,6 +647,7 @@ class MainActivity : AppCompatActivity() {
             bottomSheetControlButton.icon =
                 ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
+            setPlaybackState(1)
         }
 
     }

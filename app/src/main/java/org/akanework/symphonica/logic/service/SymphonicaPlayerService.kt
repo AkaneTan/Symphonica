@@ -43,31 +43,33 @@ import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
+import org.akanework.symphonica.logic.util.thisSong
 import kotlin.random.Random
 
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     companion object {
-        fun updatePlaybackState() {
-            musicPlayer?.let {
-                val playbackStateBuilder = PlaybackState.Builder()
-                    .setActions(PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS)
-                if (musicPlayer!!.isPlaying) {
-                    playbackStateBuilder.setState(
-                        PlaybackState.STATE_PLAYING,
-                        it.currentPosition.toLong(),
-                        1.0f
-                    )
-                } else {
-                    playbackStateBuilder.setState(
-                        PlaybackState.STATE_PAUSED,
-                        it.currentPosition.toLong(),
-                        0.0f
-                    )
-                }
 
-                mediaSession.setPlaybackState(playbackStateBuilder.build())
+        fun setPlaybackState(operation: Int) {
+            val playbackStateBuilder = PlaybackState.Builder()
+                .setActions(PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT
+                        or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO)
+            when (operation) {
+
+                0 -> playbackStateBuilder.setState(
+                    PlaybackState.STATE_PLAYING,
+                    musicPlayer!!.currentPosition.toLong(),
+                    1.0f
+                )
+
+                1 -> playbackStateBuilder.setState(
+                    PlaybackState.STATE_PAUSED,
+                    if (musicPlayer != null) musicPlayer!!.currentPosition.toLong() else 0,
+                    0.0f)
+
+                else -> throw IllegalArgumentException()
             }
+            mediaSession.setPlaybackState(playbackStateBuilder.build())
         }
 
         val mediaSession = MediaSession(context, "PlayerService")
@@ -156,7 +158,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private val mediaSessionCallback = object : MediaSession.Callback() {
         override fun onSeekTo(pos: Long) {
             musicPlayer?.seekTo(pos.toInt())
-            updatePlaybackState()
         }
 
         override fun onSkipToNext() {
@@ -168,13 +169,23 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         }
 
         override fun onPause() {
-            changePlayer()
-            updatePlaybackState()
+            if (musicPlayer != null) {
+                changePlayer()
+            } else if (playlistViewModel.playList.size != 0
+                && playlistViewModel.currentLocation != playlistViewModel.playList.size
+            ) {
+                thisSong()
+            }
         }
 
         override fun onPlay() {
-            changePlayer()
-            updatePlaybackState()
+            if (musicPlayer != null) {
+                changePlayer()
+            } else if (playlistViewModel.playList.size != 0
+                && playlistViewModel.currentLocation != playlistViewModel.playList.size
+            ) {
+                thisSong()
+            }
         }
     }
 
@@ -188,7 +199,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         mediaSession.isActive = true
         mediaSession.setCallback(mediaSessionCallback)
         updateMetadata()
-        updatePlaybackState()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -213,6 +223,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             "ACTION_RESUME" -> {
                 if (musicPlayer != null && !musicPlayer!!.isPlaying) {
                     musicPlayer!!.start()
+                    broadcastPlayStart()
                     killMiniPlayer()
                 }
             }
