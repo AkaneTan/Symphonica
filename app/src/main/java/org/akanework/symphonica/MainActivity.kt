@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
         playlistButton = findViewById(R.id.sheet_playlist)
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
-        animator = ObjectAnimator.ofFloat(fragmentContainerView, "translationX", 0f, 500f)
+        animator = ObjectAnimator.ofFloat(fragmentContainerView, "translationX", 0f, 600f)
 
         // The behavior of the global sheet starts here.
         playerBottomSheetBehavior.isHideable = false
