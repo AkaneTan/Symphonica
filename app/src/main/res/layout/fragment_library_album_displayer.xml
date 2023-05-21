@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.LibraryAlbumDisplayer">
+    tools:context=".ui.fragment.LibraryAlbumDisplayFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         app:contentScrim="?attr/colorSurface"
-        app:statusBarScrim="?attr/colorSurface"
         app:liftOnScrollColor="?attr/colorSurface"
-        android:fitsSystemWindows="true">
+        app:statusBarScrim="?attr/colorSurface">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:layout_scrollEffect="compress"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:menu="@menu/library_album_displayer_menu" />
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:menu="@menu/library_album_displayer_menu"
+            app:navigationIcon="@drawable/ic_arrow_back" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -34,101 +50,107 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="32dp"
                 android:layout_marginStart="80dp"
-                android:layout_marginEnd="80dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="32dp">
 
                 <ImageView
                     android:id="@+id/displayer_album_cover"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    android:background="@drawable/rp_album_cover"
+                    android:clipToOutline="true"
+                    android:src="@drawable/ic_album_default_cover"
+                    android:transitionName="album_imageview"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@drawable/ic_album_cover_ripple"
-                    android:src="@drawable/ic_album_default_cover"
-                    android:clipToOutline="true"
-                    android:transitionName="album_imageview"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="4dp">
+                android:layout_marginStart="4dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/library_album_displayer_album"
                     android:textColor="?attr/colorOnPrimaryContainer"
                     android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/displayer_album_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/library_album_displayer_unknown_album"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface"
                     android:transitionName="album_name" />
+
                 <TextView
                     android:id="@+id/displayer_album_artist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/library_album_displayer_unknown_artist"
-                    android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:transitionName="album_artist"/>
+                    android:textSize="14sp"
+                    android:transitionName="album_artist" />
+
                 <TextView
                     android:id="@+id/displayer_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/library_album_displayer_unknown_year"
-                    android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:transitionName="album_year"/>
+                    android:textSize="14sp"
+                    android:transitionName="album_year" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/displayer_play"
-                    android:layout_marginEnd="8dp"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="Play"
                     app:icon="@drawable/ic_sheet_play"
-                    app:iconSize="24dp"/>
+                    app:iconSize="24dp" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/displayer_shuffle"
-                    android:layout_marginStart="8dp"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:text="Shuffle"
                     app:icon="@drawable/ic_shuffle"
-                    app:iconSize="24dp"
-                    style="@style/Widget.Material3.Button.TonalButton"/>
+                    app:iconSize="24dp" />
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/displayer_recyclerview"

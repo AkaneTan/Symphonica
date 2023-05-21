@@ -15,13 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.akanework.symphonica.ui.viewmodel
+package org.akanework.symphonica.logic
 
-import androidx.lifecycle.ViewModel
-import org.akanework.symphonica.logic.data.Album
-import org.akanework.symphonica.logic.data.Song
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
 
-class LibraryViewModel : ViewModel() {
-    var librarySongList: List<Song> = listOf()
-    var libraryAlbumList: List<Album> = listOf()
-}
+@GlideModule
+class SymphonicaGlideModule : AppGlideModule()

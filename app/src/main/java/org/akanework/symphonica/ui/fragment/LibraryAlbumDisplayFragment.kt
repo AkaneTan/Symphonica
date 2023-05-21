@@ -1,12 +1,29 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,24 +36,24 @@ import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
-import org.akanework.symphonica.MainActivity.Companion.isLoopEnabled
-import org.akanework.symphonica.MainActivity.Companion.isShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.util.getYear
 import org.akanework.symphonica.logic.util.replacePlaylist
-import org.akanework.symphonica.ui.adapter.LibraryDisplayerAdapter
+import org.akanework.symphonica.ui.adapter.LibraryDisplayAdapter
 import org.akanework.symphonica.ui.viewmodel.AlbumDisplayViewModel
 
-class LibraryAlbumDisplayer : Fragment() {
+class LibraryAlbumDisplayFragment : Fragment() {
 
     private var albumDisplayViewModel: AlbumDisplayViewModel? = null
-    var position: Int? = null
+    private var position: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+        enterTransition =
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
+        returnTransition =
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
         if (albumDisplayViewModel == null) {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
         }
@@ -59,19 +76,24 @@ class LibraryAlbumDisplayer : Fragment() {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
         }
 
-        if (albumDisplayViewModel!!.position == null) {
-            position = requireArguments().getInt("Position")
+        position = if (albumDisplayViewModel!!.position == null) {
+            requireArguments().getInt("Position")
         } else {
-            position = albumDisplayViewModel!!.position
+            albumDisplayViewModel!!.position
         }
         if (albumList.isEmpty()) {
             albumList = libraryViewModel.libraryAlbumList
         }
-        Glide.with(requireContext())
-            .load(albumList[position!!].songList.first().imgUri)
-            .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
-            .placeholder(R.drawable.ic_album_default_cover)
-            .into(albumCover)
+
+        try {
+            Glide.with(requireContext())
+                .load(albumList[position!!].songList.first().imgUri)
+                .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
+                .placeholder(R.drawable.ic_album_default_cover)
+                .into(albumCover)
+        } catch (_: Exception) {
+            // Placeholder
+        }
 
         albumName.text = albumList[position!!].title
         albumArtist.text = albumList[position!!].artist
@@ -85,7 +107,7 @@ class LibraryAlbumDisplayer : Fragment() {
         }
         val libraryAlbumView: RecyclerView = rootView.findViewById(R.id.displayer_recyclerview)
         libraryAlbumView.layoutManager = LinearLayoutManager(context)
-        libraryAlbumView.adapter = LibraryDisplayerAdapter(albumList[position!!].songList)
+        libraryAlbumView.adapter = LibraryDisplayAdapter(albumList[position!!].songList)
 
         displayPlay.setOnClickListener {
             replacePlaylist(albumList[position!!].songList.toMutableList(), 0)
@@ -93,8 +115,6 @@ class LibraryAlbumDisplayer : Fragment() {
 
         displayShuffle.setOnClickListener {
             replacePlaylist(albumList[position!!].songList.toMutableList(), 0)
-            isLoopEnabled = true
-            isShuffleEnabled = true
             fullSheetLoopButton.isChecked = true
             fullSheetShuffleButton.isChecked = true
         }
@@ -102,7 +122,4 @@ class LibraryAlbumDisplayer : Fragment() {
         return rootView
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 }

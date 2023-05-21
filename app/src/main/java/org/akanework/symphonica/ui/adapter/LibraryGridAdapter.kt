@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.ui.adapter
 
 import android.os.Bundle
@@ -8,12 +25,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayer
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Album
+import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 class LibraryGridAdapter(private val albumList: List<Album>) :
     RecyclerView.Adapter<LibraryGridAdapter.ViewHolder>() {
@@ -43,22 +59,26 @@ class LibraryGridAdapter(private val albumList: List<Album>) :
         holder.songMeta.text = song.artist
         holder.songUri.text = position.toString()
 
-        Glide.with(holder.songCover.context)
-            .load(song.songList.first().imgUri)
-            .diskCacheStrategy(diskCacheStrategyCustom)
-            .placeholder(R.drawable.ic_album_default_cover)
-            .into(holder.songCover)
+        try {
+            Glide.with(holder.songCover.context)
+                .load(song.songList.first().imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .placeholder(R.drawable.ic_album_default_cover)
+                .into(holder.songCover)
+        } catch (_: Exception) {
+
+        }
 
         val albumBundle = Bundle().apply {
             putInt("Position", position)
         }
-        val albumFragment = LibraryAlbumDisplayer().apply {
+        val albumFragment = LibraryAlbumDisplayFragment().apply {
             arguments = albumBundle
         }
 
         holder.itemView.setOnClickListener {
             customFragmentManager.beginTransaction()
-                .replace(R.id.egfrag, albumFragment)
+                .replace(R.id.fragmentContainer, albumFragment)
                 .addToBackStack(null)
                 .commit()
         }

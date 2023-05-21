@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:fitsSystemWindows="true">
 
@@ -17,13 +32,13 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <LinearLayout
-            android:layout_marginTop="32dp"
             android:id="@+id/full_size_sheet_player"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:orientation="vertical">
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -32,41 +47,44 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="48dp">
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/sheet_extract_player"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:backgroundTint="?attr/colorSurface"
-                        app:icon="@drawable/ic_arrow_down"
+                        android:elevation="0dp"
                         android:insetLeft="0dp"
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
+                        app:icon="@drawable/ic_arrow_down"
                         app:iconGravity="textStart"
-                        app:iconTint="?attr/colorControlNormal"
-                        app:iconSize="30sp"
                         app:iconPadding="0dp"
-                        android:elevation="0dp"/>
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorControlNormal" />
 
                     <LinearLayout
-                        android:layout_marginStart="16dp"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:text="@string/sheet_now_playing"
-                            android:textSize="18sp"
                             android:textColor="?attr/colorOnSurface"
-                            android:textStyle="bold"/>
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/sheet_song_location"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:text="@string/unknown_song"
-                            android:textSize="14sp"
-                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -74,36 +92,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_gravity="end">
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/sheet_playlist"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:backgroundTint="?attr/colorSurface"
-                        app:icon="@drawable/ic_playlist"
+                        android:elevation="0dp"
                         android:insetLeft="0dp"
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
+                        app:icon="@drawable/ic_playlist"
                         app:iconGravity="textStart"
-                        app:iconTint="?attr/colorControlNormal"
-                        app:iconSize="30sp"
                         app:iconPadding="0dp"
-                        android:elevation="0dp"/>
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorControlNormal" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/sheet_song_info"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:backgroundTint="?attr/colorSurface"
-                        app:icon="@drawable/ic_more_vert"
+                        android:elevation="0dp"
                         android:insetLeft="0dp"
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
+                        app:icon="@drawable/ic_more_vert"
                         app:iconGravity="textStart"
-                        app:iconTint="?attr/colorControlNormal"
-                        app:iconSize="30sp"
                         app:iconPadding="0dp"
-                        android:elevation="0dp"/>
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorControlNormal" />
                 </LinearLayout>
 
             </FrameLayout>
@@ -113,107 +133,112 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/ic_album_cover_ripple"
+                android:background="@drawable/rp_album_cover"
                 android:clipToOutline="true">
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    android:background="@drawable/rp_album_cover"
+                    android:clipToOutline="true"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@drawable/ic_album_cover_ripple"
-                    android:clipToOutline="true" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    android:layout_gravity="center"
+                    android:padding="100dp"
+                    android:src="@drawable/ic_note"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:padding="100dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_note"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/sheet_cover"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    android:clipToOutline="true"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:clipToOutline="true"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:layout_marginStart="1dp"
+                android:layout_marginTop="32dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/sheet_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/unknown_song"
                     android:textColor="?attr/colorOnSurface"
-                    android:textStyle="bold"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/sheet_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:text="Unknown Artist"
-                    android:textSize="16sp"/>
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/sheet_album"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:text="Unknown Album"
-                    android:textSize="16sp"/>
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <com.google.android.material.slider.Slider
                 android:id="@+id/sheet_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:value="0"
                 android:valueFrom="0.0"
                 android:valueTo="100.0"
-                android:value="0"
                 app:labelBehavior="gone"
-                app:thumbRadius="6dp"
-                android:enabled="false"/>
+                app:thumbRadius="6dp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp">
+
                 <TextView
                     android:id="@+id/sheet_now_time"
-                    android:layout_gravity="start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:text="@string/default_play_time"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/sheet_end_time"
-                    android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:text="@string/default_play_time"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp" />
             </FrameLayout>
 
             <LinearLayout
@@ -222,83 +247,83 @@
                 android:layout_gravity="center_horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_gravity="end"
                     android:id="@+id/sheet_loop"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_gravity="end"
                     android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_repeat"
+                    android:checkable="true"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_repeat"
                     app:iconGravity="textStart"
-                    app:iconTint="@color/sl_check_button"
-                    android:checkable="true"
-                    app:iconSize="30sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="30sp"
+                    app:iconTint="@color/sl_check_button" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_gravity="end"
                     android:id="@+id/sheet_previous_song"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_gravity="end"
                     android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_sheet_previous"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_sheet_previous"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
-                    app:iconSize="30sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="30sp"
+                    app:iconTint="?attr/colorControlNormal" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/sheet_mid_button"
+                    style="?attr/floatingActionButtonLargeStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_sheet_play"
-                    style="?attr/floatingActionButtonLargeStyle"
                     app:elevation="0dp"
-                    app:fabCustomSize="64dp"/>
+                    app:fabCustomSize="64dp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_gravity="end"
                     android:id="@+id/sheet_next_song"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_gravity="end"
                     android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_sheet_next"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_sheet_next"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
-                    app:iconSize="30sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="30sp"
+                    app:iconTint="?attr/colorControlNormal" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_gravity="end"
                     android:id="@+id/sheet_random"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_gravity="end"
                     android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_shuffle"
+                    android:checkable="true"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_shuffle"
                     app:iconGravity="textStart"
-                    app:iconTint="@color/sl_check_button"
-                    android:checkable="true"
-                    app:iconSize="30sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="30sp"
+                    app:iconTint="@color/sl_check_button" />
 
             </LinearLayout>
 
@@ -309,6 +334,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -319,26 +345,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
-                    android:background="@drawable/ic_album_cover_ripple"
+                    android:background="@drawable/rp_album_cover"
                     android:clipToOutline="true">
 
                     <ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/ic_album_cover_ripple"
-                        android:clipToOutline="true"/>
+                        android:background="@drawable/rp_album_cover"
+                        android:clipToOutline="true" />
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="16dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_note"/>
+                        android:padding="16dp"
+                        android:src="@drawable/ic_note" />
 
                     <ImageView
-                        android:layout_width="56dp"
                         android:id="@+id/sheet_album_cover"
+                        android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_gravity="center_vertical" />
 
@@ -346,10 +372,10 @@
 
 
                 <LinearLayout
-                    android:layout_marginStart="16dp"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
                     android:layout_marginBottom="1dp"
                     android:orientation="vertical">
 
@@ -358,28 +384,28 @@
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
                         android:text="@string/sheet_no_playing"
                         android:textColor="?attr/colorOnSurface"
-                        android:singleLine="true"
-                        android:ellipsize="marquee"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/bottom_sheet_artist_album"
                         android:layout_width="170dp"
                         android:layout_height="wrap_content"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:singleLine="true"
                         android:ellipsize="marquee"
-                        android:textSize="12sp"
-                        android:text="@string/unknown_album_and_artist" />
+                        android:singleLine="true"
+                        android:text="@string/unknown_album_and_artist"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_gravity="center_vertical|end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal">
 
@@ -388,32 +414,32 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:backgroundTint="?attr/colorSecondaryContainer"
-                    app:icon="@drawable/ic_sheet_play"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_sheet_play"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorOnSecondaryContainer"
-                    app:iconSize="24sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="24sp"
+                    app:iconTint="?attr/colorOnSecondaryContainer" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bottom_sheet_next"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:backgroundTint="?attr/colorSurface"
-                    app:icon="@drawable/ic_sheet_next"
+                    android:elevation="0dp"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    app:icon="@drawable/ic_sheet_next"
                     app:iconGravity="textStart"
-                    app:iconTint="?attr/colorControlNormal"
-                    app:iconSize="24sp"
                     app:iconPadding="0dp"
-                    android:elevation="0dp"/>
+                    app:iconSize="24sp"
+                    app:iconTint="?attr/colorControlNormal" />
 
             </LinearLayout>
         </FrameLayout>
@@ -421,18 +447,4 @@
     </FrameLayout>
 
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <!--
-
-    <FrameLayout
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
-
-
-
-
-
-    </FrameLayout> -->

@@ -16,12 +16,22 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:tint="?attr/colorControlNormal"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="@android:color/white"
-        android:pathData="M6,19h4L10,5L6,5v14zM14,5v14h4L18,5h-4z" />
+    android:width="191dp"
+    android:height="191dp"
+    android:viewportWidth="191"
+    android:viewportHeight="191">
+    <group>
+        <clip-path android:pathData="M0,0h191v191h-191z" />
+        <path
+            android:fillColor="?attr/colorSecondary"
+            android:pathData="M1,1h189v189h-189z" />
+        <path
+            android:fillColor="?attr/colorPrimary"
+            android:fillType="evenOdd"
+            android:pathData="M1,190 L1,1 190,190Z" />
+        <path
+            android:fillColor="?attr/colorSurface"
+            android:fillType="evenOdd"
+            android:pathData="M162.32,162.32C125.42,199.23 65.58,199.23 28.68,162.32 -8.23,125.42 -8.23,65.58 28.68,28.68 46.4,10.96 70.44,1 95.5,1Z" />
+    </group>
 </vector>

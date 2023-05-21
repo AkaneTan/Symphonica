@@ -1,28 +1,33 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.ui.adapter
 
-import android.content.res.Resources.Theme
-import android.graphics.Color
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.color.MaterialColors
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
-import org.akanework.symphonica.SymphonicaApplication
-import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.jumpTo
-import org.akanework.symphonica.logic.util.nextSong
-import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.logic.util.thisSong
 
 
@@ -47,7 +52,6 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        // 设置歌曲标题和元数据
         holder.songTitle.text = songList[position].title
         holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
 
@@ -62,12 +66,11 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                     thisSong()
                 }
                 if (buttonPosition != RecyclerView.NO_POSITION) {
-                    Log.d("TAGTAG", "Previous: ${playlistViewModel.playList.size}")
-                    // 从列表中删除对应项
+                    // Delete the item.
                     songList.removeAt(buttonPosition)
                     notifyItemRemoved(buttonPosition)
                     if (buttonPosition < playlistViewModel.currentLocation) {
-                        playlistViewModel.currentLocation --
+                        playlistViewModel.currentLocation--
                     }
                 }
             }

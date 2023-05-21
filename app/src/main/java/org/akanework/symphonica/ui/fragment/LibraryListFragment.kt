@@ -1,25 +1,36 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.core.view.size
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.transition.MaterialFade
-import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.songList
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
-import org.akanework.symphonica.logic.util.saveLibrarySongList
-import org.akanework.symphonica.ui.adapter.LibraryGridAdapter
 import org.akanework.symphonica.ui.adapter.LibraryListAdapter
-import java.lang.IllegalArgumentException
 
 class LibraryListFragment : Fragment() {
 
@@ -27,6 +38,11 @@ class LibraryListFragment : Fragment() {
         lateinit var libraryListView: RecyclerView
         lateinit var adapter: LibraryListAdapter
         lateinit var loadingPrompt: MaterialCardView
+
+        /**
+         * This updates the full list of songs.
+         * involving [libraryListView].
+         */
         fun updateRecyclerView(newSongList: List<Song>) {
             if (::libraryListView.isInitialized) {
                 val adapter = LibraryListAdapter(newSongList)
@@ -35,6 +51,10 @@ class LibraryListFragment : Fragment() {
             }
         }
 
+        /**
+         * This is used for outer class to switch [loadingPrompt].
+         * e.g. When loading from disk completed.
+         */
         fun switchPrompt(operation: Int) {
             if (::loadingPrompt.isInitialized) {
                 if (operation == 0) {
@@ -42,16 +62,12 @@ class LibraryListFragment : Fragment() {
                         loadingPrompt.visibility = View.VISIBLE
                     }
                 } else if (operation == 1) {
-                    loadingPrompt.visibility = View.GONE
+                    loadingPrompt.visibility = GONE
                 } else {
                     throw IllegalArgumentException()
                 }
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -60,13 +76,25 @@ class LibraryListFragment : Fragment() {
     ): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_library_list, container, false)
-        val layoutManager = LinearLayoutManager(context)
+
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
         libraryListView = rootView.findViewById(R.id.library_listview)
+
+        // Initialize recyclerView.
+        val layoutManager = LinearLayoutManager(context)
         libraryListView.layoutManager = layoutManager
-        adapter = LibraryListAdapter(MainActivity.songList)
+        adapter = LibraryListAdapter(songList)
         libraryListView.adapter = adapter
+
         return rootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // When resumed, close the loading prompt.
+        if (libraryListView.size != 0) {
+            loadingPrompt.visibility = GONE
+        }
     }
 
 }

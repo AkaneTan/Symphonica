@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
@@ -15,104 +31,98 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mediastore ID">
+                android:hint="Mediastore ID"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown ID"
-                    android:editable="false"/>
+                    android:text="Unkown ID" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Song Name">
+                android:hint="Song Name"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_song"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown Song"
-                    android:editable="false"/>
+                    android:text="Unkown Song" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Artist">
+                android:hint="Artist"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_artist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown Artist"
-                    android:editable="false"/>
+                    android:text="Unkown Artist" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Album">
+                android:hint="Album"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_album"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown Album"
-                    android:editable="false"/>
+                    android:text="Unkown Album" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Duration (ms)">
+                android:hint="Duration (ms)"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown Time"
-                    android:editable="false"/>
+                    android:text="Unkown Time" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:paddingTop="24dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Path">
+                android:hint="Path"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:paddingRight="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dialog_path"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Unkown location"
-                    android:editable="false"/>
+                    android:text="Unkown location" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

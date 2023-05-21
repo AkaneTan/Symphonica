@@ -1,28 +1,37 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.ui.adapter
 
-import android.content.ContentUris
-import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
+import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
-import java.io.File
 
 
 class LibraryListAdapter(private val songList: List<Song>) :
@@ -50,15 +59,24 @@ class LibraryListAdapter(private val songList: List<Song>) :
 
         // 设置歌曲标题和元数据
         holder.songTitle.text = songList[position].title
-        holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
-        holder.songDuration.text = convertDurationToTimeStamp(songList[position].duration.toString())
+        holder.songMeta.text = SymphonicaApplication.context.getString(
+            R.string.library_list_metadata,
+            songList[position].artist,
+            songList[position].album
+        )
+        holder.songDuration.text =
+            convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
 
-        Glide.with(holder.songCover.context)
-            .load(songList[position].imgUri)
-            .diskCacheStrategy(diskCacheStrategyCustom)
-            .placeholder(R.drawable.ic_album_default_cover)
-            .into(holder.songCover)
+        try {
+            Glide.with(holder.songCover.context)
+                .load(songList[position].imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .placeholder(R.drawable.ic_album_default_cover)
+                .into(holder.songCover)
+        } catch (_: Exception) {
+            // Placeholder
+        }
 
         holder.itemView.setOnClickListener {
             playlistViewModel.currentLocation = position

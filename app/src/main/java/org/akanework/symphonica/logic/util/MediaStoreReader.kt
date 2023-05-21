@@ -1,14 +1,36 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.logic.util
 
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.R
+import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 
-fun getAllAlbums(context: Context, externalSongList: List<Song>): List<Album> {
+fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
 
     for (song in externalSongList) {
@@ -100,13 +122,14 @@ fun getTrackNumber(songUri: String): String? {
     var trackNumber: String? = null
     cursor?.use {
         if (cursor.moveToFirst()) {
-            trackNumber = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
+            trackNumber =
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
         }
     }
 
     cursor?.close()
 
-    if(trackNumber != null && trackNumber.toString().length == 4) {
+    if (trackNumber != null && trackNumber.toString().length == 4) {
         return trackNumber!!.substring(1).trimStart('0')
     } else if (trackNumber != null) {
         return trackNumber!!.trimStart('0')
@@ -126,13 +149,22 @@ fun getYear(songUri: String): String? {
         null
     )
 
-    var trackNumber: String? = null
+    var year: String? = null
     cursor?.use {
         if (cursor.moveToFirst()) {
-            trackNumber = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
+            year =
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
         }
     }
 
     cursor?.close()
-    return trackNumber
+    return year
+}
+
+fun fillSongCover(imgUri: Uri, songCover: ImageView) {
+    Glide.with(SymphonicaApplication.context)
+        .load(imgUri)
+        .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
+        .placeholder(R.drawable.ic_album_default_cover)
+        .into(songCover)
 }

@@ -1,11 +1,28 @@
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="48dp"
     android:height="48dp"
-    android:viewportWidth="960"
-    android:viewportHeight="960"
+    android:autoMirrored="true"
     android:tint="?attr/colorControlNormal"
-    android:autoMirrored="true">
-  <path
-      android:fillColor="@android:color/white"
-      android:pathData="M640.12,800Q591,800 556,766.44Q521,732.88 521,684.94Q521,637 554.54,603.5Q588.08,570 636,570Q652,570 667.5,573Q683,576 698,583L698,240L880,240L880,311L758,311L758,686Q758,733.5 723.62,766.75Q689.23,800 640.12,800ZM120,630L120,570L426,570L426,630L120,630ZM120,465L120,405L593,405L593,465L120,465ZM120,300L120,240L593,240L593,300L120,300Z"/>
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M640.12,800Q591,800 556,766.44Q521,732.88 521,684.94Q521,637 554.54,603.5Q588.08,570 636,570Q652,570 667.5,573Q683,576 698,583L698,240L880,240L880,311L758,311L758,686Q758,733.5 723.62,766.75Q689.23,800 640.12,800ZM120,630L120,570L426,570L426,630L120,630ZM120,465L120,405L593,405L593,465L120,465ZM120,300L120,240L593,240L593,300L120,300Z" />
 </vector>

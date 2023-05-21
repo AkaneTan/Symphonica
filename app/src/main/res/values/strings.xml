@@ -1,32 +1,30 @@
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <resources>
     <string name="app_name">Symphonica</string>
     <string name="library_tab_album">Album</string>
     <string name="library_tab_list">List</string>
-    <string name="library_playlist">PlayList</string>
     <string name="unknown_album_and_artist">Unknown Artist • Unknown Album</string>
     <string name="unknown_song">Unknown Song</string>
     <string name="default_play_time">0:00</string>
     <string name="sheet_no_playing">No Song Playing</string>
     <string name="navigation_view_subtitle">Welcome back!</string>
     <string name="navigation_view_all_song">All Songs</string>
-    <string name="navigation_view_home">Home</string>
-    <string name="navigation_view_settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="sheet_now_playing">Now Playing</string>
     <string name="loading_your_library">Loading your library.</string>
     <string name="more_information">Information</string>
@@ -35,4 +33,8 @@
     <string name="library_album_displayer_unknown_year">Unknown Year</string>
     <string name="library_album_displayer_unknown_artist">Unknown Artist</string>
     <string name="default_album_number">0</string>
+    <string name="settings">Settings</string>
+    <string name="playlist_metadata_information">%1$s • %2$s</string>
+    <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
+    <string name="library_list_metadata">%1$s - %2$s</string>
 </resources>

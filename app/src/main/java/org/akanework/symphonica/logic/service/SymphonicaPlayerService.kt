@@ -1,3 +1,20 @@
+/*
+ *     Copyright (C) 2023 AkaneWork Organization
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.akanework.symphonica.logic.service
 
 import android.app.Notification
@@ -10,22 +27,17 @@ import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.IBinder
-import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.actuallyPlaying
-import org.akanework.symphonica.MainActivity.Companion.isLoopEnabled
-import org.akanework.symphonica.MainActivity.Companion.isShuffleEnabled
+import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
+import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.MainActivity.Companion.updateAlbumView
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.util.changePlayer
@@ -35,18 +47,12 @@ import kotlin.random.Random
 
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
-    /*
-
-
-     */
-
     companion object {
         fun updatePlaybackState() {
             musicPlayer?.let {
                 val playbackStateBuilder = PlaybackState.Builder()
                     .setActions(PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS)
-
-                if (actuallyPlaying) {
+                if (musicPlayer!!.isPlaying) {
                     playbackStateBuilder.setState(
                         PlaybackState.STATE_PLAYING,
                         it.currentPosition.toLong(),
@@ -62,12 +68,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
                 mediaSession.setPlaybackState(playbackStateBuilder.build())
             }
-            updateAlbumView()
         }
 
         val mediaSession = MediaSession(context, "PlayerService")
-        val mediaStyle = Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
-        val notification = Notification.Builder(context, "channel_symphonica")
+        private val mediaStyle: Notification.MediaStyle =
+            Notification.MediaStyle().setMediaSession(mediaSession.sessionToken)
+        private val notification = Notification.Builder(context, "channel_symphonica")
             .setStyle(mediaStyle)
             .setSmallIcon(R.drawable.ic_note)
             .setActions()
@@ -75,53 +81,71 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
 
         fun updateMetadata() {
-            /*
-            if (playlistViewModel.playList[playlistViewModel.currentLocation].cover != null) {
-                mediaSession.setMetadata(
-                    MediaMetadata.Builder()
-                        .putString(MediaMetadata.METADATA_KEY_TITLE, playlistViewModel.playList[playlistViewModel.currentLocation].title)
-                        .putString(MediaMetadata.METADATA_KEY_ARTIST, playlistViewModel.playList[playlistViewModel.currentLocation].artist)
-                        .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, playlistViewModel.playList[playlistViewModel.currentLocation].cover!!.toBitmap())
-                        .putLong(MediaMetadata.METADATA_KEY_DURATION, playlistViewModel.playList[playlistViewModel.currentLocation].duration)
-                        .build()
-                )
-            } else {
-
-             */
             var initialized = false
             lateinit var bitmapResource: Bitmap
-            Glide.with(context)
-                 .asBitmap()
-                 .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-                 .placeholder(R.drawable.ic_album_default_cover)
-                 .into(object : CustomTarget<Bitmap>(){
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        bitmapResource = resource
-                        initialized = true
-                        mediaSession.setMetadata(
-                            MediaMetadata.Builder()
-                                .putString(MediaMetadata.METADATA_KEY_TITLE, playlistViewModel.playList[playlistViewModel.currentLocation].title)
-                                .putString(MediaMetadata.METADATA_KEY_ARTIST, playlistViewModel.playList[playlistViewModel.currentLocation].artist)
-                                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmapResource)
-                                .putLong(MediaMetadata.METADATA_KEY_DURATION, playlistViewModel.playList[playlistViewModel.currentLocation].duration)
-                                .build()
-                        )
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        // this is called when imageView is cleared on lifecycle call or for
-                        // some other reason.
-                        // if you are referencing the bitmap somewhere else too other than this imageView
-                        // clear it here as you can no longer have the bitmap
-                    }
-                })
-            // }
-            if (initialized == false) {
+            try {
+                Glide.with(context)
+                    .asBitmap()
+                    .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                    .placeholder(R.drawable.ic_album_default_cover)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            bitmapResource = resource
+                            initialized = true
+                            mediaSession.setMetadata(
+                                MediaMetadata.Builder()
+                                    .putString(
+                                        MediaMetadata.METADATA_KEY_TITLE,
+                                        playlistViewModel.playList[playlistViewModel.currentLocation].title
+                                    )
+                                    .putString(
+                                        MediaMetadata.METADATA_KEY_ARTIST,
+                                        playlistViewModel.playList[playlistViewModel.currentLocation].artist
+                                    )
+                                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmapResource)
+                                    .putLong(
+                                        MediaMetadata.METADATA_KEY_DURATION,
+                                        playlistViewModel.playList[playlistViewModel.currentLocation].duration
+                                    )
+                                    .build()
+                            )
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            // this is called when imageView is cleared on lifecycle call or for
+                            // some other reason.
+                            // if you are referencing the bitmap somewhere else too other than this imageView
+                            // clear it here as you can no longer have the bitmap
+                        }
+                    })
+            } catch (_: Exception) {
+                // Placeholder here.
+            }
+            if (!initialized) {
                 mediaSession.setMetadata(
                     MediaMetadata.Builder()
-                        .putString(MediaMetadata.METADATA_KEY_TITLE, playlistViewModel.playList[playlistViewModel.currentLocation].title)
-                        .putString(MediaMetadata.METADATA_KEY_ARTIST, playlistViewModel.playList[playlistViewModel.currentLocation].artist)
-                        .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, AppCompatResources.getDrawable(context, R.drawable.ic_album_default_cover)!!.toBitmap())
-                        .putLong(MediaMetadata.METADATA_KEY_DURATION, playlistViewModel.playList[playlistViewModel.currentLocation].duration)
+                        .putString(
+                            MediaMetadata.METADATA_KEY_TITLE,
+                            playlistViewModel.playList[playlistViewModel.currentLocation].title
+                        )
+                        .putString(
+                            MediaMetadata.METADATA_KEY_ARTIST,
+                            playlistViewModel.playList[playlistViewModel.currentLocation].artist
+                        )
+                        .putBitmap(
+                            MediaMetadata.METADATA_KEY_ALBUM_ART,
+                            AppCompatResources.getDrawable(
+                                context,
+                                R.drawable.ic_album_default_cover
+                            )!!.toBitmap()
+                        )
+                        .putLong(
+                            MediaMetadata.METADATA_KEY_DURATION,
+                            playlistViewModel.playList[playlistViewModel.currentLocation].duration
+                        )
                         .build()
                 )
             }
@@ -161,43 +185,46 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     override fun onPrepared(mp: MediaPlayer) {
         mp.start()
-        mediaSession.setActive(true)
+        mediaSession.isActive = true
         mediaSession.setCallback(mediaSessionCallback)
         updateMetadata()
         updatePlaybackState()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        when(intent.action) {
+        when (intent.action) {
             "ACTION_REPLACE_AND_PLAY" -> {
                 if (musicPlayer == null) {
                     musicPlayer = MediaPlayer()
                     setLoopListener()
                     startPlaying()
-
                 } else {
                     stopAndPlay()
                 }
             }
+
             "ACTION_PAUSE" -> {
                 if (musicPlayer != null && musicPlayer!!.isPlaying) {
                     musicPlayer!!.pause()
+                    broadcastPlayPaused()
                 }
             }
+
             "ACTION_RESUME" -> {
                 if (musicPlayer != null && !musicPlayer!!.isPlaying) {
                     musicPlayer!!.start()
+                    killMiniPlayer()
                 }
             }
+
             "ACTION_NEXT" -> {
                 if (musicPlayer != null) {
                     musicPlayer!!.reset()
                     nextSongDecisionMaker()
-                    if (actuallyPlaying) {
-                        startPlaying()
-                    }
+                    startPlaying()
                 }
             }
+
             "ACTION_PREV" -> {
                 if (musicPlayer != null) {
                     musicPlayer!!.reset()
@@ -205,6 +232,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     startPlaying()
                 }
             }
+
             "ACTION_JUMP" -> {
                 if (musicPlayer != null) {
                     stopAndPlay()
@@ -218,15 +246,26 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaSession.isActive = false
+        mediaSession.release()
+    }
+
     private fun startPlaying() {
-        musicPlayer!!.apply {
-            setDataSource(applicationContext, playlistViewModel.playList[
-                playlistViewModel.currentLocation
-            ].path.toUri())
-            setOnPreparedListener(this@SymphonicaPlayerService)
-            prepareAsync()
-            broadcastPlayStart()
-            setLoopListener()
+        if (musicPlayer != null) {
+            killMiniPlayer()
+            musicPlayer!!.apply {
+                setDataSource(
+                    applicationContext, playlistViewModel.playList[
+                        playlistViewModel.currentLocation
+                    ].path.toUri()
+                )
+                setOnPreparedListener(this@SymphonicaPlayerService)
+                prepareAsync()
+                broadcastPlayStart()
+                setLoopListener()
+            }
         }
     }
 
@@ -241,15 +280,26 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             if (musicPlayer != null) {
                 musicPlayer!!.reset()
                 musicPlayer!!.apply {
-                    setDataSource(applicationContext, playlistViewModel.playList[
-                        playlistViewModel.currentLocation
-                    ].path.toUri())
+                    setDataSource(
+                        applicationContext, playlistViewModel.playList[
+                            playlistViewModel.currentLocation
+                        ].path.toUri()
+                    )
                     setOnPreparedListener(this@SymphonicaPlayerService)
                     prepareAsync()
                     broadcastPlayStart()
                     setLoopListener()
+                    killMiniPlayer()
                 }
             }
+        }
+    }
+
+    private fun killMiniPlayer() {
+        if (MainActivity.isMiniPlayerRunning) {
+            // Send a broadcast to finish MiniPlayerActivity.
+            val intentKillBroadcast = Intent("internal.play_mini_player_stop")
+            sendBroadcast(intentKillBroadcast)
         }
     }
 
@@ -257,11 +307,26 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer!!.reset()
         musicPlayer!!.release()
         musicPlayer = null
+        broadcastPlayStopped()
+    }
+
+    private fun broadcastPlayStopped() {
+        val intentBroadcast = Intent("internal.play_stop")
+        sendBroadcast(intentBroadcast)
+    }
+
+    private fun broadcastPlayPaused() {
+        val intentBroadcast = Intent("internal.play_pause")
+        sendBroadcast(intentBroadcast)
     }
 
     private fun broadcastPlayStart() {
         val intent = Intent("org.akanework.symphonica.PLAY_START")
         sendBroadcast(intent)
+
+        val intentBroadcast = Intent("internal.play_start")
+        sendBroadcast(intentBroadcast)
+
         if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
             mediaSession.setCallback(mediaSessionCallback)
         }
@@ -269,32 +334,30 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun prevSongDecisionMaker() {
         playlistViewModel.currentLocation =
-        if (playlistViewModel.currentLocation == 0 && isLoopEnabled && !isShuffleEnabled) {
-            playlistViewModel.playList.size - 1
-        } else if (playlistViewModel.currentLocation == 0 && !isLoopEnabled && !isShuffleEnabled) {
-            stopPlaying()
-            actuallyPlaying = false
-            0
-        } else if (playlistViewModel.currentLocation != 0 && !isShuffleEnabled) {
-            playlistViewModel.currentLocation - 1
-        } else if (isShuffleEnabled && playlistViewModel.playList.size != 1) {
-            Random.nextInt(0, playlistViewModel.playList.size - 1)
-        } else {
-            0
-        }
+            if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                playlistViewModel.playList.size - 1
+            } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                stopPlaying()
+                0
+            } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
+                playlistViewModel.currentLocation - 1
+            } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
+                Random.nextInt(0, playlistViewModel.playList.size - 1)
+            } else {
+                0
+            }
     }
 
     private fun nextSongDecisionMaker() {
         playlistViewModel.currentLocation =
-            if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && isLoopEnabled && !isShuffleEnabled) {
+            if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
                 0
-            } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && !isLoopEnabled && !isShuffleEnabled) {
+            } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
                 stopPlaying()
-                actuallyPlaying = false
                 0
-            } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !isShuffleEnabled) {
+            } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
                 playlistViewModel.currentLocation + 1
-            } else if (isShuffleEnabled && playlistViewModel.playList.size != 1) {
+            } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
                 Random.nextInt(0, playlistViewModel.playList.size - 1)
             } else {
                 0

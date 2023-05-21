@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/displayer_item"
-        android:icon="@drawable/ic_drawer_music"
-        android:title="@string/navigation_view_all_song"
         android:checkable="true"
         android:checked="true"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_drawer_music"
+        android:title="@string/navigation_view_all_song"
+        app:showAsAction="ifRoom" />
+    <item
+        android:checkable="true"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
 </menu>
