@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="App Name"
+                        android:text="@string/settings_app_name"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="18sp" />
 
@@ -126,14 +126,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Version"
+                        android:text="@string/version"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/version_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.14a"
+                        android:text="@string/version_tag"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 

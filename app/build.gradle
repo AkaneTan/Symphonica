@@ -7,13 +7,17 @@ android {
     namespace 'org.akanework.symphonica'
     compileSdk 33
 
+    android.buildFeatures.buildConfig true
+
+    def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
+
     defaultConfig {
         applicationId "org.akanework.symphonica"
         minSdk 33
         targetSdk 33
         versionCode 1
-        versionName "0.14a"
-
+        versionName "0.15a"
+        buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -21,11 +21,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialSharedAxis
+import org.akanework.symphonica.BuildConfig
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.R
+import java.io.ByteArrayOutputStream
 
 class SettingsFragment : Fragment() {
 
@@ -49,10 +52,17 @@ class SettingsFragment : Fragment() {
 
         // Define the topAppBar behavior.
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
+        val versionTag = rootView.findViewById<TextView>(R.id.version_tag)
 
         topAppBar.setNavigationOnClickListener {
             switchDrawer()
         }
+
+        versionTag.text = getString(
+            R.string.settings_version_format,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.GIT_HASH
+        )
 
         return rootView
     }

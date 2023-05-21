@@ -37,4 +37,8 @@
     <string name="playlist_metadata_information">%1$s • %2$s</string>
     <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
     <string name="library_list_metadata">%1$s - %2$s</string>
+    <string name="settings_app_name">App Name</string>
+    <string name="version">Version</string>
+    <string name="version_tag">Unknown Version (Unknown VSC Version)</string>
+    <string name="settings_version_format">%1$s(%2$s)</string>
 </resources>
