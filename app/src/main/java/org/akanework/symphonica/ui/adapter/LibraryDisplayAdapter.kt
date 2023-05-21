@@ -42,7 +42,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.library_displayer_card, parent, false)
+            .inflate(R.layout.library_view_card, parent, false)
         return ViewHolder(view)
     }
 

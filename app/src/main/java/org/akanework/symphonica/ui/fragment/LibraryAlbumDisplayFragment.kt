@@ -63,14 +63,14 @@ class LibraryAlbumDisplayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_library_album_displayer, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_library_album_view, container, false)
         val topAppBar: MaterialToolbar = rootView.findViewById(R.id.topAppBar)
-        val albumCover: ImageView = rootView.findViewById(R.id.displayer_album_cover)
-        val albumName: TextView = rootView.findViewById(R.id.displayer_album_name)
-        val albumArtist: TextView = rootView.findViewById(R.id.displayer_album_artist)
-        val albumYear: TextView = rootView.findViewById(R.id.displayer_year)
-        val displayPlay: MaterialButton = rootView.findViewById(R.id.displayer_play)
-        val displayShuffle: MaterialButton = rootView.findViewById(R.id.displayer_shuffle)
+        val albumCover: ImageView = rootView.findViewById(R.id.library_album_view_cover)
+        val albumName: TextView = rootView.findViewById(R.id.library_album_view_name)
+        val albumArtist: TextView = rootView.findViewById(R.id.library_album_view_artist)
+        val albumYear: TextView = rootView.findViewById(R.id.library_album_view_year)
+        val displayPlay: MaterialButton = rootView.findViewById(R.id.library_album_view_play)
+        val displayShuffle: MaterialButton = rootView.findViewById(R.id.library_album_view_shuffle)
 
         if (albumDisplayViewModel == null) {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
@@ -105,7 +105,7 @@ class LibraryAlbumDisplayFragment : Fragment() {
         topAppBar.setNavigationOnClickListener {
             customFragmentManager.popBackStack()
         }
-        val libraryAlbumView: RecyclerView = rootView.findViewById(R.id.displayer_recyclerview)
+        val libraryAlbumView: RecyclerView = rootView.findViewById(R.id.library_album_view_recyclerview)
         libraryAlbumView.layoutManager = LinearLayoutManager(context)
         libraryAlbumView.adapter = LibraryDisplayAdapter(albumList[position!!].songList)
 

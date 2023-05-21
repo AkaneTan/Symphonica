@@ -37,7 +37,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/library_album_displayer_menu"
+            app:menu="@menu/library_album_view_menu"
             app:navigationIcon="@drawable/ic_arrow_back" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -62,7 +62,7 @@
                 android:layout_marginBottom="32dp">
 
                 <ImageView
-                    android:id="@+id/displayer_album_cover"
+                    android:id="@+id/library_album_view_cover"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/rp_album_cover"
@@ -86,34 +86,34 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/library_album_displayer_album"
+                    android:text="@string/library_album_view_album"
                     android:textColor="?attr/colorOnPrimaryContainer"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/displayer_album_name"
+                    android:id="@+id/library_album_view_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/library_album_displayer_unknown_album"
+                    android:text="@string/library_album_view_unknown_album"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:transitionName="album_name" />
 
                 <TextView
-                    android:id="@+id/displayer_album_artist"
+                    android:id="@+id/library_album_view_artist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/library_album_displayer_unknown_artist"
+                    android:text="@string/library_album_view_unknown_artist"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp"
                     android:transitionName="album_artist" />
 
                 <TextView
-                    android:id="@+id/displayer_year"
+                    android:id="@+id/library_album_view_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/library_album_displayer_unknown_year"
+                    android:text="@string/library_album_view_unknown_year"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp"
                     android:transitionName="album_year" />
@@ -125,7 +125,7 @@
                 android:layout_marginTop="16dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/displayer_play"
+                    android:id="@+id/library_album_view_play"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="8dp"
@@ -135,7 +135,7 @@
                     app:iconSize="24dp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/displayer_shuffle"
+                    android:id="@+id/library_album_view_shuffle"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -153,7 +153,7 @@
                 android:layout_marginBottom="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/displayer_recyclerview"
+                android:id="@+id/library_album_view_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

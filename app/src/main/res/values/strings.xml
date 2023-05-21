@@ -21,11 +21,11 @@
     <string name="default_play_time">0:00</string>
     <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
     <string name="playlist_metadata_information">%1$s • %2$s</string>
-    <string name="library_album_displayer_album">Album</string>
-    <string name="library_album_displayer_more_information">Information</string>
-    <string name="library_album_displayer_unknown_album">Unknown Album</string>
-    <string name="library_album_displayer_unknown_year">Unknown Year</string>
-    <string name="library_album_displayer_unknown_artist">Unknown Artist</string>
+    <string name="library_album_view_album">Album</string>
+    <string name="library_album_view_more_information">Information</string>
+    <string name="library_album_view_unknown_album">Unknown Album</string>
+    <string name="library_album_view_unknown_artist">Unknown Artist</string>
+    <string name="library_album_view_unknown_year">Unknown Year</string>
     <string name="library_list_metadata">%1$s - %2$s</string>
     <string name="library_tab_album">Album</string>
     <string name="library_tab_list">List</string>
