@@ -20,6 +20,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:icon="@drawable/ic_more_vert"
-        android:title="@string/more_information"
+        android:title="@string/library_album_displayer_more_information"
         app:showAsAction="ifRoom" />
 </menu>

@@ -30,7 +30,7 @@
             android:id="@+id/settings_navigation"
             android:checkable="true"
             android:icon="@drawable/ic_settings"
-            android:title="@string/settings"
+            android:title="@string/navigation_view_settings"
             app:showAsAction="ifRoom" />
     </group>
 </menu>
