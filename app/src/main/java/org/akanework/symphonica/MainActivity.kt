@@ -177,7 +177,6 @@ class MainActivity : AppCompatActivity() {
                     navigationView.visibility = GONE
                 }
                 handler.postDelayed(runnable, 400)
-                handler.removeCallbacks(runnable)
             }
         }
 

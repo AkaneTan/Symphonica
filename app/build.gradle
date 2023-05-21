@@ -16,7 +16,7 @@ android {
         minSdk 33
         targetSdk 33
         versionCode 1
-        versionName "0.15a"
+        versionName "0.20a"
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
