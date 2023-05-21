@@ -539,6 +539,10 @@ class MainActivity : AppCompatActivity() {
             updateMetadata()
             updateAlbumView(this.findViewById(R.id.global_bottom_sheet))
         }
+
+        // Tell the program to update the sheet when resuming.
+        val intentBroadcast = Intent("internal.play_start")
+        sendBroadcast(intentBroadcast)
     }
 
     override fun onDestroy() {
