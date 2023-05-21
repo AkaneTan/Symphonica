@@ -75,6 +75,7 @@ import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
 import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
+import java.lang.IllegalArgumentException
 
 
 class MainActivity : AppCompatActivity() {
@@ -130,11 +131,11 @@ class MainActivity : AppCompatActivity() {
         // These are the views inside MainActivity.
         // They're in companion area because some of the companion
         // functions required them or some outer class needs them.
-        lateinit var navigationView: NavigationView
-        lateinit var customFragmentManager: FragmentManager
+        private lateinit var navigationView: NavigationView
         lateinit var fullSheetLoopButton: MaterialButton
         lateinit var fullSheetShuffleButton: MaterialButton
 
+        lateinit var customFragmentManager: FragmentManager
         // These are the view models used across the app.
         lateinit var libraryViewModel: LibraryViewModel
         lateinit var playlistViewModel: PlaylistViewModel
@@ -177,6 +178,25 @@ class MainActivity : AppCompatActivity() {
                 }
                 handler.postDelayed(runnable, 400)
                 handler.removeCallbacks(runnable)
+            }
+        }
+
+        /**
+         * This function is used to switch selected item for
+         * navigation view across the project.
+         * [navigationView]
+         */
+        fun switchNavigationViewIndex(index: Int) {
+            when (index) {
+                0 -> {
+                    navigationView.post { navigationView.setCheckedItem(navigationView.menu.findItem(R.id.library_navigation)) }
+                }
+                1 -> {
+                    navigationView.post { navigationView.setCheckedItem(navigationView.menu.findItem(R.id.settings_navigation)) }
+                }
+                else -> {
+                    throw IllegalArgumentException()
+                }
             }
         }
 
@@ -514,6 +534,7 @@ class MainActivity : AppCompatActivity() {
                 permissionRequestCode
             )
         }
+
         // TODO: Make another pop up when denied to state why you need the permission.
     }
 

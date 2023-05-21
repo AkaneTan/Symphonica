@@ -18,15 +18,19 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:checkable="true"
-        android:checked="true"
-        android:icon="@drawable/ic_drawer_music"
-        android:title="@string/navigation_view_all_song"
-        app:showAsAction="ifRoom" />
-    <item
-        android:checkable="true"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings"
-        app:showAsAction="ifRoom" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/library_navigation"
+            android:checkable="true"
+            android:checked="true"
+            android:icon="@drawable/ic_drawer_music"
+            android:title="@string/navigation_view_all_song"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/settings_navigation"
+            android:checkable="true"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"
+            app:showAsAction="ifRoom" />
+    </group>
 </menu>

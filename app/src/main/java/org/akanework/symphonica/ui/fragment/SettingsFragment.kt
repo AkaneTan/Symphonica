@@ -27,8 +27,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
+import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
-import java.io.ByteArrayOutputStream
 
 class SettingsFragment : Fragment() {
 
@@ -65,5 +65,10 @@ class SettingsFragment : Fragment() {
         )
 
         return rootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        switchNavigationViewIndex(1)
     }
 }

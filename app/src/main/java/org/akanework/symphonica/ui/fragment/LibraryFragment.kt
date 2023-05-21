@@ -26,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
+import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
 import org.akanework.symphonica.ui.adapter.NavFragmentPageAdapter
 
@@ -63,6 +64,12 @@ class LibraryFragment : Fragment() {
         // Set the offscreenPageLimit to 2 to avoid stuttering.
         fragmentPager.offscreenPageLimit = 2
         return rootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Set the current fragment to library
+        switchNavigationViewIndex(0)
     }
 
 }
