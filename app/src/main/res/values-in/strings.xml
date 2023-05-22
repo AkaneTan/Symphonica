@@ -1,0 +1,77 @@
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name">Symphonica</string>
+    <string name="default_album_number">0</string>
+    <string name="default_play_time">0:00</string>
+    <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
+    <string name="playlist_metadata_information">%1$s • %2$s</string>
+    <string name="library_album_view_album">Album</string>
+    <string name="library_album_view_more_information">Informasi</string>
+    <string name="library_album_view_unknown_album">Album Tidak Diketahui</string>
+    <string name="library_album_view_unknown_artist">Artist Tidak Diketahui</string>
+    <string name="library_album_view_unknown_year">Tahun Tidak Diketahui</string>
+    <string name="library_list_metadata">%1$s - %2$s</string>
+    <string name="library_tab_album">Album</string>
+    <string name="library_tab_list">Daftar</string>
+    <string name="loading_your_library">Memuat Library Music</string>
+    <string name="navigation_view_all_song">Semua Lagu</string>
+    <string name="navigation_view_settings">Setting</string>
+    <string name="navigation_view_subtitle">Selamat Datang Kembali</string>
+    <string name="settings_app_name">Nama Aplikasi</string>
+    <string name="settings_version">Versi</string>
+    <string name="settings_version_format">%1$s(%2$s)</string>
+    <string name="settings_version_tag">Versi Tidak Diketahui (Versi VSC Tidak Diketahui)</string>
+    <string name="sheet_no_playing">Musik Tidak Diputar</string>
+    <string name="sheet_now_playing">Diputar Sekarang</string>
+    <string name="unknown_album_and_artist">Artist Tidak Diketahui • Album Tidak Diketahui</string>
+    <string name="unknown_song">Musik Tidak Diketahui</string>
+    <string name="desc_album_cover">Cover Album</string>
+    <string name="desc_play_button">Tombol Play</string>
+    <string name="desc_quit_button">Tombol Keluar</string>
+    <string name="desc_more">Lagi</string>
+    <string name="desc_slider">Slider</string>
+    <string name="dialog_song_info">Informasi Musik</string>
+    <string name="dialog_song_dismiss">Hilangkan</string>
+    <string name="dialog_song_mediastore_id">Mediastore ID</string>
+    <string name="dialog_song_name">Nama Lagu</string>
+    <string name="dialog_song_artist">Artist</string>
+    <string name="dialog_song_unknown_artist">Artist Tidak Diketahui</string>
+    <string name="dialog_song_unknown_song">Musik Tidak Diketahui</string>
+    <string name="dialog_song_unknown_id">ID Tidak Diketahui</string>
+    <string name="dialog_song_album">Album</string>
+    <string name="dialog_song_unknown_album">Album Tidak Diketahui</string>
+    <string name="dialog_song_unknown_time">Waktu Tidak Diketahui</string>
+    <string name="dialog_song_duration">Durasi (ms)</string>
+    <string name="dialog_song_unknown_location">Lokasi Tidak Diketahui</string>
+    <string name="dialog_song_path">Jalur</string>
+    <string name="library_album_view_play">Mulai</string>
+    <string name="library_album_view_shuffle">Acak</string>
+    <string name="library_album_view_album_art">Art Album</string>
+    <string name="settings_symphonica_icon">Symphonica Ikon</string>
+    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetic Order)</string>
+    <string name="settings_contributors">Contributors</string>
+    <string name="settings_media">Media</string>
+    <string name="settings_glide_enable_cache">Nyalakan Cache</string>
+    <string name="settings_glide_enable_cache_content">Ini akan mengaktifkan glider cache.</string>
+    <string name="dialog_album_info">Informasi Album</string>
+    <string name="dialog_album_year">Tahun</string>
+    <string name="library_view_filter">Saring</string>
+    <string name="library_view_by_name">Dengan Nama</string>
+    <string name="library_view_by_duration">Dengan Durasi</string>
+</resources>
