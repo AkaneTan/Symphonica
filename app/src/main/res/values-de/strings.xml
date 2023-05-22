@@ -1,0 +1,78 @@
+<!--
+  ~     Copyright (C) 2023 AkaneWork Organization
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name">Symphonica</string>
+    <string name="full_sheet_playlist_location">%1$s in %2$s Titel</string>
+    <string name="library_album_view_unknown_album">Unbekanntes Album</string>
+    <string name="library_album_view_unknown_artist">Unbekannter Künstler</string>
+    <string name="library_album_view_unknown_year">Unbekanntes Jahr</string>
+    <string name="library_tab_list">Liste</string>
+    <string name="loading_your_library">Bibliothek wird geladen.</string>
+    <string name="navigation_view_all_song">Alle Titel</string>
+    <string name="navigation_view_settings">Einstellungen</string>
+    <string name="navigation_view_subtitle">Willkommen zurück!</string>
+    <string name="settings_app_name">App-Titel</string>
+    <string name="settings_version_tag">Unbekannte Version (Unbekannte VSC Version)</string>
+    <string name="sheet_no_playing">Zurzeit spielt keine Musik</string>
+    <string name="sheet_now_playing">Läuft gerade</string>
+    <string name="unknown_album_and_artist">Unbekannter Künstler • Unbekanntes Album</string>
+    <string name="unknown_song">Unbekannter Titel</string>
+    <string name="desc_album_cover">Album-Cover</string>
+    <string name="desc_play_button">Abspielen-Button</string>
+    <string name="desc_quit_button">Beenden-Button</string>
+    <string name="desc_more">Mehr</string>
+    <string name="desc_slider">Schieberegler</string>
+    <string name="dialog_song_info">Info zum Titel</string>
+    <string name="dialog_song_dismiss">Ablehnen</string>
+    <string name="dialog_song_mediastore_id">Mediastore-ID</string>
+    <string name="dialog_song_name">Musiktitel</string>
+    <string name="dialog_song_artist">Artist</string>
+    <string name="dialog_song_unknown_artist">Unbekannter Künstler</string>
+    <string name="dialog_song_unknown_song">Unbekannter Titel</string>
+    <string name="dialog_song_unknown_id">Unbekannte ID</string>
+    <string name="dialog_song_unknown_album">Unbekanntes Album</string>
+    <string name="dialog_song_unknown_time">Unbekannte Zeit</string>
+    <string name="dialog_song_duration">Dauer (ms)</string>
+    <string name="dialog_song_unknown_location">Unbekannter Ort</string>
+    <string name="dialog_song_path">Pfad</string>
+    <string name="library_album_view_play">Abspielen</string>
+    <string name="library_album_view_shuffle">Zufällige Wiedergabe</string>
+    <string name="library_album_view_album_art">Album-Cover</string>
+    <string name="settings_symphonica_icon">Symphonica-Symbol</string>
+    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetische Reihenfolge)</string>
+    <string name="settings_contributors">Mitwirkende</string>
+    <string name="settings_media">Medien</string>
+    <string name="settings_glide_enable_cache">Cache aktivieren</string>
+    <string name="settings_glide_enable_cache_content">Aktivert Glides Cache.</string>
+    <string name="dialog_album_info">Album-Info</string>
+    <string name="dialog_album_year">Jahr</string>
+    <string name="dialog_long_press_title">Optionen</string>
+    <string name="dialog_long_press_add_to_next">Als nächstes abspielen</string>
+    <string name="dialog_long_press_add_to_next_content">Diesen Titel zur Playlist hinzufügen</string>
+    <string name="dialog_long_press_check_album">Album überprüfen</string>
+    <string name="dialog_long_press_check_album_content">Zeigt Albuminformationen zu diesem Titel</string>
+    <string name="settings_load">Laden</string>
+    <string name="settings_force_re_order">Neuordnung des Albums erzwingen</string>
+    <string name="settings_force_re_order_content">Die Neuordnung des Albums beim ersten Laden erzwingen</string>
+    <string name="settings_force_dark_mode">Dunkelmodus erzwingen</string>
+    <string name="settings_force_dark_mode_content">Lässt die Nacht ewig andauern</string>
+    <string name="settings_appearance">Aussehen</string>
+    <string name="settings_enable_list_shuffle">Zufällige Liste aktivieren</string>
+    <string name="settings_enable_list_shuffle_content">Generiert eine neue zufällige Songliste</string>
+    <string name="settings_behavior">Verhalten</string>
+</resources>
