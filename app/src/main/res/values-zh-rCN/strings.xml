@@ -82,5 +82,8 @@
     <string name="settings_force_re_order_content">当启动时强制专辑排序</string>
     <string name="settings_force_dark_mode">强制黑暗模式</string>
     <string name="settings_force_dark_mode_content">永夜抄,启动!!</string>
-    <string name="settings_appearance">外表</string>
+    <string name="settings_appearance">外观</string>
+    <string name="settings_enable_list_shuffle">启用列表随机</string>
+    <string name="settings_enable_list_shuffle_content">随机播放时生成新的曲目列表</string>
+    <string name="settings_behavior">行为</string>
 </resources>
