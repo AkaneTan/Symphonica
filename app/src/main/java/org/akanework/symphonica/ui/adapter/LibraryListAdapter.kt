@@ -145,12 +145,13 @@ class LibraryListAdapter(private val songList: List<Song>) :
 
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
+
+                // Update MetaData.
+                val intentBroadcast = Intent("internal.play_update")
+                holder.itemView.context.sendBroadcast(intentBroadcast)
                 rootView.dismiss()
             }
 
-            // Update MetaData.
-            val intentBroadcast = Intent("internal.play_update")
-            holder.itemView.context.sendBroadcast(intentBroadcast)
             true
         }
     }
