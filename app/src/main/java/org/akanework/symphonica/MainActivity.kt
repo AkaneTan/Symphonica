@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var receiverStop: SheetStopReceiver
     private lateinit var receiverPause: SheetPauseReceiver
     private lateinit var receiverSeek: SheetSeekReceiver
+    private lateinit var receiverUpdate: SheetUpdateReceiver
 
     private lateinit var playlistButton: MaterialButton
 
@@ -279,11 +280,13 @@ class MainActivity : AppCompatActivity() {
         receiverPlay = SheetPlayReceiver()
         receiverStop = SheetStopReceiver()
         receiverSeek = SheetSeekReceiver()
+        receiverUpdate = SheetUpdateReceiver()
 
         registerReceiver(receiverPause, IntentFilter("internal.play_pause"), RECEIVER_NOT_EXPORTED)
         registerReceiver(receiverPlay, IntentFilter("internal.play_start"), RECEIVER_NOT_EXPORTED)
         registerReceiver(receiverStop, IntentFilter("internal.play_stop"), RECEIVER_NOT_EXPORTED)
         registerReceiver(receiverSeek, IntentFilter("internal.play_seek"), RECEIVER_NOT_EXPORTED)
+        registerReceiver(receiverUpdate, IntentFilter("internal.play_update"), RECEIVER_NOT_EXPORTED)
 
         // Flatten the decors to fit the system windows.
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -632,16 +635,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Tell the program to update the sheet when resuming.
-        if (musicPlayer != null && musicPlayer!!.isPlaying) {
-            val intentBroadcast = Intent("internal.play_start")
-            sendBroadcast(intentBroadcast)
-        } else if (musicPlayer != null && !musicPlayer!!.isPlaying) {
-            val intentBroadcast = Intent("internal.play_pause")
-            sendBroadcast(intentBroadcast)
-        } else {
-            val intentBroadcast = Intent("internal.play_stop")
-            sendBroadcast(intentBroadcast)
-        }
+        val intentBroadcast = Intent("internal.play_update")
+        sendBroadcast(intentBroadcast)
     }
 
     override fun onDestroy() {
@@ -652,6 +647,7 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiverStop)
         unregisterReceiver(receiverPlay)
         unregisterReceiver(receiverSeek)
+        unregisterReceiver(receiverUpdate)
         super.onDestroy()
     }
 
@@ -747,6 +743,55 @@ class MainActivity : AppCompatActivity() {
     inner class SheetSeekReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             setPlaybackState(0)
+        }
+    }
+
+    /**
+     * This is the SheetUpdateReceiver.
+     * It receives a broadcast from [receiverUpdate] and involves
+     * changes of various UI components including:
+     * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
+     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist],
+     * [fullSheetLocation].
+     * This receiver is used when resuming the activity.
+     */
+    inner class SheetUpdateReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (musicPlayer != null) {
+                bottomSheetSongName.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].title
+                bottomSheetArtistAndAlbum.text =
+                    getString(
+                        R.string.playlist_metadata_information,
+                        playlistViewModel.playList[playlistViewModel.currentLocation].artist,
+                        playlistViewModel.playList[playlistViewModel.currentLocation].album
+                    )
+                fullSheetSongName.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].title
+                fullSheetAlbum.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].album
+                fullSheetArtist.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].artist
+                fullSheetDuration.text =
+                    convertDurationToTimeStamp(
+                        playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
+                    )
+                // If you don't use a round bracket here the ViewModel would die from +1s.
+                fullSheetLocation.text =
+                    getString(
+                        R.string.full_sheet_playlist_location,
+                        ((playlistViewModel.currentLocation) + 1).toString(),
+                        playlistViewModel.playList.size.toString()
+                    )
+
+                if (musicPlayer!!.isPlaying) {
+                    bottomSheetControlButton.icon =
+                        ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
+                    fullSheetControlButton.setImageResource(R.drawable.ic_pause)
+                }
+
+                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
+            }
         }
     }
 

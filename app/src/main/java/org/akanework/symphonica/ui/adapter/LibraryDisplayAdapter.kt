@@ -96,8 +96,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
             }
 
             // Update MetaData.
-            // TODO: Add a separate broadcast receiver for this
-            val intentBroadcast = Intent("internal.play_start")
+            val intentBroadcast = Intent("internal.play_update")
             holder.itemView.context.sendBroadcast(intentBroadcast)
             true
         }

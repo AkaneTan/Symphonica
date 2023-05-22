@@ -38,9 +38,7 @@ fun addToNext(nextSong: Song) {
     } else {
         playlistViewModel.playList.add(playlistViewModel.currentLocation, nextSong)
     }
-    if (musicPlayer != null && !musicPlayer!!.isPlaying) {
-        changePlayer()
-    } else if (musicPlayer == null) {
+    if (musicPlayer == null) {
         if (playlistViewModel.playList.size != 1) {
             playlistViewModel.currentLocation ++
         }
