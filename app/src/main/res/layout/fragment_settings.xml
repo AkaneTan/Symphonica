@@ -145,7 +145,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="74dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:longClickable="true"
@@ -158,6 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
                     tools:ignore="UselessParent">
 
                     <TextView
