@@ -41,6 +41,8 @@ import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.notification
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
@@ -411,10 +413,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         } else {
             playlistViewModel.currentLocation =
                 if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                        fullSheetLoopButton.isChecked) {
+                    fullSheetLoopButton.isChecked
+                ) {
                     0
                 } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                    !fullSheetLoopButton.isChecked) {
+                    !fullSheetLoopButton.isChecked
+                ) {
                     stopPlaying()
                     0
                 } else {

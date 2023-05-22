@@ -32,7 +32,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -316,7 +315,11 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiverPlay, IntentFilter("internal.play_start"), RECEIVER_NOT_EXPORTED)
         registerReceiver(receiverStop, IntentFilter("internal.play_stop"), RECEIVER_NOT_EXPORTED)
         registerReceiver(receiverSeek, IntentFilter("internal.play_seek"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverUpdate, IntentFilter("internal.play_update"), RECEIVER_NOT_EXPORTED)
+        registerReceiver(
+            receiverUpdate,
+            IntentFilter("internal.play_update"),
+            RECEIVER_NOT_EXPORTED
+        )
 
         // Flatten the decors to fit the system windows.
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -424,7 +427,7 @@ class MainActivity : AppCompatActivity() {
                     playlistViewModel.currentLocation = playlist.indexOf(currentSong)
 
                     broadcastMetaDataUpdate()
-                    
+
                 } else if (playlist.isNotEmpty()) {
                     playlist.clear()
                     playlist.addAll(originalPlaylist)
@@ -803,7 +806,10 @@ class MainActivity : AppCompatActivity() {
 
                 if (musicPlayer!!.isPlaying) {
                     bottomSheetControlButton.icon =
-                        ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
+                        ContextCompat.getDrawable(
+                            SymphonicaApplication.context,
+                            R.drawable.ic_pause
+                        )
                     fullSheetControlButton.setImageResource(R.drawable.ic_pause)
                 }
 

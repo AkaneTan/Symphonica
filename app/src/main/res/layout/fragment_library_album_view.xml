@@ -157,10 +157,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="78dp"
                 app:fastScrollEnabled="true"
-                app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-                app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"
                 app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-                app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"/>
+                app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
+                app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+                app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable" />
         </LinearLayout>
     </LinearLayout>
 

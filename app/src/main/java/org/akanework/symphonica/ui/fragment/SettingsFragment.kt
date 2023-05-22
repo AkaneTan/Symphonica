@@ -64,7 +64,8 @@ class SettingsFragment : Fragment() {
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
         val darkModeSwitch = rootView.findViewById<MaterialSwitch>(R.id.force_dark_mode_switch)
-        val enableListShuffleSwitch = rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
+        val enableListShuffleSwitch =
+            rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 
         cacheSwitch.isChecked = isGlideCacheEnabled
         reorderSwitch.isChecked = isForceLoadingEnabled
@@ -110,8 +111,7 @@ class SettingsFragment : Fragment() {
                 editor.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 true
-            }
-            else {
+            } else {
                 editor.putBoolean("isForceDarkModeEnabled", false)
                 editor.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

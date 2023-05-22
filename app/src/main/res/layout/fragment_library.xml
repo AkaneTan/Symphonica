@@ -37,21 +37,22 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:menu="@menu/library_view_menu"
             app:navigationIcon="@drawable/ic_library_music"
             app:title="@string/app_name"
             app:titleCentered="true"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
-            app:titleTextColor="?attr/colorControlNormal"
-            app:menu="@menu/library_view_menu" />
+            app:titleTextColor="?attr/colorControlNormal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/library_tablayout"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="?attr/colorSurface"
                 app:tabBackground="?attr/colorSurface"
                 app:tabTextAppearance="@style/TabTextAppearance">
@@ -67,10 +68,11 @@
                     android:text="@string/library_tab_album" />
 
             </com.google.android.material.tabs.TabLayout>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

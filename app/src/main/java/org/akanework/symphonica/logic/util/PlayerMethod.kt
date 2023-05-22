@@ -40,7 +40,7 @@ fun addToNext(nextSong: Song) {
     }
     if (musicPlayer == null) {
         if (playlistViewModel.playList.size != 1) {
-            playlistViewModel.currentLocation ++
+            playlistViewModel.currentLocation++
         }
         thisSong()
     }

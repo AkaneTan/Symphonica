@@ -159,8 +159,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
                     tools:ignore="UselessParent">
 
                     <TextView
@@ -274,6 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end" />
             </FrameLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -283,6 +284,7 @@
                 android:text="@string/settings_appearance"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
@@ -320,6 +322,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end" />
             </FrameLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -329,6 +332,7 @@
                 android:text="@string/settings_behavior"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
@@ -365,7 +369,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
-                    android:checked="true"/>
+                    android:checked="true" />
             </FrameLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

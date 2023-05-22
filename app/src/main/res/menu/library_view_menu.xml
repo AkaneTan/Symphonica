@@ -18,8 +18,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="@string/library_view_filter"
         android:id="@+id/filter"
         android:icon="@drawable/ic_arrange"
+        android:title="@string/library_view_filter"
         app:showAsAction="ifRoom" />
 </menu>

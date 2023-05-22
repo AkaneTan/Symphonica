@@ -21,8 +21,8 @@
     <solid android:color="@android:color/transparent" />
 
     <padding
-        android:top="24dp"
+        android:bottom="24dp"
         android:left="24dp"
         android:right="24dp"
-        android:bottom="24dp"/>
+        android:top="24dp" />
 </shape>
