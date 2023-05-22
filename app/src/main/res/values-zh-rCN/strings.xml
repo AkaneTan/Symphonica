@@ -80,4 +80,7 @@
     <string name="settings_load">加载</string>
     <string name="settings_force_re_order">强制专辑重新排序</string>
     <string name="settings_force_re_order_content">当启动时强制专辑排序</string>
+    <string name="settings_force_dark_mode">强制黑暗模式</string>
+    <string name="settings_force_dark_mode_content">永夜抄,启动!!</string>
+    <string name="settings_appearance">外表</string>
 </resources>

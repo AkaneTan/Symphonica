@@ -80,4 +80,7 @@
     <string name="settings_load">Load</string>
     <string name="settings_force_re_order">Force re-order album</string>
     <string name="settings_force_re_order_content">Force album re-ordering when first loading</string>
+    <string name="settings_force_dark_mode">Force dark mode</string>
+    <string name="settings_force_dark_mode_content">This will make night everlasting</string>
+    <string name="settings_appearance">Appearance</string>
 </resources>

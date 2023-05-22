@@ -23,11 +23,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
+import org.akanework.symphonica.MainActivity.Companion.isForceDarkModeEnabled
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
@@ -60,9 +62,11 @@ class SettingsFragment : Fragment() {
         val versionTag = rootView.findViewById<TextView>(R.id.version_tag)
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
+        val darkModeSwitch = rootView.findViewById<MaterialSwitch>(R.id.force_dark_mode_switch)
 
         cacheSwitch.isChecked = isGlideCacheEnabled
         reorderSwitch.isChecked = isForceLoadingEnabled
+        darkModeSwitch.isChecked = isForceDarkModeEnabled
 
         cacheSwitch.setOnCheckedChangeListener { _, isChecked ->
             val editor =
@@ -90,6 +94,24 @@ class SettingsFragment : Fragment() {
             } else {
                 editor.putBoolean("isForceLoadingEnabled", false)
                 editor.apply()
+                false
+            }
+        }
+
+        darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isForceDarkModeEnabled = if (isChecked) {
+                editor.putBoolean("isForceDarkModeEnabled", true)
+                editor.apply()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                true
+            }
+            else {
+                editor.putBoolean("isForceDarkModeEnabled", false)
+                editor.apply()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 false
             }
         }

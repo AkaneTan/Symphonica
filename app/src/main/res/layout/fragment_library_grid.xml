@@ -19,13 +19,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.LibraryGridFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/library_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="94dp"
-        android:scrollbars="vertical" />
+        android:layout_marginBottom="94dp"
+        app:fastScrollEnabled="true"
+        app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable"
+        app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"/>
 
 </FrameLayout>

@@ -40,6 +40,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -160,6 +161,7 @@ class MainActivity : AppCompatActivity() {
         // the settings.
         var isGlideCacheEnabled: Boolean = false
         var isForceLoadingEnabled: Boolean = false
+        var isForceDarkModeEnabled: Boolean = false
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null
@@ -255,7 +257,14 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
+        isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
 
+        // Go to dark mode if force dark mode is on.
+        if (isForceDarkModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+        // Change glide cache strategy accordingly.
         diskCacheStrategyCustom = if (isGlideCacheEnabled) {
             DiskCacheStrategy.AUTOMATIC
         } else {
