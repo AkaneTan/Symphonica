@@ -401,7 +401,7 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior.isHideable = false
 
         val playlistBottomSheet = PlaylistBottomSheet()
-        
+
         fullSheetLoopButton.addOnCheckedChangeListener { _, isChecked ->
             if (fullSheetShuffleButton.isChecked && !isListShuffleEnabled) {
                 fullSheetLoopButton.isChecked = true
@@ -422,11 +422,17 @@ class MainActivity : AppCompatActivity() {
                     originalPlaylist.addAll(playlist)
                     playlist.shuffle()
                     playlistViewModel.currentLocation = playlist.indexOf(currentSong)
+
+                    broadcastMetaDataUpdate()
+                    
                 } else if (playlist.isNotEmpty()) {
                     playlist.clear()
                     playlist.addAll(originalPlaylist)
                     playlistViewModel.currentLocation = playlist.indexOf(currentSong)
                     originalPlaylist.clear()
+
+                    broadcastMetaDataUpdate()
+
                 }
             }
         }
