@@ -50,6 +50,29 @@ import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.thisSong
 import kotlin.random.Random
 
+/**
+ * [SymphonicaPlayerService] is the core of Symphonica.
+ * It used [musicPlayer]'s async method to play songs.
+ * It also manages [notification]'s playback metadata
+ * updates.
+ *
+ * SubFunctions:
+ * [updateMetadata]
+ *
+ * Arguments:
+ * It receives [Intent] when being called.
+ * [playlistViewModel] is used to store playlist and
+ * current position across this instance.
+ * ----------------------------------------------------
+ * 1. "ACTION_REPLACE_AND_PLAY" will replace current playlist
+ * and start playing.
+ * 2. "ACTION_PAUSE" will pause current player instance.
+ * 3. "ACTION_RESUME" will resume current player instance.
+ * 4. "ACTION_NEXT" will make the player plays the next song
+ * inside the playlist. If not, then stop the instance.
+ * 5. "ACTION_PREV" similar to "ACTION_NEXT".
+ * 6. "ACTION_JUMP" will jump to target song inside the playlist.
+ */
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     companion object {
@@ -89,6 +112,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             .build()
 
 
+        /**
+         * [updateMetadata] is used for [notification] to update its
+         * metadata information. You can find this functions all across
+         * Symphonica.
+         *
+         * It does not need any arguments, instead it uses the [playlistViewModel]
+         * and [Glide] to update it's info. You can call it up anywhere.
+         */
         fun updateMetadata() {
             var initialized = false
             lateinit var bitmapResource: Bitmap

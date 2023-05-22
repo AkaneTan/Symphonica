@@ -29,6 +29,10 @@ import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 
+/**
+ * [getAllAlbums] flushes your [Album].
+ * This is called when first booting up.
+ */
 fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
 
@@ -56,7 +60,7 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
  * we will re-order the albumList in the background. When re-ordering
  * is ready, we'll offer the re-ordered list. But before that, we'll
  * offer the original list. Don't blame me :)
- * This function used [countingSortSongsByTrackNumber] which is redis sorting.
+ * This function used [countingSortSongsByTrackNumber] which is radix sorting.
  * should be fast anyways.
  * I'll leave the switch for re-ordering the albumList at the beginning.
  * Thank you for your understanding.
@@ -73,6 +77,10 @@ fun sortAlbumListByTrackNumber(albumList: List<Album>): List<Album> {
     return sortedAlbumList
 }
 
+/**
+ * [countingSortSongsByTrackNumber] is radix sorting.
+ * Despite of its dirtiness, it's fast though.
+ */
 fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): List<Song> {
     val count = IntArray(maxTrackNumber + 1) { 0 }
 
@@ -98,7 +106,12 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     return output
 }
 
-
+/**
+ * [getAllSongs] gets all of your songs from your local disk.
+ * Very fast, huh?
+ *
+ * [getAllAlbums] uses list which is its output.
+ */
 fun getAllSongs(context: Context): List<Song> {
     val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
     val projection = arrayOf(
@@ -155,6 +168,12 @@ fun getAllSongs(context: Context): List<Song> {
     return songs
 }
 
+/**
+ * This returns a [Song]'s track number using
+ * Mediastore.
+ *
+ * Return values is [Int].
+ */
 fun getTrackNumber(songUri: String): Int {
     val projection = arrayOf(MediaStore.Audio.Media.TRACK)
     val selection = "${MediaStore.Audio.Media.DATA} = ?"
@@ -185,6 +204,12 @@ fun getTrackNumber(songUri: String): Int {
     return 0
 }
 
+/**
+ * This returns a [Song]'s year information using
+ * MediaStore.
+ * It is also been used inside [Album]'s display
+ * page.
+ */
 fun getYear(songUri: String): String? {
     val projection = arrayOf(MediaStore.Audio.Media.YEAR)
     val selection = "${MediaStore.Audio.Media.DATA} = ?"
@@ -209,6 +234,11 @@ fun getYear(songUri: String): String? {
     return year
 }
 
+/**
+ * This fills up an [ImageView] with a [Song]'s cover.
+ * It requires an [imgUri] to function which can be
+ * found in [Song].
+ */
 fun fillSongCover(imgUri: Uri, songCover: ImageView) {
     Glide.with(context)
         .load(imgUri)

@@ -401,10 +401,11 @@ class MainActivity : AppCompatActivity() {
 
         // So when we open the shuffle button, loop button
         // is enabled too. This is because shuffle button
-        // no longer restricts from the current playlist's order.
-        // You might get the same song as your next when you
-        // turn the shuffle button on, so this behavior is
-        // needed.
+        // is not generating a new list from current playlist,
+        // instead it just make player service randomly plays
+        // inside of our current playlist.
+        // You might get the same song twice when you
+        // turn the shuffle button on.
         // TODO: Make it an option in settings
         fullSheetLoopButton.addOnCheckedChangeListener { _, isChecked ->
             if (fullSheetShuffleButton.isChecked) {
