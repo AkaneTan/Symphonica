@@ -72,6 +72,4 @@
     <string name="dialog_album_info">Informasi Album</string>
     <string name="dialog_album_year">Tahun</string>
     <string name="library_view_filter">Saring</string>
-    <string name="library_view_by_name">Dengan Nama</string>
-    <string name="library_view_by_duration">Dengan Durasi</string>
 </resources>
