@@ -72,6 +72,4 @@
     <string name="dialog_album_info">Album Info</string>
     <string name="dialog_album_year">Year</string>
     <string name="library_view_filter">Filter</string>
-    <string name="library_view_by_name">By Name</string>
-    <string name="library_view_by_duration">By Duration</string>
 </resources>

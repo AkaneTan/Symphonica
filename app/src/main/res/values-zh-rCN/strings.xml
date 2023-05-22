@@ -71,4 +71,5 @@
     <string name="settings_glide_enable_cache_content">开启 Glide 的 缓存。</string>
     <string name="dialog_album_info">专辑信息</string>
     <string name="dialog_album_year">年份</string>
+    <string name="library_view_filter">排列</string>
 </resources>
