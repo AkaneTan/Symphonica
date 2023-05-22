@@ -76,6 +76,7 @@ import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet
+import org.akanework.symphonica.ui.fragment.HomeFragment
 import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
@@ -246,6 +247,16 @@ class MainActivity : AppCompatActivity() {
                         navigationView.setCheckedItem(
                             navigationView.menu.findItem(
                                 R.id.settings_navigation
+                            )
+                        )
+                    }
+                }
+
+                2 -> {
+                    navigationView.post {
+                        navigationView.setCheckedItem(
+                            navigationView.menu.findItem(
+                                R.id.settings_home
                             )
                         )
                     }
@@ -483,7 +494,11 @@ class MainActivity : AppCompatActivity() {
 
         fullSheetBackButton.setOnClickListener {
             playerBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomFullSizePlayerPreview.visibility = GONE
+
+            ObjectAnimator.ofFloat(bottomFullSizePlayerPreview, "alpha", 1f, 0f)
+                .setDuration(200)
+                .start()
+
             bottomPlayerPreview.visibility = VISIBLE
         }
 
@@ -588,6 +603,13 @@ class MainActivity : AppCompatActivity() {
 
         // Set the drawer's behavior.
         navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.title == getString(R.string.navigation_home)) {
+                val homeFragment = HomeFragment()
+                customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, homeFragment)
+                    .commit()
+                switchDrawer()
+            }
             if (menuItem.title == getString(R.string.navigation_view_settings)) {
                 val settingsFragment = SettingsFragment()
                 customFragmentManager.beginTransaction()

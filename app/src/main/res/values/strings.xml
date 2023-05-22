@@ -86,4 +86,5 @@
     <string name="settings_enable_list_shuffle">Enable list shuffle</string>
     <string name="settings_enable_list_shuffle_content">Make shuffle generates a new song list</string>
     <string name="settings_behavior">Behavior</string>
+    <string name="navigation_home">Home</string>
 </resources>
