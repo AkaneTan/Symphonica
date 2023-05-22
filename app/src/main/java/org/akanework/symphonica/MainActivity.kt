@@ -62,8 +62,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
-import org.akanework.symphonica.logic.data.Album
-import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
@@ -151,11 +149,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-
-        // These are the global song/album list.
-        // They should be updated from ListView when resumed.
-        lateinit var songList: List<Song>
-        lateinit var albumList: List<Album>
 
         // This is the handler used to handle the slide task.
         private lateinit var handler: Handler
@@ -338,10 +331,6 @@ class MainActivity : AppCompatActivity() {
         // Initialize the instance of supportFragmentManager.
         customFragmentManager = supportFragmentManager
 
-        // Initialize an empty list of song/album.
-        songList = listOf()
-        albumList = listOf()
-
         // Initialize view models.
         libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
@@ -363,7 +352,9 @@ class MainActivity : AppCompatActivity() {
                 // I know what you're thinking.
                 // Let me explain. Go to sortAlbumListByTrackNumber's define page.
                 withContext(Dispatchers.IO) {
-                    libraryViewModel.librarySortedAlbumList = sortAlbumListByTrackNumber(albumList)
+                    libraryViewModel.librarySortedAlbumList = sortAlbumListByTrackNumber(
+                        libraryViewModel.libraryAlbumList
+                    )
                 }
             }
         }
@@ -836,6 +827,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
+
+                handler.postDelayed(sliderTask, 500)
             }
         }
     }

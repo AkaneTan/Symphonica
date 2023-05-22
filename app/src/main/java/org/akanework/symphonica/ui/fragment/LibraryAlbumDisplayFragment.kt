@@ -35,7 +35,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
@@ -86,13 +85,10 @@ class LibraryAlbumDisplayFragment : Fragment() {
         } else {
             albumDisplayViewModel!!.position
         }
-        if (albumList.isEmpty()) {
-            albumList = libraryViewModel.libraryAlbumList
-        }
 
         try {
             Glide.with(requireContext())
-                .load(albumList[position!!].songList.first().imgUri)
+                .load(libraryViewModel.libraryAlbumList[position!!].songList.first().imgUri)
                 .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
                 .placeholder(R.drawable.ic_album_default_cover)
                 .into(albumCover)
@@ -100,9 +96,9 @@ class LibraryAlbumDisplayFragment : Fragment() {
             // Placeholder
         }
 
-        albumName.text = albumList[position!!].title
-        albumArtist.text = albumList[position!!].artist
-        val year = getYear(albumList[position!!].songList.first().path)
+        albumName.text = libraryViewModel.libraryAlbumList[position!!].title
+        albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
+        val year = getYear(libraryViewModel.libraryAlbumList[position!!].songList.first().path)
         if (year != null) {
             albumYear.text = year
         }
@@ -159,18 +155,21 @@ class LibraryAlbumDisplayFragment : Fragment() {
                     val dialogYear: TextInputEditText =
                         rootDialogView.findViewById(R.id.dialog_album_year)!!
 
-                    dialogName.setText(albumList[position!!].title)
-                    dialogArtist.setText(albumList[position!!].artist)
+                    dialogName.setText(libraryViewModel.libraryAlbumList[position!!].title)
+                    dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].artist)
 
                     var duration: Long = 0
-                    for (i in albumList[position!!].songList) {
+                    for (i in libraryViewModel.libraryAlbumList[position!!].songList) {
                         duration += i.duration
                     }
 
                     dialogDuration.setText(duration.toString())
 
                     val acquireYear =
-                        getYear(albumList[position!!].songList.first().path.toUri().toString())
+                        getYear(
+                            libraryViewModel.libraryAlbumList[position!!].songList.first().path.toUri()
+                                .toString()
+                        )
                     if (!year.isNullOrEmpty()) {
                         dialogYear.setText(acquireYear)
                     }

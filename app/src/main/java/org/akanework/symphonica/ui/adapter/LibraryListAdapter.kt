@@ -18,7 +18,6 @@
 package org.akanework.symphonica.ui.adapter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,7 +122,6 @@ class LibraryListAdapter(private val songList: List<Song>) :
                         ))
                     }
                 }
-                Log.d("Position", albumBundle.getInt("Position").toString())
                 val albumFragment = LibraryAlbumDisplayFragment().apply {
                     arguments = albumBundle
                 }

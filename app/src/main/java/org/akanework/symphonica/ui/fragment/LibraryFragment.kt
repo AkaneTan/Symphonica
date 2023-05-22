@@ -34,6 +34,14 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.ui.adapter.NavFragmentPageAdapter
 import org.akanework.symphonica.ui.fragment.LibraryListFragment.Companion.updateRecyclerListViewOppositeOrder
 
+/**
+ * [LibraryFragment] is the fragment that
+ * contains two child fragment views which is
+ * [LibraryGridFragment] and [LibraryListFragment].
+ *
+ * At one time this was the front page but then replaced by
+ * [HomeFragment].
+ */
 class LibraryFragment : Fragment() {
 
     private lateinit var fragmentPager: ViewPager2

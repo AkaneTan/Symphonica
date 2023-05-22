@@ -26,12 +26,10 @@
 
     <style name="ToolbarTitleStyle" parent="@style/TextAppearance.Material3.ActionBar.Title">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="LargeToolbarTitleStyle" parent="@style/TextAppearance.Material3.HeadlineLarge">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="StandardBottomSheetDialog" parent="Widget.Material3.BottomSheet">

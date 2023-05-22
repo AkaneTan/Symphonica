@@ -22,40 +22,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.LibraryListFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/loading_prompt_list"
-        style="?attr/materialCardViewOutlinedStyle"
-        android:layout_width="match_parent"
-        android:layout_height="168dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="24dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:text="@string/loading_your_library"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:indeterminate="true" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/library_listview"
         android:layout_width="match_parent"

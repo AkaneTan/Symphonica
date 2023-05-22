@@ -24,30 +24,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import org.akanework.symphonica.MainActivity.Companion.albumList
+import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.ui.adapter.LibraryGridAdapter
 
 class LibraryGridFragment : Fragment() {
-
-    companion object {
-        lateinit var libraryGridView: RecyclerView
-        lateinit var adapter: LibraryGridAdapter
-
-        /**
-         * This updates gridview.
-         * involving [libraryGridView].
-         */
-        fun updateRecyclerView(newAlbumList: List<Album>) {
-            if (::libraryGridView.isInitialized) {
-                val adapter = LibraryGridAdapter(newAlbumList)
-                libraryGridView.adapter = adapter
-                adapter.notifyItemRangeInserted(0, albumList.size)
-            }
-        }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,12 +37,12 @@ class LibraryGridFragment : Fragment() {
 
         val rootView = inflater.inflate(R.layout.fragment_library_grid, container, false)
 
-        libraryGridView = rootView.findViewById(R.id.library_gridview)
+        val libraryGridView: RecyclerView = rootView.findViewById(R.id.library_gridview)
 
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         libraryGridView.layoutManager = layoutManager
-        adapter = LibraryGridAdapter(albumList)
+        val adapter = LibraryGridAdapter(libraryViewModel.libraryAlbumList)
         libraryGridView.adapter = adapter
 
         return rootView

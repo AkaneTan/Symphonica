@@ -19,51 +19,34 @@ package org.akanework.symphonica.logic.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
-import org.akanework.symphonica.MainActivity.Companion.songList
+import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.util.getAllAlbums
 import org.akanework.symphonica.logic.util.getAllSongs
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
-import org.akanework.symphonica.ui.fragment.LibraryGridFragment
-import org.akanework.symphonica.ui.fragment.LibraryListFragment
+import org.akanework.symphonica.ui.fragment.HomeFragment
 
 suspend fun loadDataFromDisk() {
-    LibraryListFragment.switchPrompt(0)
-    if (MainActivity.libraryViewModel.librarySongList.isEmpty()) {
-        withContext(Dispatchers.IO) {
-            if (songList.isEmpty()) {
-                songList = getAllSongs(SymphonicaApplication.context)
-                MainActivity.libraryViewModel.librarySongList = songList
-            }
+
+    HomeFragment.switchPrompt(0)
+    withContext(Dispatchers.IO) {
+        if (libraryViewModel.librarySongList.isEmpty()) {
+            libraryViewModel.librarySongList = getAllSongs(SymphonicaApplication.context)
         }
-        withContext(Dispatchers.IO) {
-            if (albumList.isEmpty()) {
-                albumList = getAllAlbums(songList)
-                MainActivity.libraryViewModel.libraryAlbumList = albumList
-            }
+        if (libraryViewModel.libraryAlbumList.isEmpty()) {
+            libraryViewModel.libraryAlbumList = getAllAlbums(libraryViewModel.librarySongList)
         }
-    } else {
-        albumList = MainActivity.libraryViewModel.libraryAlbumList
-        songList = MainActivity.libraryViewModel.librarySongList
     }
 
     if (isForceLoadingEnabled) {
         withContext(Dispatchers.IO) {
-            albumList = sortAlbumListByTrackNumber(albumList)
-            MainActivity.libraryViewModel.libraryAlbumList = albumList
+            libraryViewModel.librarySortedAlbumList =
+                sortAlbumListByTrackNumber(libraryViewModel.libraryAlbumList)
         }
     }
 
     withContext(Dispatchers.Main) {
-        reloadRecyclerView()
+        HomeFragment.switchPrompt(1)
     }
-}
-
-fun reloadRecyclerView() {
-    LibraryListFragment.switchPrompt(1)
-    LibraryListFragment.updateRecyclerView(songList)
-    LibraryGridFragment.updateRecyclerView(albumList)
 }

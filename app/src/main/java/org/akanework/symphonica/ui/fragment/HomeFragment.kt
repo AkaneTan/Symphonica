@@ -18,11 +18,14 @@
 package org.akanework.symphonica.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.R
 
@@ -33,8 +36,25 @@ import org.akanework.symphonica.R
  */
 class HomeFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+
+        private lateinit var loadingPrompt: MaterialCardView
+
+        /**
+         * This is used for outer class to switch [loadingPrompt].
+         * e.g. When loading from disk completed.
+         */
+        fun switchPrompt(operation: Int) {
+            if (::loadingPrompt.isInitialized) {
+                if (operation == 0) {
+                    loadingPrompt.visibility = View.VISIBLE
+                } else if (operation == 1) {
+                    loadingPrompt.visibility = View.GONE
+                } else {
+                    throw IllegalArgumentException()
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -45,9 +65,31 @@ class HomeFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
+        val collapsingToolbar =
+            rootView.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
+        val appBarLayout = rootView.findViewById<AppBarLayout>(R.id.appBarLayout)
+
+        loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
 
         topAppBar.setNavigationOnClickListener {
             MainActivity.switchDrawer()
+        }
+
+        var isShow = true
+        var scrollRange = -1
+
+        appBarLayout.addOnOffsetChangedListener { barLayout, verticalOffset ->
+            if (scrollRange == -1) {
+                scrollRange = barLayout?.totalScrollRange!!
+            }
+            if (scrollRange + verticalOffset == 0) {
+                collapsingToolbar.title = getString(R.string.app_name)
+                isShow = true
+            } else if (isShow) {
+                collapsingToolbar.title =
+                    getString(R.string.home_greetings)
+                isShow = false
+            }
         }
 
         return rootView

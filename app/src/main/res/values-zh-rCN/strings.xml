@@ -86,4 +86,6 @@
     <string name="settings_enable_list_shuffle">启用列表随机</string>
     <string name="settings_enable_list_shuffle_content">随机播放时生成新的曲目列表</string>
     <string name="settings_behavior">行为</string>
+    <string name="navigation_home">主页</string>
+    <string name="home_greetings">你好!</string>
 </resources>
