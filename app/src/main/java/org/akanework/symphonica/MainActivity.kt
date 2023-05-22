@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullSheetAlbum: TextView
     private lateinit var fullSheetDuration: TextView
     private lateinit var fullSheetLocation: TextView
+    private lateinit var fullSheetTimeStamp: TextView
 
     private lateinit var bottomSheetControlButton: MaterialButton
     private lateinit var fullSheetControlButton: FloatingActionButton
@@ -121,6 +122,31 @@ class MainActivity : AppCompatActivity() {
     // This is the coroutineScope used across MainActivity.
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
+    private val sliderTask = object : Runnable {
+        override fun run() {
+            if (musicPlayer != null && musicPlayer!!.isPlaying && playlistViewModel.currentLocation !=
+                playlistViewModel.playList.size
+            ) {
+                fullSheetSlider.isEnabled = true
+
+                // about the "/ 1000 + 0.2f", check line 396.
+                fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
+
+                if (!isUserTracking || (isUserTracking && musicPlayer!!.duration == 0)
+                    && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
+                    fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
+                    val intentBroadcast = Intent("internal.play_seek")
+                    sendBroadcast(intentBroadcast)
+                    fullSheetTimeStamp.text =
+                        convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
+                }
+
+                // Update it per 200ms.
+                handler.postDelayed(this, 500)
+            }
+        }
+    }
+
     companion object {
 
         // These are the global song/album list.
@@ -130,7 +156,6 @@ class MainActivity : AppCompatActivity() {
 
         // This is the handler used to handle the slide task.
         private lateinit var handler: Handler
-        private lateinit var sliderTask: Runnable
 
         // These variables are used inside SymphonicaPlayerService.
         // They are used to manage the MediaControl notifications.
@@ -342,7 +367,6 @@ class MainActivity : AppCompatActivity() {
         val fullSheetBackButton = findViewById<MaterialButton>(R.id.sheet_extract_player)
         val fullSheetNextButton = findViewById<MaterialButton>(R.id.sheet_next_song)
         val fullSheetPrevButton = findViewById<MaterialButton>(R.id.sheet_previous_song)
-        val fullSheetTimeStamp = findViewById<TextView>(R.id.sheet_now_time)
         val fullSheetSongInfo = findViewById<MaterialButton>(R.id.sheet_song_info)
 
         fragmentContainerView = findViewById(R.id.fragmentContainer)
@@ -359,6 +383,7 @@ class MainActivity : AppCompatActivity() {
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
         fullSheetSlider = findViewById(R.id.sheet_slider)
         fullSheetDuration = findViewById(R.id.sheet_end_time)
+        fullSheetTimeStamp = findViewById(R.id.sheet_now_time)
         playlistButton = findViewById(R.id.sheet_playlist)
         bottomFullSizePlayerPreview = findViewById(R.id.full_size_sheet_player)
         playerBottomSheetBehavior =
@@ -535,33 +560,6 @@ class MainActivity : AppCompatActivity() {
             if (fromUser) fullSheetTimeStamp.text =
                 convertDurationToTimeStamp((value * 1000).toInt().toString())
         }
-
-        sliderTask = object : Runnable {
-            override fun run() {
-                if (musicPlayer != null && playlistViewModel.currentLocation !=
-                    playlistViewModel.playList.size
-                ) {
-                    if (musicPlayer!!.isPlaying) {
-                        fullSheetSlider.isEnabled = true
-
-                        // about the "/ 1000 + 0.2f", check line 396.
-                        fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000 + 0.2f
-
-                        if (!isUserTracking || (isUserTracking && musicPlayer!!.duration == 0)) {
-                            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
-                            val intentBroadcast = Intent("internal.play_seek")
-                            sendBroadcast(intentBroadcast)
-                            fullSheetTimeStamp.text =
-                                convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
-                        }
-                    }
-                }
-                // Update it per 200ms.
-                handler.postDelayed(this, 200)
-            }
-        }
-
-        handler.postDelayed(sliderTask, 200)
         // Slider behavior ends here.
 
         // Set the drawer's behavior.
@@ -640,7 +638,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-
         // Unregister everything.
         handler.removeCallbacks(sliderTask)
         unregisterReceiver(receiverPause)
@@ -697,6 +694,7 @@ class MainActivity : AppCompatActivity() {
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
                 setPlaybackState(0)
+                handler.postDelayed(sliderTask, 500)
             }
         }
     }
