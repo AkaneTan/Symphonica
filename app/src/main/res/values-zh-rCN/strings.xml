@@ -72,4 +72,7 @@
     <string name="dialog_album_info">专辑信息</string>
     <string name="dialog_album_year">年份</string>
     <string name="library_view_filter">排列</string>
+    <string name="dialog_long_press_title">选项</string>
+    <string name="dialog_long_press_add_to_next">添加至下一曲</string>
+    <string name="dialog_long_press_add_to_next_content">将这首歌添加至下一曲</string>
 </resources>

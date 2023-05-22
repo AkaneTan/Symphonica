@@ -17,21 +17,33 @@
 
 package org.akanework.symphonica.ui.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.withContext
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
+import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.addToNext
+import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.logic.util.resumePlayer
+import org.akanework.symphonica.logic.util.thisSong
 
 
 class LibraryListAdapter(private val songList: List<Song>) :
@@ -81,6 +93,31 @@ class LibraryListAdapter(private val songList: List<Song>) :
             playlistViewModel.currentLocation = position
             playlistViewModel.playList = songList.toMutableList()
             replacePlaylist(playlistViewModel.playList, position)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            val rootView = MaterialAlertDialogBuilder(
+                holder.itemView.context,
+                com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+            )
+                .setTitle(holder.itemView.context.getString(R.string.dialog_long_press_title))
+                .setView(R.layout.alert_dialog_long_press)
+                .setNeutralButton(SymphonicaApplication.context.getString(R.string.dialog_song_dismiss)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+
+            val addToNextButton = rootView.findViewById<FrameLayout>(R.id.dialog_add_to_next)
+            addToNextButton!!.setOnClickListener {
+                addToNext(songList[position])
+                rootView.dismiss()
+            }
+
+            // Update MetaData.
+            // TODO: Add a separate broadcast receiver for this
+            val intentBroadcast = Intent("internal.play_start")
+            holder.itemView.context.sendBroadcast(intentBroadcast)
+            true
         }
     }
 

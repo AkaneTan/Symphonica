@@ -32,9 +32,20 @@ fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
     SymphonicaApplication.context.startService(intent)
 }
 
-// TODO: Add a "addToNext" action for long pressing the RecyclerView's item.
 fun addToNext(nextSong: Song) {
-    playlistViewModel.playList.add(playlistViewModel.currentLocation, nextSong)
+    if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
+        playlistViewModel.playList.add(playlistViewModel.currentLocation + 1, nextSong)
+    } else {
+        playlistViewModel.playList.add(playlistViewModel.currentLocation, nextSong)
+    }
+    if (musicPlayer != null && !musicPlayer!!.isPlaying) {
+        changePlayer()
+    } else if (musicPlayer == null) {
+        if (playlistViewModel.playList.size != 1) {
+            playlistViewModel.currentLocation ++
+        }
+        thisSong()
+    }
 }
 
 fun jumpTo(index: Int) {
