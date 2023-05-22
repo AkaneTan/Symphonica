@@ -77,4 +77,7 @@
     <string name="dialog_long_press_add_to_next_content">将这首歌添加至下一曲</string>
     <string name="dialog_long_press_check_album">查看专辑</string>
     <string name="dialog_long_press_check_album_content">查看这首歌的专辑信息</string>
+    <string name="settings_load">加载</string>
+    <string name="settings_force_re_order">强制专辑重新排序</string>
+    <string name="settings_force_re_order_content">当启动时强制专辑排序</string>
 </resources>

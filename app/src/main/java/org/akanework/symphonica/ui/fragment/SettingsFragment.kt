@@ -28,6 +28,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
+import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
@@ -58,10 +59,12 @@ class SettingsFragment : Fragment() {
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
         val versionTag = rootView.findViewById<TextView>(R.id.version_tag)
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
+        val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
 
         cacheSwitch.isChecked = isGlideCacheEnabled
+        reorderSwitch.isChecked = isForceLoadingEnabled
 
-        cacheSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        cacheSwitch.setOnCheckedChangeListener { _, isChecked ->
             val editor =
                 SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
                     .edit()
@@ -71,6 +74,21 @@ class SettingsFragment : Fragment() {
                 true
             } else {
                 editor.putBoolean("isGlideCacheEnabled", false)
+                editor.apply()
+                false
+            }
+        }
+
+        reorderSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isForceLoadingEnabled = if (isChecked) {
+                editor.putBoolean("isForceLoadingEnabled", true)
+                editor.apply()
+                true
+            } else {
+                editor.putBoolean("isForceLoadingEnabled", false)
                 editor.apply()
                 false
             }

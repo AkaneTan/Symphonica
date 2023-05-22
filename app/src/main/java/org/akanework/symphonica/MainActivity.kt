@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         // Below is the custom variables that can be changed throughout
         // the settings.
         var isGlideCacheEnabled: Boolean = false
+        var isForceLoadingEnabled: Boolean = false
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null
@@ -253,6 +254,7 @@ class MainActivity : AppCompatActivity() {
         // Get customized options.
         val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
+        isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
 
         diskCacheStrategyCustom = if (isGlideCacheEnabled) {
             DiskCacheStrategy.AUTOMATIC
@@ -300,11 +302,13 @@ class MainActivity : AppCompatActivity() {
         coroutineScope.launch {
             loadDataFromDisk()
 
-            // Look, listen.
-            // I know what you're thinking.
-            // Let me explain. Go to sortAlbumListByTrackNumber's define page.
-            withContext(Dispatchers.IO) {
-                libraryViewModel.librarySortedAlbumList = sortAlbumListByTrackNumber(albumList)
+            if (!isForceLoadingEnabled) {
+                // Look, listen.
+                // I know what you're thinking.
+                // Let me explain. Go to sortAlbumListByTrackNumber's define page.
+                withContext(Dispatchers.IO) {
+                    libraryViewModel.librarySortedAlbumList = sortAlbumListByTrackNumber(albumList)
+                }
             }
         }
 

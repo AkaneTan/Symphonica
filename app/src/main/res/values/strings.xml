@@ -77,4 +77,7 @@
     <string name="dialog_long_press_add_to_next_content">Add this song to your playlist</string>
     <string name="dialog_long_press_check_album">Check album</string>
     <string name="dialog_long_press_check_album_content">Check this song\'s album information</string>
+    <string name="settings_load">Load</string>
+    <string name="settings_force_re_order">Force re-order album</string>
+    <string name="settings_force_re_order_content">Force album re-ordering when first loading</string>
 </resources>
