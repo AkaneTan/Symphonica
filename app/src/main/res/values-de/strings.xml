@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="app_name">Symphonica</string>
+    <string name="app_name">Sinfonische Musik</string>
     <string name="full_sheet_playlist_location">%1$s in %2$s Titel</string>
     <string name="library_album_view_unknown_album">Unbekanntes Album</string>
     <string name="library_album_view_unknown_artist">Unbekannter Künstler</string>
@@ -58,7 +58,7 @@
     <string name="settings_contributors">Mitwirkende</string>
     <string name="settings_media">Medien</string>
     <string name="settings_glide_enable_cache">Cache aktivieren</string>
-    <string name="settings_glide_enable_cache_content">Aktivert Glides Cache.</string>
+    <string name="settings_glide_enable_cache_content">Aktiviert Glides Cache.</string>
     <string name="dialog_album_info">Album-Info</string>
     <string name="dialog_album_year">Jahr</string>
     <string name="dialog_long_press_title">Optionen</string>
