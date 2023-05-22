@@ -42,6 +42,16 @@ import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.fillSongCover
 import org.akanework.symphonica.logic.util.getAllSongs
 
+/**
+ * [MiniPlayerActivity] is a mini player that can be
+ * launched from file manager.
+ *
+ * It is separated from [SymphonicaPlayerService] and has
+ * it's own media player for handling light tasks.
+ *
+ * This activity still needs future improvements on handler,
+ * etc.
+ */
 class MiniPlayerActivity : AppCompatActivity() {
 
     val mediaPlayer: MediaPlayer = MediaPlayer()
@@ -198,12 +208,12 @@ class MiniPlayerActivity : AppCompatActivity() {
                         controlButton.setImageResource(R.drawable.ic_sheet_play)
                     } else {
                         mediaPlayer.start()
-                        handler.postDelayed(sliderTask, 200)
+                        handler.postDelayed(sliderTask, 500)
                         controlButton.setImageResource(R.drawable.ic_pause)
                     }
                 }
 
-                handler.postDelayed(sliderTask, 200)
+                handler.postDelayed(sliderTask, 500)
             }
         }
         onBackPressedDispatcher.addCallback(

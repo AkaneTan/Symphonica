@@ -63,9 +63,7 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
  */
 fun sortAlbumListByTrackNumber(albumList: List<Album>): List<Album> {
     val maxTrackNumber = albumList
-        .flatMap { album -> album.songList }
-        .mapNotNull { song -> getTrackNumber(song.path)?.toInt() }
-        .maxOrNull() ?: 0
+        .flatMap { album -> album.songList }.maxOfOrNull { song -> getTrackNumber(song.path) } ?: 0
 
     val sortedAlbumList = albumList.map { album ->
         val countingSortSongList = countingSortSongsByTrackNumber(album.songList, maxTrackNumber)
@@ -79,7 +77,7 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     val count = IntArray(maxTrackNumber + 1) { 0 }
 
     for (song in songList) {
-        val trackNumber = getTrackNumber(song.path)?.toInt() ?: 0
+        val trackNumber = getTrackNumber(song.path)
         count[trackNumber]++
     }
 
@@ -91,7 +89,7 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     val output = MutableList(songList.size) { Song(0, "", "", "", 0, "", null) }
 
     for (i in songList.size - 1 downTo 0) {
-        val trackNumber = getTrackNumber(sortedSongList[i].path)?.toInt() ?: 0
+        val trackNumber = getTrackNumber(sortedSongList[i].path)
         val index = count[trackNumber] - 1
         output[index] = sortedSongList[i]
         count[trackNumber]--
@@ -157,7 +155,7 @@ fun getAllSongs(context: Context): List<Song> {
     return songs
 }
 
-fun getTrackNumber(songUri: String): String? {
+fun getTrackNumber(songUri: String): Int {
     val projection = arrayOf(MediaStore.Audio.Media.TRACK)
     val selection = "${MediaStore.Audio.Media.DATA} = ?"
     val selectionArgs = arrayOf(songUri)
@@ -180,11 +178,11 @@ fun getTrackNumber(songUri: String): String? {
     cursor?.close()
 
     if (trackNumber != null && trackNumber.toString().length == 4) {
-        return trackNumber!!.substring(1).trimStart('0')
+        return trackNumber!!.substring(1).trimStart('0').toInt()
     } else if (trackNumber != null) {
-        return trackNumber!!.trimStart('0')
+        return trackNumber!!.trimStart('0').toInt()
     }
-    return null
+    return 0
 }
 
 fun getYear(songUri: String): String? {

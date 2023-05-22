@@ -64,9 +64,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
             convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
         val trackNumber = getTrackNumber(songList[position].path)
-        if (trackNumber != null) {
-            holder.songTrackNumber.text = trackNumber.toInt().toString()
-        }
+        holder.songTrackNumber.text = trackNumber.toInt().toString()
 
         holder.itemView.setOnClickListener {
             MainActivity.playlistViewModel.currentLocation = position

@@ -20,6 +20,14 @@ package org.akanework.symphonica.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import org.akanework.symphonica.logic.data.Song
 
+/**
+ * [PlaylistViewModel] is a ViewModel that stores
+ * playlist information.
+ *
+ * Arguments:
+ * [playList] is a list of [Song].
+ * [currentLocation] stores player's location.
+ */
 class PlaylistViewModel : ViewModel() {
     var playList = mutableListOf<Song>()
     var currentLocation: Int = 0

@@ -134,8 +134,7 @@ class MainActivity : AppCompatActivity() {
                 // about the "/ 1000 + 0.2f", check line 396.
                 fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
 
-                if (!isUserTracking || (isUserTracking && musicPlayer!!.duration == 0)
-                    && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
+                if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
                     fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
 
                     broadcastSliderSeek()

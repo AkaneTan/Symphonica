@@ -23,6 +23,10 @@ import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 
+/**
+ * This is a [GlideModule].
+ * This shouldn't be touched at any time.
+ */
 @GlideModule
 class SymphonicaGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {

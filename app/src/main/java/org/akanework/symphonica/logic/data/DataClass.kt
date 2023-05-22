@@ -20,6 +20,19 @@ package org.akanework.symphonica.logic.data
 import android.graphics.drawable.Drawable
 import android.net.Uri
 
+/**
+ * [Song] stores & labels Symphonica's library.
+ *
+ * Arguments are extracted from the file itself.
+ * You can see the extraction process in MediaStoreReader.kt.
+ *
+ * [id] equals to MediaStore ID.
+ * [album] is a single String.
+ * [duration] is its length in ms.
+ * [path] is its path.
+ * [imgUri] is its album Uri. Which can be used
+ * to extract its album information using Glide.
+ */
 data class Song(
     val id: Long,
     val title: String,
@@ -30,6 +43,9 @@ data class Song(
     val imgUri: Uri?
 )
 
+/**
+ *
+ */
 data class Album(
     val title: String,
     val artist: String,
