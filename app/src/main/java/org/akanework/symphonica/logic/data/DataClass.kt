@@ -44,7 +44,15 @@ data class Song(
 )
 
 /**
+ * [Album] stores album list information.
  *
+ * [title] is this album's title.
+ * And other variables are extracted from
+ * the FIRST song of the songList.
+ * TODO: Rewrite this
+ *
+ * [songList] contains all the songs from
+ * this single album.
  */
 data class Album(
     val title: String,
