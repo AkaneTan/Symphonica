@@ -39,6 +39,7 @@ import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
+import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
@@ -130,7 +131,9 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
         displayShuffle.setOnClickListener {
             replacePlaylist(sortedSongList.toMutableList(), 0)
-            fullSheetLoopButton.isChecked = true
+            if (!isListShuffleEnabled) {
+                fullSheetLoopButton.isChecked = true
+            }
             fullSheetShuffleButton.isChecked = true
         }
 

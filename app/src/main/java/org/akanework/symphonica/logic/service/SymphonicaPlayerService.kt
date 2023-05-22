@@ -36,6 +36,7 @@ import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
+import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -365,35 +366,61 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     private fun prevSongDecisionMaker() {
-        playlistViewModel.currentLocation =
-            if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
-                playlistViewModel.playList.size - 1
-            } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
-                stopPlaying()
-                0
-            } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
-                playlistViewModel.currentLocation - 1
-            } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
-                Random.nextInt(0, playlistViewModel.playList.size - 1)
-            } else {
-                0
-            }
+        if (!isListShuffleEnabled) {
+            playlistViewModel.currentLocation =
+                if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                    playlistViewModel.playList.size - 1
+                } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                    stopPlaying()
+                    0
+                } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
+                    playlistViewModel.currentLocation - 1
+                } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
+                    Random.nextInt(0, playlistViewModel.playList.size - 1)
+                } else {
+                    0
+                }
+        } else {
+            playlistViewModel.currentLocation =
+                if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked) {
+                    playlistViewModel.playList.size - 1
+                } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked) {
+                    stopPlaying()
+                    0
+                } else {
+                    playlistViewModel.currentLocation - 1
+                }
+        }
     }
 
     private fun nextSongDecisionMaker() {
-        playlistViewModel.currentLocation =
-            if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
-                0
-            } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
-                stopPlaying()
-                0
-            } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
-                playlistViewModel.currentLocation + 1
-            } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
-                Random.nextInt(0, playlistViewModel.playList.size - 1)
-            } else {
-                0
-            }
+        if (!isListShuffleEnabled) {
+            playlistViewModel.currentLocation =
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                    0
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                    stopPlaying()
+                    0
+                } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
+                    playlistViewModel.currentLocation + 1
+                } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
+                    Random.nextInt(0, playlistViewModel.playList.size - 1)
+                } else {
+                    0
+                }
+        } else {
+            playlistViewModel.currentLocation =
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
+                        fullSheetLoopButton.isChecked) {
+                    0
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
+                    !fullSheetLoopButton.isChecked) {
+                    stopPlaying()
+                    0
+                } else {
+                    playlistViewModel.currentLocation + 1
+                }
+        }
     }
 
 }

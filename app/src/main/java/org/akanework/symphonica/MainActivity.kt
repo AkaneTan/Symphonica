@@ -32,6 +32,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -190,6 +191,7 @@ class MainActivity : AppCompatActivity() {
         var isGlideCacheEnabled: Boolean = false
         var isForceLoadingEnabled: Boolean = false
         var isForceDarkModeEnabled: Boolean = false
+        var isListShuffleEnabled: Boolean = true
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null
@@ -286,6 +288,7 @@ class MainActivity : AppCompatActivity() {
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
+        isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
 
         // Go to dark mode if force dark mode is on.
         if (isForceDarkModeEnabled) {
@@ -398,18 +401,9 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior.isHideable = false
 
         val playlistBottomSheet = PlaylistBottomSheet()
-
-        // So when we open the shuffle button, loop button
-        // is enabled too. This is because shuffle button
-        // is not generating a new list from current playlist,
-        // instead it just make player service randomly plays
-        // inside of our current playlist.
-        // You might get the same song twice when you
-        // turn the shuffle button on.
-        // TODO: Make it an option in settings
+        
         fullSheetLoopButton.addOnCheckedChangeListener { _, isChecked ->
-            if (fullSheetShuffleButton.isChecked) {
-                fullSheetLoopButton.isChecked = true
+            if (fullSheetShuffleButton.isChecked && !isListShuffleEnabled) {
                 fullSheetLoopButton.isChecked = true
             } else {
                 fullSheetLoopButton.isChecked = isChecked
@@ -417,9 +411,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         fullSheetShuffleButton.addOnCheckedChangeListener { _, isChecked ->
-            fullSheetShuffleButton.isChecked = isChecked
-            fullSheetLoopButton.isChecked = fullSheetShuffleButton.isChecked
+            if (!isListShuffleEnabled) {
+                fullSheetLoopButton.isChecked = isChecked
+            } else {
+                val playlist = playlistViewModel.playList
+                val originalPlaylist = playlistViewModel.originalPlaylist
+                val currentSong = playlist[playlistViewModel.currentLocation]
+
+                if (playlist.isNotEmpty() && originalPlaylist.isEmpty()) {
+                    originalPlaylist.addAll(playlist)
+                    playlist.shuffle()
+                    playlistViewModel.currentLocation = playlist.indexOf(currentSong)
+                } else if (playlist.isNotEmpty()) {
+                    playlist.clear()
+                    playlist.addAll(originalPlaylist)
+                    playlistViewModel.currentLocation = playlist.indexOf(currentSong)
+                    originalPlaylist.clear()
+                }
+            }
         }
+
 
         bottomSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {

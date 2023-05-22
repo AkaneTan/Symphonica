@@ -83,4 +83,7 @@
     <string name="settings_force_dark_mode">Force dark mode</string>
     <string name="settings_force_dark_mode_content">This will make night everlasting</string>
     <string name="settings_appearance">Appearance</string>
+    <string name="settings_enable_list_shuffle">Enable list shuffle</string>
+    <string name="settings_enable_list_shuffle_content">Make shuffle generates a new song list</string>
+    <string name="settings_behavior">Behavior</string>
 </resources>

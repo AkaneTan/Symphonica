@@ -26,9 +26,11 @@ import org.akanework.symphonica.logic.data.Song
  *
  * Arguments:
  * [playList] is a list of [Song].
+ * [originalPlaylist] is [Song]'s original list (without shuffle)
  * [currentLocation] stores player's location.
  */
 class PlaylistViewModel : ViewModel() {
     var playList = mutableListOf<Song>()
+    var originalPlaylist = mutableListOf<Song>()
     var currentLocation: Int = 0
 }

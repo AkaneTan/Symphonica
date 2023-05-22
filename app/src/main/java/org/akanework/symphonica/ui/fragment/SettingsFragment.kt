@@ -32,6 +32,7 @@ import org.akanework.symphonica.BuildConfig
 import org.akanework.symphonica.MainActivity.Companion.isForceDarkModeEnabled
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
+import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
@@ -63,10 +64,12 @@ class SettingsFragment : Fragment() {
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
         val darkModeSwitch = rootView.findViewById<MaterialSwitch>(R.id.force_dark_mode_switch)
+        val enableListShuffleSwitch = rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 
         cacheSwitch.isChecked = isGlideCacheEnabled
         reorderSwitch.isChecked = isForceLoadingEnabled
         darkModeSwitch.isChecked = isForceDarkModeEnabled
+        enableListShuffleSwitch.isChecked = isListShuffleEnabled
 
         cacheSwitch.setOnCheckedChangeListener { _, isChecked ->
             val editor =
@@ -112,6 +115,21 @@ class SettingsFragment : Fragment() {
                 editor.putBoolean("isForceDarkModeEnabled", false)
                 editor.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                false
+            }
+        }
+
+        enableListShuffleSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isListShuffleEnabled = if (isChecked) {
+                editor.putBoolean("isListShuffleEnabled", true)
+                editor.apply()
+                true
+            } else {
+                editor.putBoolean("isListShuffleEnabled", false)
+                editor.apply()
                 false
             }
         }
