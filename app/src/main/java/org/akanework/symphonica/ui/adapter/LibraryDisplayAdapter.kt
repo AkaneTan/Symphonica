@@ -21,6 +21,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -85,6 +86,10 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
                 .show()
 
             val addToNextButton = rootView.findViewById<FrameLayout>(R.id.dialog_add_to_next)
+            val checkAlbumButton = rootView.findViewById<FrameLayout>(R.id.dialog_check_album)
+
+            checkAlbumButton!!.visibility = GONE
+
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
                 rootView.dismiss()

@@ -75,4 +75,6 @@
     <string name="dialog_long_press_title">选项</string>
     <string name="dialog_long_press_add_to_next">添加至下一曲</string>
     <string name="dialog_long_press_add_to_next_content">将这首歌添加至下一曲</string>
+    <string name="dialog_long_press_check_album">查看专辑</string>
+    <string name="dialog_long_press_check_album_content">查看这首歌的专辑信息</string>
 </resources>

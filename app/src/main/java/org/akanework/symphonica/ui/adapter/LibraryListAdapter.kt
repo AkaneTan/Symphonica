@@ -18,6 +18,7 @@
 package org.akanework.symphonica.ui.adapter
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,10 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.albumList
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
+import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -44,6 +48,7 @@ import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.logic.util.resumePlayer
 import org.akanework.symphonica.logic.util.thisSong
+import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 
 class LibraryListAdapter(private val songList: List<Song>) :
@@ -108,6 +113,36 @@ class LibraryListAdapter(private val songList: List<Song>) :
                 .show()
 
             val addToNextButton = rootView.findViewById<FrameLayout>(R.id.dialog_add_to_next)
+            val checkAlbumButton = rootView.findViewById<FrameLayout>(R.id.dialog_check_album)
+
+            checkAlbumButton!!.setOnClickListener {
+                val albumBundle = Bundle().apply {
+                    if (libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
+                        putInt("Position", libraryViewModel.librarySortedAlbumList.indexOf(
+                            libraryViewModel.librarySortedAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    } else {
+                        putInt("Position", libraryViewModel.libraryAlbumList.indexOf(
+                            libraryViewModel.libraryAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    }
+                }
+                Log.d("Position", albumBundle.getInt("Position").toString())
+                val albumFragment = LibraryAlbumDisplayFragment().apply {
+                    arguments = albumBundle
+                }
+
+                MainActivity.customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, albumFragment)
+                    .addToBackStack(null)
+                    .commit()
+                rootView.dismiss()
+            }
+
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
                 rootView.dismiss()

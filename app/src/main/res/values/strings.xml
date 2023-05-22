@@ -75,4 +75,6 @@
     <string name="dialog_long_press_title">Options</string>
     <string name="dialog_long_press_add_to_next">Add to next</string>
     <string name="dialog_long_press_add_to_next_content">Add this song to your playlist</string>
+    <string name="dialog_long_press_check_album">Check album</string>
+    <string name="dialog_long_press_check_album_content">Check this song\'s album information</string>
 </resources>
