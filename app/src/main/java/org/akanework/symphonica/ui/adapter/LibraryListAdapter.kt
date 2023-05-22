@@ -43,6 +43,7 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.addToNext
+import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
@@ -146,9 +147,8 @@ class LibraryListAdapter(private val songList: List<Song>) :
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
 
-                // Update MetaData.
-                val intentBroadcast = Intent("internal.play_update")
-                holder.itemView.context.sendBroadcast(intentBroadcast)
+                broadcastMetaDataUpdate()
+
                 rootView.dismiss()
             }
 

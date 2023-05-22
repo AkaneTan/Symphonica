@@ -67,6 +67,8 @@ import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
+import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
+import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -135,8 +137,9 @@ class MainActivity : AppCompatActivity() {
                 if (!isUserTracking || (isUserTracking && musicPlayer!!.duration == 0)
                     && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
                     fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
-                    val intentBroadcast = Intent("internal.play_seek")
-                    sendBroadcast(intentBroadcast)
+
+                    broadcastSliderSeek()
+
                     fullSheetTimeStamp.text =
                         convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
                 }
@@ -548,8 +551,9 @@ class MainActivity : AppCompatActivity() {
                 // used the duration directly) we might encounter
                 // some performance problem.
                 musicPlayer?.seekTo((slider.value * 1000).toInt())
-                val intentBroadcast = Intent("internal.play_seek")
-                sendBroadcast(intentBroadcast)
+
+                broadcastSliderSeek()
+
                 isUserTracking = false
             }
         }
@@ -632,9 +636,7 @@ class MainActivity : AppCompatActivity() {
             updateAlbumView(this.findViewById(R.id.global_bottom_sheet))
         }
 
-        // Tell the program to update the sheet when resuming.
-        val intentBroadcast = Intent("internal.play_update")
-        sendBroadcast(intentBroadcast)
+        broadcastMetaDataUpdate()
     }
 
     override fun onDestroy() {

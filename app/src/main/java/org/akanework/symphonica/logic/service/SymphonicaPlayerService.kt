@@ -40,6 +40,10 @@ import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.logic.util.broadcastPlayPaused
+import org.akanework.symphonica.logic.util.broadcastPlayStart
+import org.akanework.symphonica.logic.util.broadcastPlayStopped
+import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
@@ -161,8 +165,8 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private val mediaSessionCallback = object : MediaSession.Callback() {
         override fun onSeekTo(pos: Long) {
             musicPlayer?.seekTo(pos.toInt())
-            val intentBroadcast = Intent("internal.play_seek")
-            sendBroadcast(intentBroadcast)
+
+            broadcastSliderSeek()
         }
 
         override fun onSkipToNext() {
@@ -229,6 +233,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 if (musicPlayer != null && !musicPlayer!!.isPlaying) {
                     musicPlayer!!.start()
                     broadcastPlayStart()
+                    if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                        mediaSession.setCallback(mediaSessionCallback)
+                    }
                     killMiniPlayer()
                 }
             }
@@ -274,6 +281,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 setOnPreparedListener(this@SymphonicaPlayerService)
                 prepareAsync()
                 broadcastPlayStart()
+                if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                    mediaSession.setCallback(mediaSessionCallback)
+                }
                 setLoopListener()
             }
         }
@@ -298,6 +308,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     setOnPreparedListener(this@SymphonicaPlayerService)
                     prepareAsync()
                     broadcastPlayStart()
+                    if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                        mediaSession.setCallback(mediaSessionCallback)
+                    }
                     setLoopListener()
                     killMiniPlayer()
                 }
@@ -318,28 +331,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer!!.release()
         musicPlayer = null
         broadcastPlayStopped()
-    }
-
-    private fun broadcastPlayStopped() {
-        val intentBroadcast = Intent("internal.play_stop")
-        sendBroadcast(intentBroadcast)
-    }
-
-    private fun broadcastPlayPaused() {
-        val intentBroadcast = Intent("internal.play_pause")
-        sendBroadcast(intentBroadcast)
-    }
-
-    private fun broadcastPlayStart() {
-        val intent = Intent("org.akanework.symphonica.PLAY_START")
-        sendBroadcast(intent)
-
-        val intentBroadcast = Intent("internal.play_start")
-        sendBroadcast(intentBroadcast)
-
-        if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
-            mediaSession.setCallback(mediaSessionCallback)
-        }
     }
 
     private fun prevSongDecisionMaker() {
