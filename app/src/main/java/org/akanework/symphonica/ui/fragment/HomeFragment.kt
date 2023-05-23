@@ -51,10 +51,12 @@ class HomeFragment : Fragment() {
                         loadingPrompt.visibility = View.VISIBLE
                         isInitialized = false
                     }
+
                     1 -> {
                         loadingPrompt.visibility = View.GONE
                         isInitialized = true
                     }
+
                     else -> {
                         throw IllegalArgumentException()
                     }

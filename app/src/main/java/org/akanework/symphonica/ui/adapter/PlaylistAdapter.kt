@@ -21,8 +21,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
@@ -82,11 +80,31 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         }
 
         if (songList[position] == playlistViewModel.playList[playlistViewModel.currentLocation]) {
-            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnPrimaryContainer))
-            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnPrimaryContainer))
+            holder.songTitle.setTextColor(
+                MaterialColors.getColor(
+                    holder.itemView,
+                    com.google.android.material.R.attr.colorOnPrimaryContainer
+                )
+            )
+            holder.songMeta.setTextColor(
+                MaterialColors.getColor(
+                    holder.itemView,
+                    com.google.android.material.R.attr.colorOnPrimaryContainer
+                )
+            )
         } else {
-            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurface))
-            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant))
+            holder.songTitle.setTextColor(
+                MaterialColors.getColor(
+                    holder.itemView,
+                    com.google.android.material.R.attr.colorOnSurface
+                )
+            )
+            holder.songMeta.setTextColor(
+                MaterialColors.getColor(
+                    holder.itemView,
+                    com.google.android.material.R.attr.colorOnSurfaceVariant
+                )
+            )
         }
     }
 
