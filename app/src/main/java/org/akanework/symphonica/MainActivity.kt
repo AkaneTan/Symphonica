@@ -699,6 +699,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         broadcastMetaDataUpdate()
+
+        if (musicPlayer != null && !musicPlayer!!.isPlaying) {
+            fullSheetSlider.isEnabled = true
+            fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
+            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
+            fullSheetTimeStamp.text =
+                convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
+        }
     }
 
     override fun onDestroy() {
