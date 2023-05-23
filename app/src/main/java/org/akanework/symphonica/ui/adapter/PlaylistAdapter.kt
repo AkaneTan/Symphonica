@@ -31,6 +31,7 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.jumpTo
 import org.akanework.symphonica.logic.util.thisSong
+import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 
 
 class PlaylistAdapter(private val songList: MutableList<Song>) :
@@ -58,8 +59,10 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
 
         holder.itemView.setOnClickListener {
+            val previousLocation = playlistViewModel.currentLocation
             playlistViewModel.currentLocation = holder.adapterPosition
             jumpTo(holder.adapterPosition)
+            updatePlaylistSheetLocation(previousLocation)
         }
         holder.dismissButton.setOnClickListener {
             if (playlistViewModel.playList.size != 1) {
@@ -79,8 +82,8 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         }
 
         if (songList[position] == playlistViewModel.playList[playlistViewModel.currentLocation]) {
-            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorSecondary))
-            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorPrimary))
+            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnPrimaryContainer))
+            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnPrimaryContainer))
         } else {
             holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurface))
             holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant))

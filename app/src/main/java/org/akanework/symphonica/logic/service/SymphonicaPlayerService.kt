@@ -51,6 +51,7 @@ import org.akanework.symphonica.logic.util.changePlayer
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.thisSong
+import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 import kotlin.random.Random
 
 /**
@@ -396,6 +397,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     private fun nextSongDecisionMaker() {
+        val previousLocation = playlistViewModel.currentLocation
         if (!isListShuffleEnabled) {
             playlistViewModel.currentLocation =
                 if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
@@ -425,6 +427,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     playlistViewModel.currentLocation + 1
                 }
         }
+        updatePlaylistSheetLocation(previousLocation)
     }
 
 }

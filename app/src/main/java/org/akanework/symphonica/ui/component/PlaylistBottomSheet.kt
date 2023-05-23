@@ -33,6 +33,21 @@ import org.akanework.symphonica.ui.adapter.PlaylistAdapter
 
 class PlaylistBottomSheet : BottomSheetDialogFragment() {
 
+    companion object {
+        const val TAG = "PlaylistBottomSheet"
+        lateinit var adapter: PlaylistAdapter
+
+        /**
+         * [updatePlaylistSheetLocation] updates playlist's
+         * now playing location indicator.
+         */
+        fun updatePlaylistSheetLocation(prevLocation: Int) {
+            if (::adapter.isInitialized) {
+                adapter.notifyItemChanged(prevLocation)
+                adapter.notifyItemChanged(playlistViewModel.currentLocation)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +58,7 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
         val playlistView: RecyclerView = rootView.findViewById(R.id.playlist_recyclerview)
 
         val layoutManager = LinearLayoutManager(SymphonicaApplication.context)
-        val adapter = PlaylistAdapter(playlistViewModel.playList)
+        adapter = PlaylistAdapter(playlistViewModel.playList)
 
         playlistView.layoutManager = layoutManager
         playlistView.adapter = adapter
@@ -52,10 +67,6 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
             layoutManager.scrollToPositionWithOffset(playlistViewModel.currentLocation, 20)
         }
         return rootView
-    }
-
-    companion object {
-        const val TAG = "PlaylistBottomSheet"
     }
 
 }
