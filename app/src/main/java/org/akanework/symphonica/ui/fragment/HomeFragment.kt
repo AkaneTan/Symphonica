@@ -30,9 +30,7 @@ import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.R
 
 /**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * [HomeFragment] is homepage fragment.
  */
 class HomeFragment : Fragment() {
 
@@ -40,18 +38,26 @@ class HomeFragment : Fragment() {
 
         private lateinit var loadingPrompt: MaterialCardView
 
+        private var isInitialized: Boolean = true
+
         /**
          * This is used for outer class to switch [loadingPrompt].
          * e.g. When loading from disk completed.
          */
         fun switchPrompt(operation: Int) {
             if (::loadingPrompt.isInitialized) {
-                if (operation == 0) {
-                    loadingPrompt.visibility = View.VISIBLE
-                } else if (operation == 1) {
-                    loadingPrompt.visibility = View.GONE
-                } else {
-                    throw IllegalArgumentException()
+                when (operation) {
+                    0 -> {
+                        loadingPrompt.visibility = View.VISIBLE
+                        isInitialized = false
+                    }
+                    1 -> {
+                        loadingPrompt.visibility = View.GONE
+                        isInitialized = true
+                    }
+                    else -> {
+                        throw IllegalArgumentException()
+                    }
                 }
             }
         }
@@ -72,7 +78,10 @@ class HomeFragment : Fragment() {
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
 
         topAppBar.setNavigationOnClickListener {
-            MainActivity.switchDrawer()
+            // Allow open drawer if only initialization have been completed.
+            if (isInitialized) {
+                MainActivity.switchDrawer()
+            }
         }
 
         var isShow = true
