@@ -17,9 +17,14 @@
 
 package org.akanework.symphonica.ui.fragment
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.AppBarLayout
@@ -48,12 +53,22 @@ class HomeFragment : Fragment() {
             if (::loadingPrompt.isInitialized) {
                 when (operation) {
                     0 -> {
-                        loadingPrompt.visibility = View.VISIBLE
+                        loadingPrompt.visibility = VISIBLE
+                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 0f, 1f)
+                            .setDuration(200)
+                            .start()
                         isInitialized = false
                     }
 
                     1 -> {
-                        loadingPrompt.visibility = View.GONE
+                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 1f, 0f)
+                            .setDuration(200)
+                            .start()
+                        val handler = Handler(Looper.getMainLooper())
+                        val runnable = Runnable {
+                            loadingPrompt.visibility = GONE
+                        }
+                        handler.postDelayed(runnable, 200)
                         isInitialized = true
                     }
 
