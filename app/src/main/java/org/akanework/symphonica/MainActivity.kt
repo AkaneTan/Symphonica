@@ -41,6 +41,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -194,6 +195,9 @@ class MainActivity : AppCompatActivity() {
 
         // This is used to check if the miniPlayer is running.
         var isMiniPlayerRunning = false
+
+        // This control's loop button's status.
+        var loopButtonStatus = 0
 
         /**
          * This is the function used to switch the status of
@@ -407,18 +411,41 @@ class MainActivity : AppCompatActivity() {
 
         val playlistBottomSheet = PlaylistBottomSheet()
 
-        fullSheetLoopButton.addOnCheckedChangeListener { _, isChecked ->
-            if (fullSheetShuffleButton.isChecked && !isListShuffleEnabled) {
-                fullSheetLoopButton.isChecked = true
-            } else {
-                fullSheetLoopButton.isChecked = isChecked
+        fullSheetLoopButton.addOnCheckedChangeListener { _, _ ->
+
+            /**
+             * Status 0: Don't loop
+             * Status 1: Loop
+             * Status 2: Repeat single
+             */
+            when (loopButtonStatus) {
+                0 -> {
+                    loopButtonStatus = 1
+                    fullSheetLoopButton.isChecked = true
+                    if (!isListShuffleEnabled) {
+                        fullSheetLoopButton.isChecked = true
+                    }
+                }
+                1 -> {
+                    loopButtonStatus = 2
+                    fullSheetLoopButton.isChecked = true
+                    fullSheetLoopButton.icon = AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
+                }
+                2 -> {
+                    loopButtonStatus = 0
+                    fullSheetLoopButton.isChecked = false
+                    fullSheetLoopButton.icon = AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
+                }
+                else -> {
+                    throw IllegalStateException()
+                }
             }
         }
 
         fullSheetShuffleButton.addOnCheckedChangeListener { _, isChecked ->
-            if (!isListShuffleEnabled) {
+            if (!isListShuffleEnabled && loopButtonStatus != 2) {
                 fullSheetLoopButton.isChecked = isChecked
-            } else {
+            } else if (loopButtonStatus != 2) {
                 val playlist = playlistViewModel.playList
                 val originalPlaylist = playlistViewModel.originalPlaylist
                 val currentSong = playlist[playlistViewModel.currentLocation]
@@ -439,6 +466,8 @@ class MainActivity : AppCompatActivity() {
                     broadcastMetaDataUpdate()
 
                 }
+            } else {
+                fullSheetShuffleButton.isChecked = false
             }
         }
 

@@ -34,9 +34,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
+import org.akanework.symphonica.MainActivity.Companion.loopButtonStatus
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -369,11 +369,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     private fun prevSongDecisionMaker() {
-        if (!isListShuffleEnabled) {
+        val previousLocation = playlistViewModel.currentLocation
+        if (!isListShuffleEnabled && loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
                     playlistViewModel.playList.size - 1
-                } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
                     stopPlaying()
                     0
                 } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
@@ -383,26 +384,30 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 } else {
                     0
                 }
-        } else {
+        } else if (loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == 0 && fullSheetLoopButton.isChecked) {
+                if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 0) {
                     playlistViewModel.playList.size - 1
-                } else if (playlistViewModel.currentLocation == 0 && !fullSheetLoopButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 1) {
                     stopPlaying()
                     0
                 } else {
                     playlistViewModel.currentLocation - 1
                 }
         }
+
+        // Who the fuck opens the playlist and use media control to select the
+        // previous song? Not me.
+        updatePlaylistSheetLocation(previousLocation)
     }
 
     private fun nextSongDecisionMaker() {
         val previousLocation = playlistViewModel.currentLocation
-        if (!isListShuffleEnabled) {
+        if (!isListShuffleEnabled && loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
                     0
-                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && !fullSheetLoopButton.isChecked && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
                     stopPlaying()
                     0
                 } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
@@ -412,14 +417,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 } else {
                     0
                 }
-        } else {
+        } else if (loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
                 if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                    fullSheetLoopButton.isChecked
+                    loopButtonStatus == 1
                 ) {
                     0
                 } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                    !fullSheetLoopButton.isChecked
+                    loopButtonStatus == 0
                 ) {
                     stopPlaying()
                     0
