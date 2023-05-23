@@ -36,6 +36,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/akane"
+        android:layout_width="300dp"
+        android:layout_height="468dp"
+        android:visibility="gone"
+        android:layout_gravity="bottom|start"
+        android:src="@drawable/akane"
+        android:tintMode="src_atop"
+        app:tint="?attr/colorPrimary"
+        android:importantForAccessibility="no" />
+
     <include
         android:id="@+id/global_bottom_sheet"
         layout="@layout/global_bottom_sheet" />

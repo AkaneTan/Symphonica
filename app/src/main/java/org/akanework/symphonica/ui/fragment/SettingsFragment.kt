@@ -21,7 +21,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -29,6 +33,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
+import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
+import org.akanework.symphonica.MainActivity.Companion.isEasterEggDiscovered
 import org.akanework.symphonica.MainActivity.Companion.isForceDarkModeEnabled
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
@@ -39,6 +45,8 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 
 class SettingsFragment : Fragment() {
+
+    private var logoClickedTimes = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +72,9 @@ class SettingsFragment : Fragment() {
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
         val darkModeSwitch = rootView.findViewById<MaterialSwitch>(R.id.force_dark_mode_switch)
+        val symphonicaIcon = rootView.findViewById<ImageView>(R.id.symphonica_icon)
+        val akanePreference = rootView.findViewById<FrameLayout>(R.id.akane_preference)
+        val akaneDisplaySwitch = rootView.findViewById<MaterialSwitch>(R.id.akane_display_settings)
         val enableListShuffleSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 
@@ -71,6 +82,11 @@ class SettingsFragment : Fragment() {
         reorderSwitch.isChecked = isForceLoadingEnabled
         darkModeSwitch.isChecked = isForceDarkModeEnabled
         enableListShuffleSwitch.isChecked = isListShuffleEnabled
+        akaneDisplaySwitch.isChecked = isAkaneVisible
+
+        if (isEasterEggDiscovered) {
+            akanePreference.visibility = VISIBLE
+        }
 
         cacheSwitch.setOnCheckedChangeListener { _, isChecked ->
             val editor =
@@ -134,8 +150,40 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        akaneDisplaySwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isAkaneVisible = if (isChecked) {
+                editor.putBoolean("isAkaneVisible", true)
+                editor.apply()
+                requireActivity().findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+                true
+            } else {
+                editor.putBoolean("isAkaneVisible", false)
+                editor.apply()
+                requireActivity().findViewById<ImageView>(R.id.akane).visibility = GONE
+                false
+            }
+        }
+
         topAppBar.setNavigationOnClickListener {
             switchDrawer()
+        }
+
+        symphonicaIcon.setOnClickListener {
+            logoClickedTimes ++
+            if (logoClickedTimes == 10) {
+                requireActivity().findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+                isEasterEggDiscovered = true
+                val editor = SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+                editor.putBoolean("isEasterEggDiscovered", true)
+                editor.apply()
+                isAkaneVisible = true
+                akaneDisplaySwitch.isChecked = true
+                akanePreference.visibility = VISIBLE
+            }
         }
 
         versionTag.text = getString(

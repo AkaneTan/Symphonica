@@ -88,4 +88,6 @@
     <string name="settings_behavior">行为</string>
     <string name="navigation_home">主页</string>
     <string name="home_greetings">你好!</string>
+    <string name="settings_enable_akane_content">你启用了什么啊 (恼)</string>
+    <string name="settings_enable_akane">启用新条茜</string>
 </resources>

@@ -88,4 +88,6 @@
     <string name="settings_behavior">Behavior</string>
     <string name="navigation_home">Home</string>
     <string name="home_greetings">Hello!</string>
+    <string name="settings_enable_akane_content">You enabled what?</string>
+    <string name="settings_enable_akane">Enable akane</string>
 </resources>

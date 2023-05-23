@@ -186,6 +186,8 @@ class MainActivity : AppCompatActivity() {
         var isForceLoadingEnabled: Boolean = false
         var isForceDarkModeEnabled: Boolean = false
         var isListShuffleEnabled: Boolean = true
+        var isEasterEggDiscovered: Boolean = false
+        var isAkaneVisible: Boolean = false
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null
@@ -296,6 +298,8 @@ class MainActivity : AppCompatActivity() {
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
         isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
+        isEasterEggDiscovered = prefs.getBoolean("isEasterEggDiscovered", false)
+        isAkaneVisible = prefs.getBoolean("isAkaneVisible", false)
 
         // Go to dark mode if force dark mode is on.
         if (isForceDarkModeEnabled) {
@@ -374,6 +378,10 @@ class MainActivity : AppCompatActivity() {
 
         // Inflate the view.
         setContentView(R.layout.activity_main)
+
+        if (isAkaneVisible) {
+            findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+        }
 
         // Find the views.
         bottomPlayerPreview = findViewById(R.id.bottom_player)
