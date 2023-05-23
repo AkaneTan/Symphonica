@@ -464,8 +464,9 @@ class MainActivity : AppCompatActivity() {
                 if (playlist.isNotEmpty() && originalPlaylist.isEmpty()) {
                     originalPlaylist.addAll(playlist)
                     playlist.shuffle()
-                    playlistViewModel.currentLocation = playlist.indexOf(currentSong)
-
+                    playlist.remove(currentSong)
+                    playlist.add(0, currentSong)
+                    playlistViewModel.currentLocation = 0
                     broadcastMetaDataUpdate()
 
                 } else if (playlist.isNotEmpty()) {
