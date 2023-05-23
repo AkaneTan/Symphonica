@@ -430,6 +430,9 @@ class MainActivity : AppCompatActivity() {
                     loopButtonStatus = 2
                     fullSheetLoopButton.isChecked = true
                     fullSheetLoopButton.icon = AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
+                    if (fullSheetShuffleButton.isChecked) {
+                        fullSheetShuffleButton.isChecked = false
+                    }
                 }
                 2 -> {
                     loopButtonStatus = 0
