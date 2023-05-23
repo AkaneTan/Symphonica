@@ -18,6 +18,7 @@
 package org.akanework.symphonica.ui.component
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,18 +40,22 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val rootView = inflater.inflate(R.layout.playlist_bottom_sheet, container, false)
-        playlistView = rootView.findViewById(R.id.playlist_recyclerview)
-        playlistView.layoutManager = LinearLayoutManager(SymphonicaApplication.context)
-        playlistView.adapter = PlaylistAdapter(playlistViewModel.playList)
-        scrollToCurrent()
+        val playlistView: RecyclerView = rootView.findViewById(R.id.playlist_recyclerview)
+
+        val layoutManager = LinearLayoutManager(SymphonicaApplication.context)
+        val adapter = PlaylistAdapter(playlistViewModel.playList)
+
+        playlistView.layoutManager = layoutManager
+        playlistView.adapter = adapter
+
+        playlistView.post {
+            layoutManager.scrollToPositionWithOffset(playlistViewModel.currentLocation, 20)
+        }
         return rootView
     }
 
     companion object {
         const val TAG = "PlaylistBottomSheet"
-        lateinit var playlistView: RecyclerView
-        fun scrollToCurrent() {
-            playlistView.layoutManager!!.scrollToPosition(playlistViewModel.currentLocation)
-        }
     }
+
 }

@@ -21,8 +21,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
@@ -73,6 +76,14 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                     }
                 }
             }
+        }
+
+        if (songList[position] == playlistViewModel.playList[playlistViewModel.currentLocation]) {
+            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorSecondary))
+            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorPrimary))
+        } else {
+            holder.songTitle.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurface))
+            holder.songMeta.setTextColor(MaterialColors.getColor(holder.itemView, com.google.android.material.R.attr.colorOnSurfaceVariant))
         }
     }
 
