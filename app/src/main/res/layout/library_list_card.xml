@@ -45,7 +45,7 @@
             android:clipToOutline="true"
             android:contentDescription="@string/desc_album_cover"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_album_default_cover" />
+            android:src="@drawable/ic_song_default_cover" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -260,6 +260,7 @@
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    android:saveEnabled="false"
                     app:icon="@drawable/ic_repeat"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
@@ -322,6 +323,7 @@
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    android:saveEnabled="false"
                     app:icon="@drawable/ic_shuffle"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
@@ -391,10 +393,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
                         android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="-1"
                         android:singleLine="true"
                         android:text="@string/sheet_no_playing"
                         android:textColor="?attr/colorOnSurface"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/bottom_sheet_artist_album"

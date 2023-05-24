@@ -162,7 +162,10 @@ class LibraryAlbumDisplayFragment : Fragment() {
                         rootDialogView.findViewById(R.id.dialog_album_year)!!
 
                     dialogName.setText(libraryViewModel.libraryAlbumList[position!!].title)
-                    if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(R.string.library_album_view_unknown_artist)) {
+                    if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(
+                            R.string.library_album_view_unknown_artist
+                        )
+                    ) {
                         dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].songList.first().artist)
                     } else {
                         dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].artist)

@@ -63,7 +63,6 @@ class LibraryListFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_library_list, container, false)
 
-
         libraryListView = rootView.findViewById(R.id.library_listview)
 
         // Initialize recyclerView.

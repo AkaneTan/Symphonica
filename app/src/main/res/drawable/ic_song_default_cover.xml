@@ -15,13 +15,18 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@android:color/system_neutral1_100">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape
             android:shape="rectangle"
             android:tint="?attr/colorSurfaceVariant">
-            <corners android:radius="10dp" />
+            <corners android:radius="0dp" />
         </shape>
     </item>
-</ripple>
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_note"
+        android:end="16dp"
+        android:start="16dp"
+        android:top="16dp" />
+</layer-list>

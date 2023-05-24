@@ -94,7 +94,7 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     }
 
     val sortedSongList = MutableList(songList.size) { songList[it] }
-    val output = MutableList(songList.size) { Song(0, "", "", "", "",0, "", null) }
+    val output = MutableList(songList.size) { Song(0, "", "", "", "", 0, "", null) }
 
     for (i in songList.size - 1 downTo 0) {
         val trackNumber = getTrackNumber(sortedSongList[i].path)
@@ -151,7 +151,8 @@ fun getAllSongs(context: Context): List<Song> {
             val title = it.getString(titleColumn)
             val artist = it.getString(artistColumn)
             val album = it.getString(albumColumn)
-            val albumArtist = it.getString(albumArtistColumn) ?: context.getString(R.string.library_album_view_unknown_artist)
+            val albumArtist = it.getString(albumArtistColumn)
+                ?: context.getString(R.string.library_album_view_unknown_artist)
             val duration = it.getLong(durationColumn)
             val path = it.getString(pathColumn)
             val albumId = it.getLong(albumIdColumn)
@@ -246,6 +247,6 @@ fun fillSongCover(imgUri: Uri, songCover: ImageView) {
     Glide.with(context)
         .load(imgUri)
         .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
-        .placeholder(R.drawable.ic_album_default_cover)
+        .placeholder(R.drawable.ic_song_default_cover)
         .into(songCover)
 }

@@ -34,9 +34,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
-import org.akanework.symphonica.MainActivity.Companion.loopButtonStatus
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -131,7 +131,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 Glide.with(context)
                     .asBitmap()
                     .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-                    .placeholder(R.drawable.ic_album_default_cover)
+                    .placeholder(R.drawable.ic_song_default_cover)
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(
                             resource: Bitmap,
@@ -370,25 +370,25 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun prevSongDecisionMaker() {
         val previousLocation = playlistViewModel.currentLocation
-        if (!isListShuffleEnabled && loopButtonStatus != 2) {
+        if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
                     playlistViewModel.playList.size - 1
-                } else if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
                     stopPlaying()
                     0
                 } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
                     playlistViewModel.currentLocation - 1
                 } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
-                    Random.nextInt(0, playlistViewModel.playList.size - 1)
+                    Random.nextInt(0, playlistViewModel.playList.size)
                 } else {
                     0
                 }
-        } else if (loopButtonStatus != 2) {
+        } else if (booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 0) {
+                if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0) {
                     playlistViewModel.playList.size - 1
-                } else if (playlistViewModel.currentLocation == 0 && loopButtonStatus == 1) {
+                } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1) {
                     stopPlaying()
                     0
                 } else {
@@ -403,28 +403,28 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun nextSongDecisionMaker() {
         val previousLocation = playlistViewModel.currentLocation
-        if (!isListShuffleEnabled && loopButtonStatus != 2) {
+        if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
                     0
-                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
                     stopPlaying()
                     0
                 } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
                     playlistViewModel.currentLocation + 1
                 } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
-                    Random.nextInt(0, playlistViewModel.playList.size - 1)
+                    Random.nextInt(0, playlistViewModel.playList.size)
                 } else {
                     0
                 }
-        } else if (loopButtonStatus != 2) {
+        } else if (booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
                 if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                    loopButtonStatus == 1
+                    booleanViewModel.loopButtonStatus == 1
                 ) {
                     0
                 } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                    loopButtonStatus == 0
+                    booleanViewModel.loopButtonStatus == 0
                 ) {
                     stopPlaying()
                     0

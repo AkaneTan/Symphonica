@@ -373,6 +373,7 @@
                     android:layout_gravity="center_vertical|end"
                     android:checked="true" />
             </FrameLayout>
+
             <FrameLayout
                 android:id="@+id/akane_preference"
                 android:layout_width="match_parent"

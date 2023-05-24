@@ -172,12 +172,13 @@ class SettingsFragment : Fragment() {
         }
 
         symphonicaIcon.setOnClickListener {
-            logoClickedTimes ++
+            logoClickedTimes++
             if (logoClickedTimes == 10) {
                 requireActivity().findViewById<ImageView>(R.id.akane).visibility = VISIBLE
                 isEasterEggDiscovered = true
-                val editor = SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
-                    .edit()
+                val editor =
+                    SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                        .edit()
                 editor.putBoolean("isEasterEggDiscovered", true)
                 editor.apply()
                 isAkaneVisible = true

@@ -15,7 +15,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,11 +26,11 @@
         android:id="@+id/library_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="94dp"
+        android:layout_marginBottom="92dp"
         app:fastScrollEnabled="true"
         app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
         app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
         app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
         app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -22,6 +22,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +45,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
         val songDuration: TextView = view.findViewById(R.id.song_duration)
         val songTrackNumber: TextView = view.findViewById(R.id.track_number)
         val songUri: TextView = view.findViewById(R.id.song_uri)
+        val emptyIcon: ImageView = view.findViewById(R.id.empty_note)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,11 +64,18 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
             convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
         val trackNumber = getTrackNumber(songList[position].path)
-        holder.songTrackNumber.text = trackNumber.toInt().toString()
+        if (trackNumber != 0) {
+            holder.songTrackNumber.text = trackNumber.toString()
+            holder.emptyIcon.visibility = GONE
+        }
 
         holder.itemView.setOnClickListener {
             MainActivity.playlistViewModel.currentLocation = position
             MainActivity.playlistViewModel.playList = songList.toMutableList()
+            if (MainActivity.booleanViewModel.shuffleState) {
+                MainActivity.booleanViewModel.shuffleState = false
+                MainActivity.fullSheetShuffleButton.isChecked = false
+            }
             replacePlaylist(songList.toMutableList(), position)
         }
 

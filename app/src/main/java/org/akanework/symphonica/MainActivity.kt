@@ -198,9 +198,6 @@ class MainActivity : AppCompatActivity() {
         // This is used to check if the miniPlayer is running.
         var isMiniPlayerRunning = false
 
-        // This control's loop button's status.
-        var loopButtonStatus = 0
-
         /**
          * This is the function used to switch the status of
          * [navigationView].
@@ -277,12 +274,12 @@ class MainActivity : AppCompatActivity() {
     private fun updateAlbumView(view: View) {
         val sheetAlbumCover: ImageView = view.findViewById(R.id.sheet_album_cover)
         val fullSheetCover: ImageView = view.findViewById(R.id.sheet_cover)
-        sheetAlbumCover.setImageResource(R.drawable.ic_album_default_cover)
+        sheetAlbumCover.setImageResource(R.drawable.ic_song_default_cover)
         Glide.with(context)
             .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
             .diskCacheStrategy(diskCacheStrategyCustom)
             .into(sheetAlbumCover)
-        fullSheetCover.setImageResource(R.drawable.ic_album_default_cover)
+        fullSheetCover.setImageResource(R.drawable.ic_song_default_cover)
         Glide.with(context)
             .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
             .diskCacheStrategy(diskCacheStrategyCustom)
@@ -411,6 +408,8 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior =
             BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
 
+        bottomSheetSongName.requestFocus()
+
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
         animator = ObjectAnimator.ofFloat(fragmentContainerView, "translationX", 0f, 600f)
 
@@ -419,6 +418,29 @@ class MainActivity : AppCompatActivity() {
 
         val playlistBottomSheet = PlaylistBottomSheet()
 
+        when (booleanViewModel.loopButtonStatus) {
+            0 -> {
+                fullSheetLoopButton.isChecked = false
+                fullSheetLoopButton.icon =
+                    AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
+            }
+
+            1 -> {
+                fullSheetLoopButton.isChecked = true
+                fullSheetLoopButton.icon =
+                    AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
+            }
+
+            2 -> {
+                fullSheetLoopButton.isChecked = true
+                fullSheetLoopButton.icon =
+                    AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
+            }
+
+            else -> {
+                throw IllegalStateException()
+            }
+        }
         fullSheetLoopButton.addOnCheckedChangeListener { _, _ ->
 
             /**
@@ -426,37 +448,47 @@ class MainActivity : AppCompatActivity() {
              * Status 1: Loop
              * Status 2: Repeat single
              */
-            when (loopButtonStatus) {
+            when (booleanViewModel.loopButtonStatus) {
                 0 -> {
-                    loopButtonStatus = 1
+                    booleanViewModel.loopButtonStatus = 1
                     fullSheetLoopButton.isChecked = true
                     if (!isListShuffleEnabled) {
                         fullSheetLoopButton.isChecked = true
                     }
                 }
+
                 1 -> {
-                    loopButtonStatus = 2
+                    booleanViewModel.loopButtonStatus = 2
                     fullSheetLoopButton.isChecked = true
-                    fullSheetLoopButton.icon = AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
+                    fullSheetLoopButton.icon =
+                        AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
                     if (fullSheetShuffleButton.isChecked) {
                         fullSheetShuffleButton.isChecked = false
                     }
                 }
+
                 2 -> {
-                    loopButtonStatus = 0
+                    booleanViewModel.loopButtonStatus = 0
                     fullSheetLoopButton.isChecked = false
-                    fullSheetLoopButton.icon = AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
+                    fullSheetLoopButton.icon =
+                        AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
                 }
+
                 else -> {
                     throw IllegalStateException()
                 }
             }
         }
 
+        fullSheetShuffleButton.isChecked = booleanViewModel.shuffleState
+
         fullSheetShuffleButton.addOnCheckedChangeListener { _, isChecked ->
-            if (!isListShuffleEnabled && loopButtonStatus != 2) {
+            if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2 &&
+                playlistViewModel.playList.isNotEmpty()
+            ) {
                 fullSheetLoopButton.isChecked = isChecked
-            } else if (loopButtonStatus != 2) {
+                booleanViewModel.shuffleState = isChecked
+            } else if (booleanViewModel.loopButtonStatus != 2 && playlistViewModel.playList.isNotEmpty()) {
                 val playlist = playlistViewModel.playList
                 val originalPlaylist = playlistViewModel.originalPlaylist
                 val currentSong = playlist[playlistViewModel.currentLocation]
@@ -476,10 +508,11 @@ class MainActivity : AppCompatActivity() {
                     originalPlaylist.clear()
 
                     broadcastMetaDataUpdate()
-
                 }
+                booleanViewModel.shuffleState = isChecked
             } else {
                 fullSheetShuffleButton.isChecked = false
+                booleanViewModel.shuffleState = false
             }
         }
 
@@ -590,6 +623,7 @@ class MainActivity : AppCompatActivity() {
                     bottomPlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = true
                 }
+                bottomSheetSongName.requestFocus()
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {

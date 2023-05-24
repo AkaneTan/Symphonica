@@ -25,8 +25,8 @@
     </item>
     <item
         android:bottom="16dp"
-        android:drawable="@drawable/ic_note"
+        android:drawable="@drawable/ic_disc"
         android:end="16dp"
         android:start="16dp"
-        android:top="16dp"></item>
+        android:top="16dp" />
 </layer-list>

@@ -29,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
+import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -79,7 +81,7 @@ class LibraryListAdapter(private val songList: List<Song>) :
             Glide.with(holder.songCover.context)
                 .load(songList[position].imgUri)
                 .diskCacheStrategy(diskCacheStrategyCustom)
-                .placeholder(R.drawable.ic_album_default_cover)
+                .placeholder(R.drawable.ic_song_default_cover)
                 .into(holder.songCover)
         } catch (_: Exception) {
             // Placeholder
@@ -88,6 +90,10 @@ class LibraryListAdapter(private val songList: List<Song>) :
         holder.itemView.setOnClickListener {
             playlistViewModel.currentLocation = position
             playlistViewModel.playList = songList.toMutableList()
+            if (booleanViewModel.shuffleState) {
+                booleanViewModel.shuffleState = false
+                fullSheetShuffleButton.isChecked = false
+            }
             replacePlaylist(playlistViewModel.playList, position)
         }
 
