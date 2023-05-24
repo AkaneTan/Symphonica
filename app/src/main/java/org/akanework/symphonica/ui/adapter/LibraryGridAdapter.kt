@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.R
+import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
@@ -55,7 +56,11 @@ class LibraryGridAdapter(private val albumList: List<Album>) :
         val song = albumList[position]
 
         holder.songTitle.text = song.title
-        holder.songMeta.text = song.artist
+        if (song.artist == SymphonicaApplication.context.getString(R.string.library_album_view_unknown_artist)) {
+            holder.songMeta.text = song.songList.first().artist
+        } else {
+            holder.songMeta.text = song.artist
+        }
         holder.songUri.text = position.toString()
 
         try {

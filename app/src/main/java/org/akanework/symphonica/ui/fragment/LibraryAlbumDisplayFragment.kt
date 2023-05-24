@@ -98,6 +98,12 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
         albumName.text = libraryViewModel.libraryAlbumList[position!!].title
         albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
+        if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(R.string.library_album_view_unknown_artist)) {
+            albumArtist.text = libraryViewModel.libraryAlbumList[position!!].songList.first().artist
+        } else {
+            albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
+        }
+
         val year = getYear(libraryViewModel.libraryAlbumList[position!!].songList.first().path)
         if (year != null) {
             albumYear.text = year
@@ -156,7 +162,11 @@ class LibraryAlbumDisplayFragment : Fragment() {
                         rootDialogView.findViewById(R.id.dialog_album_year)!!
 
                     dialogName.setText(libraryViewModel.libraryAlbumList[position!!].title)
-                    dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].artist)
+                    if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(R.string.library_album_view_unknown_artist)) {
+                        dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].songList.first().artist)
+                    } else {
+                        dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].artist)
+                    }
 
                     var duration: Long = 0
                     for (i in libraryViewModel.libraryAlbumList[position!!].songList) {
