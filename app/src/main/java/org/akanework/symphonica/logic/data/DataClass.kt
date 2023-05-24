@@ -38,6 +38,7 @@ data class Song(
     val title: String,
     val artist: String,
     val album: String,
+    val albumArtist: String,
     val duration: Long,
     val path: String,
     val imgUri: Uri?

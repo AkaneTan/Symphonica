@@ -37,7 +37,7 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
 
     for (song in externalSongList) {
-        val albumKey = "${song.album}_${song.artist}"
+        val albumKey = "${song.album}_${song.albumArtist}"
         val albumSongs = albumsMap.getOrPut(albumKey) { mutableListOf() }
         albumSongs.add(song)
     }
@@ -45,9 +45,9 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albums = mutableListOf<Album>()
 
     for ((albumKey, songList) in albumsMap) {
-        val (albumTitle, artist) = albumKey.split("_")
+        val (albumTitle, albumArtist) = albumKey.split("_")
         val cover = null
-        val album = Album(albumTitle, artist, cover, songList)
+        val album = Album(albumTitle, albumArtist, cover, songList)
         albums.add(album)
     }
 
@@ -94,7 +94,7 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     }
 
     val sortedSongList = MutableList(songList.size) { songList[it] }
-    val output = MutableList(songList.size) { Song(0, "", "", "", 0, "", null) }
+    val output = MutableList(songList.size) { Song(0, "", "", "", "",0, "", null) }
 
     for (i in songList.size - 1 downTo 0) {
         val trackNumber = getTrackNumber(sortedSongList[i].path)
@@ -119,6 +119,7 @@ fun getAllSongs(context: Context): List<Song> {
         MediaStore.Audio.Media.TITLE,
         MediaStore.Audio.Media.ARTIST,
         MediaStore.Audio.Media.ALBUM,
+        MediaStore.Audio.Media.ALBUM_ARTIST,
         MediaStore.Audio.Media.DURATION,
         MediaStore.Audio.Media.DATA,
         MediaStore.Audio.Media.YEAR,
@@ -140,6 +141,7 @@ fun getAllSongs(context: Context): List<Song> {
         val titleColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
         val artistColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
         val albumColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+        val albumArtistColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ARTIST)
         val durationColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
         val pathColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
         val albumIdColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
@@ -149,6 +151,7 @@ fun getAllSongs(context: Context): List<Song> {
             val title = it.getString(titleColumn)
             val artist = it.getString(artistColumn)
             val album = it.getString(albumColumn)
+            val albumArtist = it.getString(albumArtistColumn) ?: context.getString(R.string.library_album_view_unknown_artist)
             val duration = it.getLong(durationColumn)
             val path = it.getString(pathColumn)
             val albumId = it.getLong(albumIdColumn)
@@ -159,7 +162,7 @@ fun getAllSongs(context: Context): List<Song> {
                 albumId
             )
 
-            val song = Song(id, title, artist, album, duration, path, imgUri)
+            val song = Song(id, title, artist, album, albumArtist, duration, path, imgUri)
             songs.add(song)
         }
     }
