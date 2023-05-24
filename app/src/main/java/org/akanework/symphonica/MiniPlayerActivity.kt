@@ -127,6 +127,8 @@ class MiniPlayerActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.miniplayer_end_time).text =
                     convertDurationToTimeStamp(targetSong.duration.toString())
                 findViewById<TextView>(R.id.miniplayer_song_path).text = targetSong.path
+                val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
+                MainActivity.isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
                 fillSongCover(targetSong.imgUri!!, findViewById(R.id.miniplayer_sheet_cover))
                 initMediaPlayer(targetSong.path.toUri())
 
