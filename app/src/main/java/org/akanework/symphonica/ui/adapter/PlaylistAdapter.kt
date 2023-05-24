@@ -19,7 +19,10 @@ package org.akanework.symphonica.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -39,6 +42,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songMeta: TextView = view.findViewById(R.id.song_meta)
         val dismissButton: MaterialButton = view.findViewById(R.id.playlist_delete)
+        val activeBackground: ImageView = view.findViewById(R.id.active_background)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -92,6 +96,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                     com.google.android.material.R.attr.colorOnPrimaryContainer
                 )
             )
+            holder.activeBackground.visibility = VISIBLE
         } else {
             holder.songTitle.setTextColor(
                 MaterialColors.getColor(
@@ -105,6 +110,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                     com.google.android.material.R.attr.colorOnSurfaceVariant
                 )
             )
+            holder.activeBackground.visibility = GONE
         }
     }
 

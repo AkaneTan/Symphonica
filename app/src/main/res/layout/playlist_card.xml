@@ -24,6 +24,16 @@
     android:focusable="true"
     android:longClickable="true">
 
+    <ImageView
+        android:id="@+id/active_background"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/playlist_active_shape"
+        android:contentDescription="@string/playlist_active_song" />
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"

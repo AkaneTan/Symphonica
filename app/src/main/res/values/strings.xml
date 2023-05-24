@@ -90,4 +90,5 @@
     <string name="home_greetings">Hello!</string>
     <string name="settings_enable_akane_content">You enabled what?</string>
     <string name="settings_enable_akane">Enable akane</string>
+    <string name="playlist_active_song">Active song</string>
 </resources>
