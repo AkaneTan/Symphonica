@@ -331,7 +331,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         // Flatten the decors to fit the system windows.
-        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         // Initialize the instance of supportFragmentManager.
         customFragmentManager = supportFragmentManager

@@ -21,12 +21,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         app:contentScrim="?attr/colorSurface"
         app:liftOnScrollColor="?attr/colorSurface"
         app:statusBarScrim="?attr/colorSurface">
@@ -35,6 +36,7 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:fitsSystemWindows="false"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/library_view_menu"
@@ -45,6 +47,7 @@
             app:titleTextColor="?attr/colorControlNormal" />
 
         <LinearLayout
+            android:fitsSystemWindows="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
