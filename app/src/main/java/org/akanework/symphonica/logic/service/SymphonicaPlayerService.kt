@@ -43,6 +43,7 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.notification
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
+import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
@@ -366,6 +367,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer!!.release()
         musicPlayer = null
         broadcastPlayStopped()
+        broadcastMetaDataUpdate()
     }
 
     private fun prevSongDecisionMaker() {

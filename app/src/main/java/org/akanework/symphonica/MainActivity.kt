@@ -909,6 +909,34 @@ class MainActivity : AppCompatActivity() {
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
 
                 handler.postDelayed(sliderTask, 500)
+            } else if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
+                bottomSheetSongName.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].title
+                bottomSheetArtistAndAlbum.text =
+                    getString(
+                        R.string.playlist_metadata_information,
+                        playlistViewModel.playList[playlistViewModel.currentLocation].artist,
+                        playlistViewModel.playList[playlistViewModel.currentLocation].album
+                    )
+                fullSheetSongName.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].title
+                fullSheetAlbum.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].album
+                fullSheetArtist.text =
+                    playlistViewModel.playList[playlistViewModel.currentLocation].artist
+                fullSheetDuration.text =
+                    convertDurationToTimeStamp(
+                        playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
+                    )
+                // If you don't use a round bracket here the ViewModel would die from +1s.
+                fullSheetLocation.text =
+                    getString(
+                        R.string.full_sheet_playlist_location,
+                        ((playlistViewModel.currentLocation) + 1).toString(),
+                        playlistViewModel.playList.size.toString()
+                    )
+                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
+                updateMetadata()
             }
         }
     }
