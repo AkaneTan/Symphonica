@@ -33,6 +33,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:name="org.akanework.symphonica.ui.fragment.HomeFragment"
+        android:layout_marginBottom="@dimen/bottom_sheet_height"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

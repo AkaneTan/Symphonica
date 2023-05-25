@@ -26,7 +26,6 @@
         android:id="@+id/library_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="92dp"
         app:fastScrollEnabled="true"
         app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
         app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"

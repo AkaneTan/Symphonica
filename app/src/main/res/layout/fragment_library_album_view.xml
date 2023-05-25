@@ -172,7 +172,6 @@
         android:id="@+id/library_album_view_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="76dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
