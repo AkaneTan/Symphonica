@@ -17,7 +17,7 @@ android {
         minSdk 33
         targetSdk 33
         versionCode 1
-        versionName "0.50b"
+        versionName "0.51b"
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,9 +33,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
     }
+
 }
 
 dependencies {
