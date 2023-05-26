@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.logic.service
@@ -374,14 +374,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val previousLocation = playlistViewModel.currentLocation
         if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton!!.isChecked) {
                     playlistViewModel.playList.size - 1
-                } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton!!.isChecked) {
                     stopPlaying()
                     0
-                } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton!!.isChecked) {
                     playlistViewModel.currentLocation - 1
-                } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
+                } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
                     Random.nextInt(0, playlistViewModel.playList.size)
                 } else {
                     0
@@ -407,14 +407,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val previousLocation = playlistViewModel.currentLocation
         if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton.isChecked) {
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 1 && !fullSheetShuffleButton!!.isChecked) {
                     0
-                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel.loopButtonStatus == 0 && !fullSheetShuffleButton!!.isChecked) {
                     stopPlaying()
                     0
-                } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton.isChecked) {
+                } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 && !fullSheetShuffleButton!!.isChecked) {
                     playlistViewModel.currentLocation + 1
-                } else if (fullSheetShuffleButton.isChecked && playlistViewModel.playList.size != 1) {
+                } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
                     Random.nextInt(0, playlistViewModel.playList.size)
                 } else {
                     0

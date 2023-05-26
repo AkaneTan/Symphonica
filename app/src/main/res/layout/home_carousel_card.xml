@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     Copyright (C) 2023 Akane Foundation
+  ~
+  ~     This file is part of Symphonica.
+  ~
+  ~     Symphonica is free software: you can redistribute it and/or modify it under the terms
+  ~     of the GNU General Public License as published by the Free Software Foundation,
+  ~     either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along with
+  ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<com.google.android.material.carousel.MaskableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/carousel_item_container"
+    style="?attr/materialCardViewOutlinedStyle"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:shapeAppearance="?attr/shapeAppearanceCornerMedium">
+
+    <ImageView
+        android:id="@+id/carousel_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_song_outline_default_cover" />
+</com.google.android.material.carousel.MaskableFrameLayout>

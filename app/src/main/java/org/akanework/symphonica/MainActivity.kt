@@ -1,21 +1,21 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("KotlinConstantConditions", "KotlinConstantConditions")
+@file:Suppress("KotlinConstantConditions")
 
 package org.akanework.symphonica
 
@@ -162,9 +162,9 @@ class MainActivity : AppCompatActivity() {
         // These are the views inside MainActivity.
         // They're in companion area because some of the companion
         // functions required them or some outer class needs them.
-        private lateinit var navigationView: NavigationView
-        lateinit var fullSheetLoopButton: MaterialButton
-        lateinit var fullSheetShuffleButton: MaterialButton
+        private var navigationView: NavigationView? = null
+        var fullSheetLoopButton: MaterialButton? = null
+        var fullSheetShuffleButton: MaterialButton? = null
 
         lateinit var customFragmentManager: FragmentManager
 
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
         fun switchDrawer() {
             if (!isDrawerOpen) {
                 isDrawerOpen = true
-                navigationView.visibility = VISIBLE
+                navigationView?.visibility = VISIBLE
                 animator.setDuration(400)
                 animator.start()
             } else {
@@ -215,7 +215,7 @@ class MainActivity : AppCompatActivity() {
                 // Make the navigationView disappear delayed.
                 val handler = Handler(Looper.getMainLooper())
                 val runnable = Runnable {
-                    navigationView.visibility = GONE
+                    navigationView?.visibility = GONE
                 }
                 handler.postDelayed(runnable, 400)
             }
@@ -229,32 +229,38 @@ class MainActivity : AppCompatActivity() {
         fun switchNavigationViewIndex(index: Int) {
             when (index) {
                 0 -> {
-                    navigationView.post {
-                        navigationView.setCheckedItem(
-                            navigationView.menu.findItem(
-                                R.id.library_navigation
+                    navigationView?.post {
+                        navigationView?.menu?.let {
+                            navigationView?.setCheckedItem(
+                                it.findItem(
+                                    R.id.library_navigation
+                                )
                             )
-                        )
+                        }
                     }
                 }
 
                 1 -> {
-                    navigationView.post {
-                        navigationView.setCheckedItem(
-                            navigationView.menu.findItem(
-                                R.id.settings_navigation
+                    navigationView?.post {
+                        navigationView?.menu?.let {
+                            navigationView?.setCheckedItem(
+                                it.findItem(
+                                    R.id.settings_navigation
+                                )
                             )
-                        )
+                        }
                     }
                 }
 
                 2 -> {
-                    navigationView.post {
-                        navigationView.setCheckedItem(
-                            navigationView.menu.findItem(
-                                R.id.settings_home
+                    navigationView?.post {
+                        navigationView?.menu?.let {
+                            navigationView?.setCheckedItem(
+                                it.findItem(
+                                    R.id.settings_home
+                                )
                             )
-                        )
+                        }
                     }
                 }
 
@@ -272,18 +278,22 @@ class MainActivity : AppCompatActivity() {
      * use it to find the global sheet.
      */
     private fun updateAlbumView(view: View) {
-        val sheetAlbumCover: ImageView = view.findViewById(R.id.sheet_album_cover)
-        val fullSheetCover: ImageView = view.findViewById(R.id.sheet_cover)
-        sheetAlbumCover.setImageResource(R.drawable.ic_song_default_cover)
-        Glide.with(context)
-            .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-            .diskCacheStrategy(diskCacheStrategyCustom)
-            .into(sheetAlbumCover)
-        fullSheetCover.setImageResource(R.drawable.ic_song_default_cover)
-        Glide.with(context)
-            .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-            .diskCacheStrategy(diskCacheStrategyCustom)
-            .into(fullSheetCover)
+        val sheetAlbumCover: ImageView? = view.findViewById(R.id.sheet_album_cover)
+        val fullSheetCover: ImageView? = view.findViewById(R.id.sheet_cover)
+        sheetAlbumCover?.setImageResource(R.drawable.ic_song_default_cover)
+        if (sheetAlbumCover != null) {
+            Glide.with(context)
+                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(sheetAlbumCover)
+        }
+        fullSheetCover?.setImageResource(R.drawable.ic_song_default_cover)
+        if (fullSheetCover != null) {
+            Glide.with(context)
+                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(fullSheetCover)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -408,8 +418,6 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior =
             BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
 
-        bottomSheetSongName.requestFocus()
-
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
         animator = ObjectAnimator.ofFloat(fragmentContainerView, "translationX", 0f, 600f)
 
@@ -420,20 +428,20 @@ class MainActivity : AppCompatActivity() {
 
         when (booleanViewModel.loopButtonStatus) {
             0 -> {
-                fullSheetLoopButton.isChecked = false
-                fullSheetLoopButton.icon =
+                fullSheetLoopButton?.isChecked = false
+                fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
             1 -> {
-                fullSheetLoopButton.isChecked = true
-                fullSheetLoopButton.icon =
+                fullSheetLoopButton?.isChecked = true
+                fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
             2 -> {
-                fullSheetLoopButton.isChecked = true
-                fullSheetLoopButton.icon =
+                fullSheetLoopButton?.isChecked = true
+                fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
             }
 
@@ -441,7 +449,7 @@ class MainActivity : AppCompatActivity() {
                 throw IllegalStateException()
             }
         }
-        fullSheetLoopButton.addOnCheckedChangeListener { _, _ ->
+        fullSheetLoopButton?.addOnCheckedChangeListener { _, _ ->
 
             /**
              * Status 0: Don't loop
@@ -451,23 +459,23 @@ class MainActivity : AppCompatActivity() {
             when (booleanViewModel.loopButtonStatus) {
                 0 -> {
                     booleanViewModel.loopButtonStatus = 1
-                    fullSheetLoopButton.isChecked = true
+                    fullSheetLoopButton?.isChecked = true
                     if (!isListShuffleEnabled) {
-                        fullSheetLoopButton.isChecked = true
+                        fullSheetLoopButton?.isChecked = true
                     }
                 }
 
                 1 -> {
                     booleanViewModel.loopButtonStatus = 2
-                    fullSheetLoopButton.isChecked = true
-                    fullSheetLoopButton.icon =
+                    fullSheetLoopButton?.isChecked = true
+                    fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
                 }
 
                 2 -> {
                     booleanViewModel.loopButtonStatus = 0
-                    fullSheetLoopButton.isChecked = false
-                    fullSheetLoopButton.icon =
+                    fullSheetLoopButton?.isChecked = false
+                    fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
                 }
 
@@ -477,15 +485,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fullSheetShuffleButton.isChecked = booleanViewModel.shuffleState
+        fullSheetShuffleButton?.isChecked = booleanViewModel.shuffleState
 
-        fullSheetShuffleButton.addOnCheckedChangeListener { _, isChecked ->
-            if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2 &&
+        fullSheetShuffleButton?.addOnCheckedChangeListener { _, isChecked ->
+            if (!isListShuffleEnabled &&
                 playlistViewModel.playList.isNotEmpty()
             ) {
-                fullSheetLoopButton.isChecked = isChecked
+                fullSheetLoopButton?.isChecked = isChecked
                 booleanViewModel.shuffleState = isChecked
-            } else if (booleanViewModel.loopButtonStatus != 2 && playlistViewModel.playList.isNotEmpty()) {
+            } else if (playlistViewModel.playList.isNotEmpty()) {
                 val playlist = playlistViewModel.playList
                 val originalPlaylist = playlistViewModel.originalPlaylist
                 val currentSong = playlist[playlistViewModel.currentLocation]
@@ -508,7 +516,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 booleanViewModel.shuffleState = isChecked
             } else {
-                fullSheetShuffleButton.isChecked = false
+                fullSheetShuffleButton?.isChecked = false
                 booleanViewModel.shuffleState = false
             }
         }
@@ -620,7 +628,6 @@ class MainActivity : AppCompatActivity() {
                     bottomPlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = true
                 }
-                bottomSheetSongName.requestFocus()
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -665,7 +672,7 @@ class MainActivity : AppCompatActivity() {
         // Slider behavior ends here.
 
         // Set the drawer's behavior.
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        navigationView?.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.title == getString(R.string.navigation_home)) {
                 val homeFragment = HomeFragment()
                 customFragmentManager.beginTransaction()
@@ -760,6 +767,9 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiverPlay)
         unregisterReceiver(receiverSeek)
         unregisterReceiver(receiverUpdate)
+        navigationView = null
+        fullSheetLoopButton = null
+        fullSheetShuffleButton = null
         super.onDestroy()
     }
 
@@ -870,7 +880,7 @@ class MainActivity : AppCompatActivity() {
      */
     inner class SheetUpdateReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (musicPlayer != null) {
+            if (musicPlayer != null && playlistViewModel.currentLocation < playlistViewModel.playList.size) {
                 bottomSheetSongName.text =
                     playlistViewModel.playList[playlistViewModel.currentLocation].title
                 bottomSheetArtistAndAlbum.text =

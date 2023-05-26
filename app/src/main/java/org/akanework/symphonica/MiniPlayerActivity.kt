@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica
@@ -118,8 +118,10 @@ class MiniPlayerActivity : AppCompatActivity() {
             retriever.setDataSource(this, externalSongData)
 
             val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+            val duration =
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong()
 
-            targetSong = tempSongList.find { it.title == title }
+            targetSong = tempSongList.find { it.title == title && it.duration == duration }
             if (targetSong != null) {
                 findViewById<TextView>(R.id.miniplayer_song_name).text = targetSong.title
                 findViewById<TextView>(R.id.miniplayer_sheet_author).text = targetSong.artist

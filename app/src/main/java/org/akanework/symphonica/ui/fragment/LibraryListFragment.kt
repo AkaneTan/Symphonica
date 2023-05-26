@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.fragment
@@ -32,7 +32,7 @@ import org.akanework.symphonica.ui.adapter.LibraryListAdapter
 class LibraryListFragment : Fragment() {
 
     companion object {
-        lateinit var libraryListView: RecyclerView
+        var libraryListView: RecyclerView? = null
         lateinit var adapter: LibraryListAdapter
         private var isOpposite = false
 
@@ -41,15 +41,15 @@ class LibraryListFragment : Fragment() {
          * involving [libraryListView].
          */
         fun updateRecyclerListViewOppositeOrder(songs: List<Song>) {
-            if (::libraryListView.isInitialized) {
+            if (libraryListView != null) {
                 if (!isOpposite) {
                     val adapter = LibraryListAdapter(songs.reversed())
-                    libraryListView.adapter = adapter
+                    libraryListView!!.adapter = adapter
                     adapter.notifyItemRangeChanged(0, songs.size)
                     isOpposite = true
                 } else {
                     val adapter = LibraryListAdapter(songs)
-                    libraryListView.adapter = adapter
+                    libraryListView!!.adapter = adapter
                     adapter.notifyItemRangeChanged(0, songs.size)
                     isOpposite = false
                 }
@@ -67,11 +67,16 @@ class LibraryListFragment : Fragment() {
 
         // Initialize recyclerView.
         val layoutManager = LinearLayoutManager(context)
-        libraryListView.layoutManager = layoutManager
+        libraryListView?.layoutManager = layoutManager
         adapter = LibraryListAdapter(libraryViewModel.librarySongList)
-        libraryListView.adapter = adapter
+        libraryListView?.adapter = adapter
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        libraryListView = null
+        super.onDestroyView()
     }
 
 }

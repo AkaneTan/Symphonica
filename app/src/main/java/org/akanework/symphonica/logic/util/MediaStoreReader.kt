@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.logic.util
@@ -22,6 +22,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.widget.ImageView
+import androidx.core.database.getLongOrNull
 import com.bumptech.glide.Glide
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.R
@@ -55,6 +56,7 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
 }
 
 /**
+ * [sortAlbumListByTrackNumber]:
  * Since re-ordering the albumList at libraryAlbumDisplayFragment
  * is too slow, we offer this choice. While you enjoy your music,
  * we will re-order the albumList in the background. When re-ordering
@@ -94,7 +96,7 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
     }
 
     val sortedSongList = MutableList(songList.size) { songList[it] }
-    val output = MutableList(songList.size) { Song(0, "", "", "", "", 0, "", null) }
+    val output = MutableList(songList.size) { Song(0, "", "", "", "", 0, "", null, null) }
 
     for (i in songList.size - 1 downTo 0) {
         val trackNumber = getTrackNumber(sortedSongList[i].path)
@@ -123,7 +125,8 @@ fun getAllSongs(context: Context): List<Song> {
         MediaStore.Audio.Media.DURATION,
         MediaStore.Audio.Media.DATA,
         MediaStore.Audio.Media.YEAR,
-        MediaStore.Audio.Media.ALBUM_ID
+        MediaStore.Audio.Media.ALBUM_ID,
+        MediaStore.Audio.Media.DATE_ADDED
     )
     val sortOrder = MediaStore.Audio.Media.TITLE + " ASC"
 
@@ -145,6 +148,7 @@ fun getAllSongs(context: Context): List<Song> {
         val durationColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
         val pathColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
         val albumIdColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+        val addDateColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
 
         while (it.moveToNext()) {
             val id = it.getLong(idColumn)
@@ -156,6 +160,7 @@ fun getAllSongs(context: Context): List<Song> {
             val duration = it.getLong(durationColumn)
             val path = it.getString(pathColumn)
             val albumId = it.getLong(albumIdColumn)
+            val addDate = it.getLongOrNull(addDateColumn)
 
             val sArtworkUri = Uri.parse("content://media/external/audio/albumart")
             val imgUri = ContentUris.withAppendedId(
@@ -163,7 +168,7 @@ fun getAllSongs(context: Context): List<Song> {
                 albumId
             )
 
-            val song = Song(id, title, artist, album, albumArtist, duration, path, imgUri)
+            val song = Song(id, title, artist, album, albumArtist, duration, path, imgUri, addDate)
             songs.add(song)
         }
     }
@@ -247,6 +252,16 @@ fun fillSongCover(imgUri: Uri, songCover: ImageView) {
     Glide.with(context)
         .load(imgUri)
         .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
-        .placeholder(R.drawable.ic_song_default_cover)
         .into(songCover)
+}
+
+/**
+ * [findTopTenSongsByAddDate] arranges the song by [Song.addDate]
+ * and outputs ten recently added songs.
+ */
+fun findTopTenSongsByAddDate(songs: List<Song>): MutableList<Song> {
+    return songs.asSequence()
+        .sortedByDescending { it.addDate ?: 0 } // 按 addDate 降序排序
+        .take(10) // 获取前十个元素
+        .toMutableList() // 转换为列表
 }

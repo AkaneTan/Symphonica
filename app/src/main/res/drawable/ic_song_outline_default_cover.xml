@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     Copyright (C) 2023 Akane Foundation
+  ~
+  ~     This file is part of Symphonica.
+  ~
+  ~     Symphonica is free software: you can redistribute it and/or modify it under the terms
+  ~     of the GNU General Public License as published by the Free Software Foundation,
+  ~     either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along with
+  ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape
+            android:shape="rectangle"
+            android:tint="?attr/colorSurfaceContainer">
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_note_outline"
+        android:end="16dp"
+        android:start="16dp"
+        android:top="16dp" />
+</layer-list>

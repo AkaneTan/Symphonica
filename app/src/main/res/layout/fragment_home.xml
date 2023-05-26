@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~     Copyright (C) 2023 AkaneWork Organization
+  ~     Copyright (C) 2023 Akane Foundation
   ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
+  ~     This file is part of Symphonica.
   ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
+  ~     Symphonica is free software: you can redistribute it and/or modify it under the terms
+  ~     of the GNU General Public License as published by the Free Software Foundation,
+  ~     either version 3 of the License, or (at your option) any later version.
   ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along with
+  ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -53,6 +53,197 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/home_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/home_shuffle_all"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:backgroundTint="?attr/colorTertiaryContainer"
+                        app:icon="@drawable/ic_shuffle"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorOnTertiaryContainer" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/home_favourite"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:backgroundTint="?attr/colorSecondaryContainer"
+                        app:icon="@drawable/ic_favourite"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorOnSecondaryContainer" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/home_like"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:backgroundTint="?attr/colorPrimaryContainer"
+                        app:icon="@drawable/ic_refresh"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorOnPrimaryContainer" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/home_playlist"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:backgroundTint="?attr/colorTertiaryContainer"
+                        app:icon="@drawable/ic_playlist"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="30sp"
+                        app:iconTint="?attr/colorOnTertiaryContainer" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/home_today_shuffle"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/refresh_shuffle_list"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:backgroundTint="?attr/colorSurface"
+                    android:elevation="0dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@drawable/ic_refresh"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="30sp"
+                    app:iconTint="?attr/colorControlNormal" />
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shuffle_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="196dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/home_recent_added"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recent_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="196dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom
+
+                    ="32dp" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/loading_prompt_list"
         style="?attr/materialCardViewOutlinedStyle"
@@ -61,6 +252,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="256dp"
         android:layout_marginEnd="24dp"
+        android:background="?attr/colorSurface"
         android:visibility="gone">
 
         <LinearLayout
@@ -86,22 +278,5 @@
                 android:indeterminate="true" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Today's Shuffle"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.adapter
@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -52,7 +51,6 @@ class LibraryListAdapter(private val songList: List<Song>) :
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songMeta: TextView = view.findViewById(R.id.song_meta)
         val songDuration: TextView = view.findViewById(R.id.song_duration)
-        val songUri: TextView = view.findViewById(R.id.song_uri)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -75,7 +73,6 @@ class LibraryListAdapter(private val songList: List<Song>) :
         )
         holder.songDuration.text =
             convertDurationToTimeStamp(songList[position].duration.toString())
-        holder.songUri.text = songList[position].path.toUri().toString()
 
         try {
             Glide.with(holder.songCover.context)
@@ -92,7 +89,7 @@ class LibraryListAdapter(private val songList: List<Song>) :
             playlistViewModel.playList = songList.toMutableList()
             if (booleanViewModel.shuffleState) {
                 booleanViewModel.shuffleState = false
-                fullSheetShuffleButton.isChecked = false
+                fullSheetShuffleButton!!.isChecked = false
             }
             replacePlaylist(playlistViewModel.playList, position)
         }

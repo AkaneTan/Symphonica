@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 AkaneWork Organization
+ *     Copyright (C) 2023 Akane Foundation
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
+ *     This file is part of Symphonica.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
+ *     Symphonica is free software: you can redistribute it and/or modify it under the terms
+ *     of the GNU General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+ *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License along with
+ *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.fragment
@@ -27,12 +27,18 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.carousel.CarouselLayoutManager
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.ui.adapter.SongCarouselAdapter
 
 /**
  * [HomeFragment] is homepage fragment.
@@ -42,6 +48,10 @@ class HomeFragment : Fragment() {
     companion object {
 
         private lateinit var loadingPrompt: MaterialCardView
+        private lateinit var shuffleAdapter: SongCarouselAdapter
+        private lateinit var recentAdapter: SongCarouselAdapter
+        private val shuffleList: MutableList<Song> = mutableListOf()
+        private val recentList: MutableList<Song> = mutableListOf()
 
         private var isInitialized: Boolean = true
 
@@ -70,6 +80,7 @@ class HomeFragment : Fragment() {
                         }
                         handler.postDelayed(runnable, 200)
                         isInitialized = true
+                        initializeList()
                     }
 
                     else -> {
@@ -77,6 +88,33 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        private fun initializeList() {
+            if (shuffleList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleAdapter.notifyItemRangeChanged(0, 5)
+            }
+            if (libraryViewModel.libraryNewestAddedList.isNotEmpty()) {
+                recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
+                recentAdapter.notifyItemRangeChanged(0, 10)
+            }
+        }
+
+        fun refreshList() {
+            if (shuffleList.isNotEmpty()) {
+                shuffleList.clear()
+            }
+            shuffleList.add(libraryViewModel.librarySongList.random())
+            shuffleList.add(libraryViewModel.librarySongList.random())
+            shuffleList.add(libraryViewModel.librarySongList.random())
+            shuffleList.add(libraryViewModel.librarySongList.random())
+            shuffleList.add(libraryViewModel.librarySongList.random())
+            shuffleAdapter.notifyItemRangeChanged(0, 5)
         }
     }
 
@@ -88,9 +126,24 @@ class HomeFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
+        val shuffleRefreshButton = rootView.findViewById<MaterialButton>(R.id.refresh_shuffle_list)
         val collapsingToolbar =
             rootView.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
         val appBarLayout = rootView.findViewById<AppBarLayout>(R.id.appBarLayout)
+        val shuffleCarouselRecyclerView =
+            rootView.findViewById<RecyclerView>(R.id.shuffle_recycler_view)
+        val recentCarouselRecyclerView =
+            rootView.findViewById<RecyclerView>(R.id.recent_recycler_view)
+
+        val shuffleLayoutManager = CarouselLayoutManager()
+        shuffleCarouselRecyclerView.layoutManager = shuffleLayoutManager
+        shuffleAdapter = SongCarouselAdapter(shuffleList)
+        shuffleCarouselRecyclerView.adapter = shuffleAdapter
+
+        val recentLayoutManager = CarouselLayoutManager()
+        recentCarouselRecyclerView.layoutManager = recentLayoutManager
+        recentAdapter = SongCarouselAdapter(recentList)
+        recentCarouselRecyclerView.adapter = recentAdapter
 
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
 
@@ -99,6 +152,10 @@ class HomeFragment : Fragment() {
             if (isInitialized) {
                 MainActivity.switchDrawer()
             }
+        }
+
+        shuffleRefreshButton.setOnClickListener {
+            refreshList()
         }
 
         var isShow = true

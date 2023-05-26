@@ -1,27 +1,27 @@
 <!--
-  ~     Copyright (C) 2023 AkaneWork Organization
+  ~     Copyright (C) 2023 Akane Foundation
   ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
+  ~     This file is part of Symphonica.
   ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
+  ~     Symphonica is free software: you can redistribute it and/or modify it under the terms
+  ~     of the GNU General Public License as published by the Free Software Foundation,
+  ~     either version 3 of the License, or (at your option) any later version.
   ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along with
+  ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:tint="#000000"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:tint="?attr/colorControlNormal"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M7,7h10v3l4,-4 -4,-4v3L5,5v6h2L7,7zM17,17L7,17v-3l-4,4 4,4v-3h12v-6h-2v4z" />
+        android:pathData="M280,880L120,720L280,560L336,618L274,680L680,680L680,520L760,520L760,760L274,760L336,822L280,880ZM200,440L200,200L686,200L624,138L680,80L840,240L680,400L624,342L686,280L280,280L280,440L200,440Z" />
 </vector>

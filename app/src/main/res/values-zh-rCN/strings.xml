@@ -1,18 +1,18 @@
 <!--
-  ~     Copyright (C) 2023 AkaneWork Organization
+  ~     Copyright (C) 2023 Akane Foundation
   ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
+  ~     This file is part of Symphonica.
   ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
+  ~     Symphonica is free software: you can redistribute it and/or modify it under the terms
+  ~     of the GNU General Public License as published by the Free Software Foundation,
+  ~     either version 3 of the License, or (at your option) any later version.
   ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along with
+  ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <resources>
@@ -90,4 +90,6 @@
     <string name="home_greetings">你好!</string>
     <string name="settings_enable_akane_content">你启用了什么啊 (恼)</string>
     <string name="settings_enable_akane">启用新条茜</string>
+    <string name="home_today_shuffle">今日串烧</string>
+    <string name="home_recent_added">最近添加</string>
 </resources>
