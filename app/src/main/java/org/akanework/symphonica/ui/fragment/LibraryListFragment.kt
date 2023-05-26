@@ -29,6 +29,10 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.ui.adapter.LibraryListAdapter
 
+/**
+ * [LibraryListFragment] holds a recyclerview
+ * which contains all songs.
+ */
 class LibraryListFragment : Fragment() {
 
     companion object {

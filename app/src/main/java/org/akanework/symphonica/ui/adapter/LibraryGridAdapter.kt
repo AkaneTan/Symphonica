@@ -32,9 +32,16 @@ import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
+/**
+ * [LibraryGridAdapter] is the adapter used for library
+ * grid fragment.
+ */
 class LibraryGridAdapter(private val albumList: List<Album>) :
     RecyclerView.Adapter<LibraryGridAdapter.ViewHolder>() {
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songCover: ImageView = view.findViewById(R.id.song_cover)
         val songTitle: TextView = view.findViewById(R.id.song_title)

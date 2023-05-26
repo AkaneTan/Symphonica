@@ -42,10 +42,16 @@ import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
-
+/**
+ * [LibraryListAdapter] is the adapter for the library
+ * list fragment.
+ */
 class LibraryListAdapter(private val songList: List<Song>) :
     RecyclerView.Adapter<LibraryListAdapter.ViewHolder>() {
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songCover: ImageView = view.findViewById(R.id.song_cover)
         val songTitle: TextView = view.findViewById(R.id.song_title)

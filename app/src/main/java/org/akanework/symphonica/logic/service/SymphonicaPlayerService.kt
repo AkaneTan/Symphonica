@@ -48,7 +48,7 @@ import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.changePlayer
+import org.akanework.symphonica.logic.util.changePlayerStatus
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.thisSong
@@ -82,6 +82,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     companion object {
 
+        /**
+         * [setPlaybackState] sets the playback state of the
+         * media control notification.
+         */
         fun setPlaybackState(operation: Int) {
             val playbackStateBuilder = PlaybackState.Builder()
                 .setActions(
@@ -215,7 +219,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
         override fun onPause() {
             if (musicPlayer != null) {
-                changePlayer()
+                changePlayerStatus()
             } else if (playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -225,7 +229,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
         override fun onPlay() {
             if (musicPlayer != null) {
-                changePlayer()
+                changePlayerStatus()
             } else if (playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {

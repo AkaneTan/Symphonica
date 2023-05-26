@@ -21,6 +21,11 @@ import androidx.lifecycle.ViewModel
 import org.akanework.symphonica.logic.data.Album
 import org.akanework.symphonica.logic.data.Song
 
+/**
+ * [LibraryViewModel] is a [ViewModel] that contains
+ * Library's song list which are read from the disk
+ * when booting up. They won't be saved locally.
+ */
 class LibraryViewModel : ViewModel() {
     var librarySongList: List<Song> = listOf()
     var librarySortedAlbumList: List<Album> = listOf()

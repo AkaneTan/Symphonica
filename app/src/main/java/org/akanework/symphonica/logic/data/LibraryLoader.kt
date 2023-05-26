@@ -28,6 +28,10 @@ import org.akanework.symphonica.logic.util.getAllSongs
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.ui.fragment.HomeFragment
 
+/**
+ * [loadDataFromDisk] is used when booting up.
+ * It uses different threads to load data from disk.
+ */
 suspend fun loadDataFromDisk() {
 
     HomeFragment.switchPrompt(0)

@@ -105,6 +105,10 @@ class HomeFragment : Fragment() {
             }
         }
 
+        /**
+         * [refreshList] refreshes shuffleList.
+         * It is used for the shuffle button.
+         */
         fun refreshList() {
             if (shuffleList.isNotEmpty()) {
                 shuffleList.clear()

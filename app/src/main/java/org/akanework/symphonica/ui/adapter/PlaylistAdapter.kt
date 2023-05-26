@@ -34,10 +34,16 @@ import org.akanework.symphonica.logic.util.jumpTo
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 
-
+/**
+ * [PlaylistAdapter] is the adapter
+ * used for playlist bottom sheet.
+ */
 class PlaylistAdapter(private val songList: MutableList<Song>) :
     RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songMeta: TextView = view.findViewById(R.id.song_meta)

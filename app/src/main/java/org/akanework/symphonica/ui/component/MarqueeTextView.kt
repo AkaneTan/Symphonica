@@ -22,6 +22,16 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
+/**
+ * [MarqueeTextView] is a kind of [AppCompatTextView]
+ * keeps the focus of the textView all the time so marquee
+ * can be displayed properly without needing to set focus
+ * manually.
+ *
+ * Noteworthy, when the mainThread is doing something, marquee
+ * will reload and cause a fake "jitter". Use this wisely, don't
+ * make it everywhere.
+ */
 @Suppress("KotlinConstantConditions")
 class MarqueeTextView @JvmOverloads constructor(
     context: Context,

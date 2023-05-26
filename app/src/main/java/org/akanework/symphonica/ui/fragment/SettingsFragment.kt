@@ -44,6 +44,10 @@ import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 
+/**
+ * [SettingsFragment] is the fragment that is used
+ * for settings.
+ */
 class SettingsFragment : Fragment() {
 
     private var logoClickedTimes = 0

@@ -29,7 +29,11 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.ui.adapter.PlaylistAdapter
 
-
+/**
+ * [PlaylistBottomSheet] is the [BottomSheetDialogFragment]
+ * that will open when you click the playlist button inside
+ * full player.
+ */
 class PlaylistBottomSheet : BottomSheetDialogFragment() {
 
     companion object {

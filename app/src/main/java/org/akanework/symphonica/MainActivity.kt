@@ -68,7 +68,7 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.changePlayer
+import org.akanework.symphonica.logic.util.changePlayerStatus
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
@@ -82,7 +82,11 @@ import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
 import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 
-
+/**
+ * [MainActivity] is the heart of Symphonica.
+ * Google said, let there be fragments, so akane answered:
+ * "There would be fragments."
+ */
 class MainActivity : AppCompatActivity() {
 
     private val permissionRequestCode = 123
@@ -272,11 +276,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * This is a packaged function to update Album ImageViews.
-     * It gets the MainActivity's view from it's parameter and
-     * use it to find the global sheet.
-     */
     private fun updateAlbumView(view: View) {
         val sheetAlbumCover: ImageView? = view.findViewById(R.id.sheet_album_cover)
         val fullSheetCover: ImageView? = view.findViewById(R.id.sheet_cover)
@@ -524,7 +523,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
-                changePlayer()
+                changePlayerStatus()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -554,7 +553,7 @@ class MainActivity : AppCompatActivity() {
 
         fullSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
-                changePlayer()
+                changePlayerStatus()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {

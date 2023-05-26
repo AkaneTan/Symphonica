@@ -32,9 +32,16 @@ import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
 
+/**
+ * This is the carousel adapter used for
+ * songs.
+ */
 class SongCarouselAdapter(private val songList: MutableList<Song>) :
     RecyclerView.Adapter<SongCarouselAdapter.ViewHolder>() {
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songCover: ImageView = view.findViewById(R.id.carousel_image_view)
         val container: MaskableFrameLayout = view.findViewById(R.id.carousel_item_container)

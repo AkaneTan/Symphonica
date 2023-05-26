@@ -24,6 +24,10 @@ import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 
+/**
+ * [replacePlaylist] replaces playlist with the given argument
+ * and jump to the desired location inside the new playlist.
+ */
 fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     playlistViewModel.playList = targetPlaylist
@@ -32,6 +36,9 @@ fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [addToNext] adds a song to the next position of the playlist.
+ */
 fun addToNext(nextSong: Song) {
     if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
         playlistViewModel.playList.add(playlistViewModel.currentLocation + 1, nextSong)
@@ -46,6 +53,9 @@ fun addToNext(nextSong: Song) {
     }
 }
 
+/**
+ * [jumpTo] will jump to the position in playlist.
+ */
 fun jumpTo(index: Int) {
     playlistViewModel.currentLocation = index
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
@@ -53,6 +63,9 @@ fun jumpTo(index: Int) {
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [nextSong] will jump to the next song in the playlist.
+ */
 fun nextSong() {
     if (musicPlayer != null && !musicPlayer!!.isPlaying) {
         thisSong()
@@ -62,6 +75,9 @@ fun nextSong() {
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [thisSong] will stop the music player and play current song.
+ */
 fun thisSong() {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_REPLACE_AND_PLAY"
@@ -69,25 +85,38 @@ fun thisSong() {
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [prevSong] will play the previous song in the playlist.
+ */
 fun prevSong() {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_PREV"
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [pausePlayer] pauses [SymphonicaPlayerService]'s player.
+ */
 fun pausePlayer() {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_PAUSE"
     SymphonicaApplication.context.startService(intent)
 }
 
+/**
+ * [resumePlayer] resumes [SymphonicaPlayerService]'s player.
+ */
 fun resumePlayer() {
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_RESUME"
     SymphonicaApplication.context.startService(intent)
 }
 
-fun changePlayer() {
+/**
+ * [changePlayerStatus] changes [SymphonicaPlayerService]'s
+ * player status. If paused then play. If is playing then pause.
+ */
+fun changePlayerStatus() {
     if (musicPlayer != null && musicPlayer!!.isPlaying) {
         pausePlayer()
     } else {

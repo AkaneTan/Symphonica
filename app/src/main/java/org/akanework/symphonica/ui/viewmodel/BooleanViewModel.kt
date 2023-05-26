@@ -19,6 +19,11 @@ package org.akanework.symphonica.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 
+/**
+ * [BooleanViewModel] is a [ViewModel] that
+ * contains several important booleans used across
+ * MainActivity.
+ */
 class BooleanViewModel : ViewModel() {
     var isBottomSheetOpen = false
     var loopButtonStatus = 0

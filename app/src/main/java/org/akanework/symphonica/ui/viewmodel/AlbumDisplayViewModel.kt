@@ -19,6 +19,14 @@ package org.akanework.symphonica.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 
+/**
+ * [AlbumDisplayViewModel]:
+ * I forgot what this [ViewModel] does..
+ * Maybe it saves what libraryAlbumDisplayFragment
+ * is displaying?
+ * [position] probably means the position inside
+ * the whole library.
+ */
 class AlbumDisplayViewModel : ViewModel() {
     var position: Int? = null
 }

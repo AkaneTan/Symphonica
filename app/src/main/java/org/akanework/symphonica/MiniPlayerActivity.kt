@@ -243,6 +243,10 @@ class MiniPlayerActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    /**
+     * [KillReceiver] receives the signals from [MainActivity] to kill
+     * the miniplayer.
+     */
     inner class KillReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             finish()

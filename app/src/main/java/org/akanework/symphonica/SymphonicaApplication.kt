@@ -22,6 +22,10 @@ import android.app.Application
 import android.content.Context
 import com.google.android.material.color.DynamicColors
 
+/**
+ * [SymphonicaApplication] provides context
+ * and applies dynamic colors.
+ */
 class SymphonicaApplication : Application() {
 
     companion object {

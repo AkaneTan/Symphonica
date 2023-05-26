@@ -37,9 +37,16 @@ import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.getTrackNumber
 import org.akanework.symphonica.logic.util.replacePlaylist
 
+/**
+ * [LibraryDisplayAdapter] is used for displaying song lists
+ * inside an album. Used in library album display fragment.
+ */
 class LibraryDisplayAdapter(private val songList: List<Song>) :
     RecyclerView.Adapter<LibraryDisplayAdapter.ViewHolder>() {
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songDuration: TextView = view.findViewById(R.id.song_duration)

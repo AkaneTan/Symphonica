@@ -20,26 +20,42 @@ package org.akanework.symphonica.logic.util
 import android.content.Intent
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 
+/**
+ * [broadcastMetaDataUpdate] updates the notification's metadata.
+ */
 fun broadcastMetaDataUpdate() {
     val intentBroadcast = Intent("internal.play_update")
     context.sendBroadcast(intentBroadcast)
 }
 
+/**
+ * [broadcastSliderSeek] broadcast in case of needing to seek
+ * the player for the notification.
+ */
 fun broadcastSliderSeek() {
     val intentBroadcast = Intent("internal.play_seek")
     context.sendBroadcast(intentBroadcast)
 }
 
+/**
+ * [broadcastPlayStopped] broadcast in case of play stopped.
+ */
 fun broadcastPlayStopped() {
     val intentBroadcast = Intent("internal.play_stop")
     context.sendBroadcast(intentBroadcast)
 }
 
+/**
+ * [broadcastPlayStart] broadcast in case of play start.
+ */
 fun broadcastPlayPaused() {
     val intentBroadcast = Intent("internal.play_pause")
     context.sendBroadcast(intentBroadcast)
 }
 
+/**
+ * [broadcastPlayStart] broadcast in case of pause.
+ */
 fun broadcastPlayStart() {
     val intentBroadcast = Intent("internal.play_start")
     context.sendBroadcast(intentBroadcast)

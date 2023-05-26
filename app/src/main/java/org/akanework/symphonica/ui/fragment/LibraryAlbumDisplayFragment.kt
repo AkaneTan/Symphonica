@@ -47,6 +47,10 @@ import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.LibraryDisplayAdapter
 import org.akanework.symphonica.ui.viewmodel.AlbumDisplayViewModel
 
+/**
+ * [LibraryAlbumDisplayFragment] is the album detail
+ * page.
+ */
 class LibraryAlbumDisplayFragment : Fragment() {
 
     private var albumDisplayViewModel: AlbumDisplayViewModel? = null

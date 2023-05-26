@@ -23,6 +23,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import org.akanework.symphonica.ui.fragment.LibraryGridFragment
 import org.akanework.symphonica.ui.fragment.LibraryListFragment
 
+/**
+ * This is the ViewPager2 adapter.
+ */
 class NavFragmentPageAdapter(fragmentManager: FragmentActivity) :
     FragmentStateAdapter(fragmentManager) {
     override fun getItemCount(): Int {

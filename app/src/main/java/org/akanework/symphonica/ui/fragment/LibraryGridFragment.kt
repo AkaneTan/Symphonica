@@ -28,6 +28,10 @@ import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.ui.adapter.LibraryGridAdapter
 
+/**
+ * [LibraryGridFragment] holds a view that contains
+ * all albums.
+ */
 class LibraryGridFragment : Fragment() {
 
     override fun onCreateView(
