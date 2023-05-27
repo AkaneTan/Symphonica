@@ -141,8 +141,6 @@ class MainActivity : AppCompatActivity() {
                 if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
                     fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
 
-                    broadcastSliderSeek()
-
                     fullSheetTimeStamp.text =
                         convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
                 }
