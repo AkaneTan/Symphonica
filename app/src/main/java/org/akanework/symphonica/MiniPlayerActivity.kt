@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -131,6 +132,14 @@ class MiniPlayerActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.miniplayer_song_path).text = targetSong.path
                 val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
                 MainActivity.isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
+
+                // Change glide cache strategy accordingly.
+                MainActivity.diskCacheStrategyCustom = if (MainActivity.isGlideCacheEnabled) {
+                    DiskCacheStrategy.AUTOMATIC
+                } else {
+                    DiskCacheStrategy.NONE
+                }
+
                 fillSongCover(targetSong.imgUri!!, findViewById(R.id.miniplayer_sheet_cover))
                 initMediaPlayer(targetSong.path.toUri())
 
