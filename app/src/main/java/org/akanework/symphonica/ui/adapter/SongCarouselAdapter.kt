@@ -17,20 +17,27 @@
 
 package org.akanework.symphonica.ui.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.carousel.MaskableFrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
+import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.addToNext
+import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 /**
  * This is the carousel adapter used for
@@ -74,6 +81,59 @@ class SongCarouselAdapter(private val songList: MutableList<Song>) :
                 fullSheetShuffleButton!!.isChecked = false
             }
             replacePlaylist(playlistViewModel.playList, position)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            val rootView = MaterialAlertDialogBuilder(
+                holder.itemView.context,
+                com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+            )
+                .setTitle(holder.itemView.context.getString(R.string.dialog_long_press_title))
+                .setView(R.layout.alert_dialog_long_press)
+                .setNeutralButton(SymphonicaApplication.context.getString(R.string.dialog_song_dismiss)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+
+            val addToNextButton = rootView.findViewById<FrameLayout>(R.id.dialog_add_to_next)
+            val checkAlbumButton = rootView.findViewById<FrameLayout>(R.id.dialog_check_album)
+
+            checkAlbumButton!!.setOnClickListener {
+                val albumBundle = Bundle().apply {
+                    if (MainActivity.libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
+                        putInt("Position", MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
+                            MainActivity.libraryViewModel.librarySortedAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    } else {
+                        putInt("Position", MainActivity.libraryViewModel.libraryAlbumList.indexOf(
+                            MainActivity.libraryViewModel.libraryAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    }
+                }
+                val albumFragment = LibraryAlbumDisplayFragment().apply {
+                    arguments = albumBundle
+                }
+
+                MainActivity.customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, albumFragment)
+                    .addToBackStack(null)
+                    .commit()
+                rootView.dismiss()
+            }
+
+            addToNextButton!!.setOnClickListener {
+                addToNext(songList[position])
+
+                broadcastMetaDataUpdate()
+
+                rootView.dismiss()
+            }
+
+            true
         }
 
     }
