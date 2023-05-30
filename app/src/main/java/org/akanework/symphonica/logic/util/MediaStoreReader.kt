@@ -205,12 +205,7 @@ fun getTrackNumber(songUri: String): Int {
 
     cursor?.close()
 
-    if (trackNumber != null && trackNumber.toString().length == 4) {
-        return trackNumber!!.substring(1).trimStart('0').toInt()
-    } else if (trackNumber != null) {
-        return trackNumber!!.trimStart('0').toInt()
-    }
-    return 0
+    return trackNumber?.toIntOrNull() ?: 0
 }
 
 /**
