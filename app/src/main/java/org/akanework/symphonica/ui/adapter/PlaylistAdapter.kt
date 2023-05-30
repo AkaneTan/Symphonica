@@ -89,7 +89,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
             }
         }
 
-        if (songList[position] == playlistViewModel.playList[playlistViewModel.currentLocation]) {
+        if (holder.adapterPosition == playlistViewModel.currentLocation) {
             holder.songTitle.setTextColor(
                 MaterialColors.getColor(
                     holder.itemView,
