@@ -34,6 +34,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
@@ -120,6 +121,14 @@ class HomeFragment : Fragment() {
             shuffleList.add(libraryViewModel.librarySongList.random())
             shuffleAdapter.notifyItemRangeChanged(0, 5)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        reenterTransition =
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+
     }
 
     override fun onCreateView(
