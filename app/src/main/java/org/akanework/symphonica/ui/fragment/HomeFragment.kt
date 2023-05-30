@@ -100,7 +100,7 @@ class HomeFragment : Fragment() {
                 shuffleList.add(libraryViewModel.librarySongList.random())
                 shuffleAdapter.notifyItemRangeChanged(0, 5)
             }
-            if (libraryViewModel.libraryNewestAddedList.isNotEmpty()) {
+            if (libraryViewModel.libraryNewestAddedList.isNotEmpty() && recentList.isEmpty()) {
                 recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
                 recentAdapter.notifyItemRangeChanged(0, 10)
             }
