@@ -205,12 +205,13 @@ fun getTrackNumber(songUri: String): Int {
 
     cursor?.close()
 
-    if (trackNumber != null && trackNumber.toString().length == 4) {
-        return trackNumber!!.substring(1).trimStart('0').toInt()
-    } else if (trackNumber != null) {
-        return trackNumber!!.trimStart('0').toInt()
-    }
-    return 0
+    return trackNumber?.let {
+        if (it.length == 4) {
+            it.substring(1).toIntOrNull() ?: 0
+        } else {
+            it.toIntOrNull() ?: 0
+        }
+    } ?: 0
 }
 
 /**
@@ -261,7 +262,7 @@ fun fillSongCover(imgUri: Uri, songCover: ImageView) {
  */
 fun findTopTenSongsByAddDate(songs: List<Song>): MutableList<Song> {
     return songs.asSequence()
-        .sortedByDescending { it.addDate ?: 0 } // 按 addDate 降序排序
-        .take(10) // 获取前十个元素
-        .toMutableList() // 转换为列表
+        .sortedByDescending { it.addDate ?: 0 }
+        .take(10)
+        .toMutableList()
 }
