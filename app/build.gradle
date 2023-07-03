@@ -15,7 +15,7 @@ android {
         minSdk 29
         targetSdk 33
         versionCode 1
-        versionName "0.55b.hotfix"
+        versionName "0.55b.hotfix.1"
     }
 
     buildTypes {
