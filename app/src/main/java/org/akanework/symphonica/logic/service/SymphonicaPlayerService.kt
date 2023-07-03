@@ -61,6 +61,7 @@ import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 import kotlin.random.Random
 
+
 /**
  * [SymphonicaPlayerService] is the core of Symphonica.
  * It used [musicPlayer]'s async method to play songs.
@@ -88,6 +89,8 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private lateinit var audioManager: AudioManager
     private var isAudioManagerInitialized = false
+
+    private var isMusicPlayerError = false
 
     /**
      * [focusChangeListener] is a listener build for [audioManager].
@@ -315,8 +318,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             "ACTION_REPLACE_AND_PLAY" -> {
                 if (musicPlayer == null) {
                     musicPlayer = MediaPlayer()
-                    setLoopListener()
+                    musicPlayer!!.setOnErrorListener { _, _, _ ->
+                        isMusicPlayerError = true
+                        false
+                    }
                     startPlaying()
+                    setLoopListener()
                 } else {
                     stopAndPlay()
                 }
@@ -361,6 +368,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     stopAndPlay()
                 } else {
                     musicPlayer = MediaPlayer()
+                    musicPlayer!!.setOnErrorListener { _, _, _ ->
+                        isMusicPlayerError = true
+                        false
+                    }
                     setLoopListener()
                     startPlaying()
                 }
@@ -396,7 +407,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun setLoopListener() {
         musicPlayer!!.setOnCompletionListener {
-            nextSongDecisionMaker()
+            if (!isMusicPlayerError) {
+                nextSongDecisionMaker()
+                isMusicPlayerError = false
+            }
             if (musicPlayer != null) {
                 musicPlayer!!.reset()
                 musicPlayer!!.apply {
