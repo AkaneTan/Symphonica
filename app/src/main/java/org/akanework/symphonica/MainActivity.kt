@@ -764,6 +764,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         // Unregister everything.
         handler.removeCallbacks(sliderTask)
         unregisterReceiver(receiverPause)
@@ -776,9 +777,7 @@ class MainActivity : AppCompatActivity() {
         fullSheetShuffleButton = null
         val intent = Intent(this, SymphonicaPlayerService::class.java)
         stopService(intent)
-        managerSymphonica.cancel(1)
-        managerSymphonica.deleteNotificationChannel("channel_symphonica")
-        super.onDestroy()
+        managerSymphonica.cancelAll()
     }
 
     /**
