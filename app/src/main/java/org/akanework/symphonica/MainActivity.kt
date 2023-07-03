@@ -64,6 +64,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.loadDataFromDisk
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
@@ -81,6 +82,7 @@ import org.akanework.symphonica.ui.fragment.SettingsFragment
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
 import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
+
 
 /**
  * [MainActivity] is the heart of Symphonica.
@@ -772,7 +774,10 @@ class MainActivity : AppCompatActivity() {
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
-        managerSymphonica.cancelAll()
+        val intent = Intent(this, SymphonicaPlayerService::class.java)
+        stopService(intent)
+        managerSymphonica.cancel(1)
+        managerSymphonica.deleteNotificationChannel("channel_symphonica")
         super.onDestroy()
     }
 
