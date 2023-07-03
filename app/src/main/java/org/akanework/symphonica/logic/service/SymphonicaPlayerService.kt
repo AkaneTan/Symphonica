@@ -20,9 +20,12 @@ package org.akanework.symphonica.logic.service
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
@@ -51,7 +54,9 @@ import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.changePlayerStatus
 import org.akanework.symphonica.logic.util.nextSong
+import org.akanework.symphonica.logic.util.pausePlayer
 import org.akanework.symphonica.logic.util.prevSong
+import org.akanework.symphonica.logic.util.resumePlayer
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 import kotlin.random.Random
@@ -80,6 +85,35 @@ import kotlin.random.Random
  * 6. "ACTION_JUMP" will jump to target song inside the playlist.
  */
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
+
+    private lateinit var audioManager: AudioManager
+    private var isAudioManagerInitialized = false
+
+    /**
+     * [focusChangeListener] is a listener build for [audioManager].
+     *
+     * It has four main changes :
+     * - AUDIOFOCUS_LOSS: Pause player when somebody else need to play media.
+     * - AUDIOFOCUS_LOSS_TRANSIENT: Same as above.
+     * - AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK: Same as above
+     * - AUDIOFOCUS_GAIN: Resume player when acquired media session.
+     */
+    private val focusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                pausePlayer()
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                pausePlayer()
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                pausePlayer()
+            }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                resumePlayer()
+            }
+        }
+    }
 
     init {
         playbackStateBuilder = PlaybackState.Builder()
@@ -261,6 +295,22 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        if (!isAudioManagerInitialized) {
+
+            audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+            val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                .setOnAudioFocusChangeListener(focusChangeListener)
+                .build()
+
+            val result = audioManager.requestAudioFocus(audioFocusRequest)
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                // Audio focus is granted, resume playback here
+                resumePlayer()
+            }
+
+            isAudioManagerInitialized = true
+        }
         when (intent.action) {
             "ACTION_REPLACE_AND_PLAY" -> {
                 if (musicPlayer == null) {
