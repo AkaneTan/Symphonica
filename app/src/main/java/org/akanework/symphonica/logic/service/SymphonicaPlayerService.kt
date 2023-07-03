@@ -515,9 +515,4 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         updatePlaylistSheetLocation(previousLocation)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        MainActivity.managerSymphonica.cancel(1)
-    }
-
 }
