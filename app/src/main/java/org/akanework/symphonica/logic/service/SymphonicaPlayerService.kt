@@ -409,8 +409,8 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer!!.setOnCompletionListener {
             if (!isMusicPlayerError) {
                 nextSongDecisionMaker()
-                isMusicPlayerError = false
             }
+            isMusicPlayerError = false
             if (musicPlayer != null) {
                 musicPlayer!!.reset()
                 musicPlayer!!.apply {
