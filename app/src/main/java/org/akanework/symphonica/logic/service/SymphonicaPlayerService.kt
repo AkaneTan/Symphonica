@@ -80,18 +80,23 @@ import kotlin.random.Random
  */
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
+    init {
+        playbackStateBuilder = PlaybackState.Builder()
+            .setActions(
+                PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT
+                        or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO
+            )
+    }
+
     companion object {
+
+        lateinit var playbackStateBuilder: PlaybackState.Builder
 
         /**
          * [setPlaybackState] sets the playback state of the
          * media control notification.
          */
         fun setPlaybackState(operation: Int) {
-            val playbackStateBuilder = PlaybackState.Builder()
-                .setActions(
-                    PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT
-                            or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO
-                )
             when (operation) {
 
                 0 -> playbackStateBuilder.setState(
