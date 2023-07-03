@@ -376,7 +376,7 @@ class MainActivity : AppCompatActivity() {
         channelSymphonica = NotificationChannel(
             "channel_symphonica",
             "Symphonica",
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_NONE
         )
         managerSymphonica.createNotificationChannel(channelSymphonica)
 
