@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica.logic.service
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.Service
 import android.content.Intent
@@ -133,7 +134,11 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
          *
          * It does not need any arguments, instead it uses the [playlistViewModel]
          * and [Glide] to update it's info. You can call it up anywhere.
+         *
+         * About suppress, we don't need notification permission for only
+         * sending the music notification.
          */
+        @SuppressLint("NotificationPermission")
         fun updateMetadata() {
             var initialized = false
             lateinit var bitmapResource: Bitmap
