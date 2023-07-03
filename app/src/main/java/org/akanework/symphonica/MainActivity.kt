@@ -772,6 +772,7 @@ class MainActivity : AppCompatActivity() {
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
+        managerSymphonica.cancelAll()
         super.onDestroy()
     }
 
