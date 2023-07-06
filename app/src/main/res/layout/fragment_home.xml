@@ -123,7 +123,7 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/home_like"
+                        android:id="@+id/home_history"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"

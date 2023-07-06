@@ -49,6 +49,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -64,6 +65,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.loadDataFromDisk
+import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
@@ -154,6 +156,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+
+        var isDBSafe = false
+
+        val database = Room.databaseBuilder(context, HistoryDatabase::class.java,
+            "history_db").build()
+        val historyDao = database.historyDao()
 
         // This is the handler used to handle the slide task.
         private lateinit var handler: Handler
@@ -349,6 +357,13 @@ class MainActivity : AppCompatActivity() {
         libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         booleanViewModel = ViewModelProvider(this)[BooleanViewModel::class.java]
+
+        coroutineScope.launch {
+            withContext(Dispatchers.IO) {
+                libraryViewModel.libraryHistoryList = historyDao.getAllItems().map { it.value }.toMutableList()
+                isDBSafe = true
+            }
+        }
 
         // Open external audio files.
         val intent = intent

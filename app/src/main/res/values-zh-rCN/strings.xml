@@ -90,6 +90,11 @@
     <string name="home_greetings">你好!</string>
     <string name="settings_enable_akane_content">你启用了什么啊 (恼)</string>
     <string name="settings_enable_akane">启用新条茜</string>
+    <string name="playlist_active_song">当前歌曲</string>
     <string name="home_today_shuffle">今日串烧</string>
     <string name="home_recent_added">最近添加</string>
+    <string name="home_history_view_title">历史记录</string>
+    <string name="home_history_clear_all">清除所有</string>
+    <string name="home_history_counter_song">%1$s首歌</string>
+    <string name="home_history_counter_songs">%1$s首歌</string>
 </resources>

@@ -37,6 +37,10 @@ import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
@@ -397,6 +401,15 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 }
                 setLoopListener()
             }
+
+            val coroutineScope = CoroutineScope(Dispatchers.Main)
+            coroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    MainActivity.libraryViewModel.
+                        addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
+                    MainActivity.libraryViewModel.saveSongToLocal()
+                }
+            }
         }
     }
 
@@ -409,6 +422,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer!!.setOnCompletionListener {
             if (!isMusicPlayerError) {
                 nextSongDecisionMaker()
+                val coroutineScope = CoroutineScope(Dispatchers.Main)
+                coroutineScope.launch {
+                    withContext(Dispatchers.IO) {
+                        MainActivity.libraryViewModel.
+                            addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
+                        MainActivity.libraryViewModel.saveSongToLocal()
+                    }
+                }
             }
             isMusicPlayerError = false
             if (musicPlayer != null) {
