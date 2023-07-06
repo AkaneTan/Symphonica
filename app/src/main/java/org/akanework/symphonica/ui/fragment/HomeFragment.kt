@@ -39,6 +39,7 @@ import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.SongCarouselAdapter
 
 /**
@@ -148,6 +149,9 @@ class HomeFragment : Fragment() {
         val recentCarouselRecyclerView =
             rootView.findViewById<RecyclerView>(R.id.recent_recycler_view)
 
+        val homeShuffleButton =
+            rootView.findViewById<MaterialButton>(R.id.home_shuffle_all)
+
         val shuffleLayoutManager = CarouselLayoutManager()
         shuffleCarouselRecyclerView.layoutManager = shuffleLayoutManager
         shuffleAdapter = SongCarouselAdapter(shuffleList)
@@ -159,6 +163,13 @@ class HomeFragment : Fragment() {
         recentCarouselRecyclerView.adapter = recentAdapter
 
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
+
+        homeShuffleButton.setOnClickListener {
+            if (libraryViewModel.librarySongList.isNotEmpty()) {
+                replacePlaylist(libraryViewModel.librarySongList.toMutableList(),
+                    (0 until libraryViewModel.librarySongList.size).random())
+            }
+        }
 
         topAppBar.setNavigationOnClickListener {
             // Allow open drawer if only initialization have been completed.
