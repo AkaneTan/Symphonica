@@ -46,6 +46,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -67,6 +68,7 @@ import org.akanework.symphonica.logic.util.MediaStateCallback
 import org.akanework.symphonica.logic.util.Playlist
 import org.akanework.symphonica.logic.util.PlaylistCallbacks
 import org.akanework.symphonica.logic.util.Timestamp
+import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.changePlayerStatus
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
@@ -122,6 +124,12 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
+
+        var isDBSafe = false
+
+        val database = Room.databaseBuilder(context, HistoryDatabase::class.java,
+            "history_db").build()
+        val historyDao = database.historyDao()
 
         // These variables are used inside SymphonicaPlayerService.
         // They are used to manage the MediaControl notifications.
@@ -273,6 +281,13 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         // Initialize view models.
         libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
         booleanViewModel = ViewModelProvider(this)[BooleanViewModel::class.java]
+
+        coroutineScope.launch {
+            withContext(Dispatchers.IO) {
+                libraryViewModel.libraryHistoryList = historyDao.getAllItems().map { it.value }.toMutableList()
+                isDBSafe = true
+            }
+        }
 
         // Open external audio files.
         val intent = intent

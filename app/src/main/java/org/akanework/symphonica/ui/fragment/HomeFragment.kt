@@ -36,6 +36,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
@@ -151,6 +152,8 @@ class HomeFragment : Fragment() {
 
         val homeShuffleButton =
             rootView.findViewById<MaterialButton>(R.id.home_shuffle_all)
+        val homeHistoryButton =
+            rootView.findViewById<MaterialButton>(R.id.home_history)
 
         val shuffleLayoutManager = CarouselLayoutManager()
         shuffleCarouselRecyclerView.layoutManager = shuffleLayoutManager
@@ -169,6 +172,13 @@ class HomeFragment : Fragment() {
                 replacePlaylist(libraryViewModel.librarySongList.toMutableList(),
                     (0 until libraryViewModel.librarySongList.size).random())
             }
+        }
+
+        homeHistoryButton.setOnClickListener {
+            customFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, HomeHistoryFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         topAppBar.setNavigationOnClickListener {

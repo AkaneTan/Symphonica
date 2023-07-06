@@ -12,6 +12,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.function.Supplier
 
@@ -358,6 +363,17 @@ class MediaPlayerState internal constructor(private val applicationContext: Cont
 			state = StateDiagram.PREPARED
 			prepareListener?.run()
 			onDurationAvailable(durationMillis)
+		}
+		CoroutineScope(Dispatchers.Main).launch {
+			withContext(Dispatchers.IO) {
+				Log.v(TAG, "onPrepared: Start adding current song to history database")
+				MainActivity.libraryViewModel.
+				addSongToHistory(MainActivity.musicPlayer.playlist!!.getItem(
+					MainActivity.musicPlayer.playlist!!.currentPosition
+				)!!)
+				MainActivity.libraryViewModel.saveSongToLocal()
+				Log.v(TAG, "onPrepared: Adding song to history database completed")
+			}
 		}
 		Log.v(TAG, "onPrepared done")
 	}

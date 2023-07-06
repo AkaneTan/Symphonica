@@ -18,7 +18,10 @@
 package org.akanework.symphonica.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import org.akanework.symphonica.MainActivity.Companion.historyDao
+import org.akanework.symphonica.MainActivity.Companion.isDBSafe
 import org.akanework.symphonica.logic.data.Album
+import org.akanework.symphonica.logic.data.HistoryDataEntity
 import org.akanework.symphonica.logic.data.Song
 
 /**
@@ -31,4 +34,18 @@ class LibraryViewModel : ViewModel() {
     var librarySortedAlbumList: List<Album> = listOf()
     var libraryAlbumList: List<Album> = listOf()
     var libraryNewestAddedList: MutableList<Song> = mutableListOf()
+    var libraryHistoryList: MutableList<Long> = mutableListOf()
+
+    fun addSongToHistory(song: Song) {
+        if (isDBSafe) {
+            libraryHistoryList.add(song.id)
+        }
+    }
+
+    suspend fun saveSongToLocal() {
+        historyDao.clearHistoryItems()
+        libraryHistoryList.forEach { item ->
+            historyDao.insertItem(HistoryDataEntity(value = item))
+        }
+    }
 }

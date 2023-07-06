@@ -93,4 +93,8 @@
     <string name="playlist_active_song">Active song</string>
     <string name="home_today_shuffle">Today\'s Shuffle</string>
     <string name="home_recent_added">Recently added</string>
+    <string name="home_history_view_title">History</string>
+    <string name="home_history_clear_all">Clear all</string>
+    <string name="home_history_counter_song">%1$s Song</string>
+    <string name="home_history_counter_songs">%1$s Songs</string>
 </resources>
