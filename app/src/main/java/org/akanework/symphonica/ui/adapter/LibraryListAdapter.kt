@@ -91,13 +91,13 @@ class LibraryListAdapter(private val songList: List<Song>) :
         }
 
         holder.itemView.setOnClickListener {
-            playlistViewModel.currentLocation = position
-            playlistViewModel.playList = songList.toMutableList()
             if (booleanViewModel.shuffleState) {
                 booleanViewModel.shuffleState = false
                 fullSheetShuffleButton!!.isChecked = false
+                playlistViewModel.originalPlaylist.clear()
             }
-            replacePlaylist(playlistViewModel.playList, position)
+            replacePlaylist(songList.toMutableList(), position)
+            playlistViewModel.currentLocation = position
         }
 
         holder.itemView.setOnLongClickListener {
