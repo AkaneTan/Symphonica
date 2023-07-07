@@ -20,17 +20,21 @@ package org.akanework.symphonica.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
+import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.NavFragmentPageAdapter
 import org.akanework.symphonica.ui.fragment.LibraryListFragment.Companion.updateRecyclerListViewOppositeOrder
 
@@ -67,6 +71,20 @@ class LibraryFragment : Fragment() {
         val topAppBar: MaterialToolbar = rootView.findViewById(R.id.topAppBar)
         val libraryTabLayout: TabLayout = rootView.findViewById(R.id.library_tablayout)
         fragmentPager = rootView.findViewById(R.id.fragmentSwitch)
+
+        val libraryShuffleButton =
+            rootView.findViewById<FloatingActionButton>(R.id.library_shuffle_button)
+
+        if (isLibraryShuffleButtonEnabled) {
+            libraryShuffleButton.visibility = VISIBLE
+        }
+
+        libraryShuffleButton.setOnClickListener {
+            if (libraryViewModel.librarySongList.isNotEmpty()) {
+                replacePlaylist(libraryViewModel.librarySongList.toMutableList(),
+                    (0 until libraryViewModel.librarySongList.size).random())
+            }
+        }
 
         topAppBar.setNavigationOnClickListener {
             switchDrawer()
