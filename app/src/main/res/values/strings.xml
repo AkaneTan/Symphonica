@@ -97,4 +97,8 @@
     <string name="home_history_clear_all">Clear all</string>
     <string name="home_history_counter_song">%1$s Song</string>
     <string name="home_history_counter_songs">%1$s Songs</string>
+    <string name="settings_library_shuffle_button">Enable library shuffle button</string>
+    <string name="settings_library_shuffle_button_summary">Shuffle library with one click</string>
+    <string name="settings_colorful_buttons">Colorful buttons</string>
+    <string name="settings_colorful_buttons_summary">Use different colors for homepage buttons</string>
 </resources>
