@@ -227,8 +227,10 @@ class HomeFragment : Fragment() {
 
         homeShuffleButton.setOnClickListener {
             if (libraryViewModel.librarySongList.isNotEmpty()) {
-                replacePlaylist(libraryViewModel.librarySongList.toMutableList(),
-                    (0 until libraryViewModel.librarySongList.size).random())
+                replacePlaylist(
+                    libraryViewModel.librarySongList.toMutableList(),
+                    (0 until libraryViewModel.librarySongList.size).random()
+                )
             }
         }
 

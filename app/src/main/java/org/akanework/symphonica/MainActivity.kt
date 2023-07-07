@@ -32,7 +32,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -160,8 +159,10 @@ class MainActivity : AppCompatActivity() {
 
         var isDBSafe = false
 
-        val database = Room.databaseBuilder(context, HistoryDatabase::class.java,
-            "history_db").build()
+        val database = Room.databaseBuilder(
+            context, HistoryDatabase::class.java,
+            "history_db"
+        ).build()
         val historyDao = database.historyDao()
 
         // This is the handler used to handle the slide task.
@@ -365,7 +366,8 @@ class MainActivity : AppCompatActivity() {
 
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
-                libraryViewModel.libraryHistoryList = historyDao.getAllItems().map { it.value }.toMutableList()
+                libraryViewModel.libraryHistoryList =
+                    historyDao.getAllItems().map { it.value }.toMutableList()
                 isDBSafe = true
             }
         }
@@ -701,16 +703,24 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.fragmentContainer, homeFragment)
                         .commit()
                 }
+
                 getString(R.string.navigation_view_settings) -> {
-                    customFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    customFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
                     val settingsFragment = SettingsFragment()
                     customFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, settingsFragment)
                         .addToBackStack("SETTINGS")
                         .commit()
                 }
+
                 getString(R.string.navigation_view_all_song) -> {
-                    customFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    customFragmentManager.popBackStack(
+                        null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
                     val libraryFragment = LibraryFragment()
                     customFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, libraryFragment)

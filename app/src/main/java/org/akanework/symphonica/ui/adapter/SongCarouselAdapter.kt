@@ -101,11 +101,12 @@ class SongCarouselAdapter(private val songList: MutableList<Song>) :
             checkAlbumButton!!.setOnClickListener {
                 val albumBundle = Bundle().apply {
                     if (MainActivity.libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
-                        putInt("Position", MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
-                            MainActivity.libraryViewModel.librarySortedAlbumList.find {
-                                it.songList.contains(songList[position])
-                            }
-                        ))
+                        putInt("Position",
+                            MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
+                                MainActivity.libraryViewModel.librarySortedAlbumList.find {
+                                    it.songList.contains(songList[position])
+                                }
+                            ))
                     } else {
                         putInt("Position", MainActivity.libraryViewModel.libraryAlbumList.indexOf(
                             MainActivity.libraryViewModel.libraryAlbumList.find {

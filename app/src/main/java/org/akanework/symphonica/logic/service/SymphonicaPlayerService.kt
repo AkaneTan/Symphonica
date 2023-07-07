@@ -110,12 +110,15 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             AudioManager.AUDIOFOCUS_LOSS -> {
                 pausePlayer()
             }
+
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                 pausePlayer()
             }
+
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                 pausePlayer()
             }
+
             AudioManager.AUDIOFOCUS_GAIN -> {
                 resumePlayer()
             }
@@ -394,8 +397,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             val coroutineScope = CoroutineScope(Dispatchers.Main)
             coroutineScope.launch {
                 withContext(Dispatchers.IO) {
-                    MainActivity.libraryViewModel.
-                        addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
+                    MainActivity.libraryViewModel.addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
                     MainActivity.libraryViewModel.saveSongToLocal()
                 }
             }
@@ -414,8 +416,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 val coroutineScope = CoroutineScope(Dispatchers.Main)
                 coroutineScope.launch {
                     withContext(Dispatchers.IO) {
-                        MainActivity.libraryViewModel.
-                            addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
+                        MainActivity.libraryViewModel.addSongToHistory(playlistViewModel.playList[playlistViewModel.currentLocation])
                         MainActivity.libraryViewModel.saveSongToLocal()
                     }
                 }

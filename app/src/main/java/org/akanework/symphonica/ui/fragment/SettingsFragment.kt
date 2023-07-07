@@ -82,7 +82,8 @@ class SettingsFragment : Fragment() {
         val symphonicaIcon = rootView.findViewById<ImageView>(R.id.symphonica_icon)
         val akanePreference = rootView.findViewById<FrameLayout>(R.id.akane_preference)
         val akaneDisplaySwitch = rootView.findViewById<MaterialSwitch>(R.id.akane_display_settings)
-        val libraryShuffleButtonSwitch = rootView.findViewById<MaterialSwitch>(R.id.library_shuffle_button_switch)
+        val libraryShuffleButtonSwitch =
+            rootView.findViewById<MaterialSwitch>(R.id.library_shuffle_button_switch)
         val enableListShuffleSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 

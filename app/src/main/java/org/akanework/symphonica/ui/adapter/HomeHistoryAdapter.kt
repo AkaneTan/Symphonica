@@ -20,7 +20,6 @@ package org.akanework.symphonica.ui.adapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -106,11 +105,12 @@ class HomeHistoryAdapter(private val songList: List<Song>) :
             checkAlbumButton!!.setOnClickListener {
                 val albumBundle = Bundle().apply {
                     if (MainActivity.libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
-                        putInt("Position", MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
-                            MainActivity.libraryViewModel.librarySortedAlbumList.find {
-                                it.songList.contains(songList[position])
-                            }
-                        ))
+                        putInt("Position",
+                            MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
+                                MainActivity.libraryViewModel.librarySortedAlbumList.find {
+                                    it.songList.contains(songList[position])
+                                }
+                            ))
                     } else {
                         putInt("Position", MainActivity.libraryViewModel.libraryAlbumList.indexOf(
                             MainActivity.libraryViewModel.libraryAlbumList.find {
