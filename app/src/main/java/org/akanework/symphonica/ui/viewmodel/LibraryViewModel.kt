@@ -44,7 +44,8 @@ class LibraryViewModel : ViewModel() {
 
     suspend fun saveSongToLocal() {
         historyDao.clearHistoryItems()
-        libraryHistoryList.forEach { item ->
+        val copyList = ArrayList(libraryHistoryList)
+        for (item in copyList) {
             historyDao.insertItem(HistoryDataEntity(value = item))
         }
     }
