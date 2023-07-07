@@ -85,12 +85,12 @@
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        app:backgroundTint="?attr/colorTertiaryContainer"
+                        app:backgroundTint="?attr/colorPrimaryContainer"
                         app:icon="@drawable/ic_shuffle"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="30sp"
-                        app:iconTint="?attr/colorOnTertiaryContainer" />
+                        app:iconTint="?attr/colorOnPrimaryContainer" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -109,12 +109,12 @@
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        app:backgroundTint="?attr/colorSecondaryContainer"
+                        app:backgroundTint="?attr/colorPrimaryContainer"
                         app:icon="@drawable/ic_favourite"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="30sp"
-                        app:iconTint="?attr/colorOnSecondaryContainer" />
+                        app:iconTint="?attr/colorOnPrimaryContainer" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -157,12 +157,12 @@
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        app:backgroundTint="?attr/colorTertiaryContainer"
+                        app:backgroundTint="?attr/colorPrimaryContainer"
                         app:icon="@drawable/ic_playlist"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="30sp"
-                        app:iconTint="?attr/colorOnTertiaryContainer" />
+                        app:iconTint="?attr/colorOnPrimaryContainer" />
                 </FrameLayout>
             </LinearLayout>
 

@@ -195,6 +195,7 @@ class MainActivity : AppCompatActivity() {
 
         // Below is the custom variables that can be changed throughout
         // the settings.
+        var isColorfulButtonEnabled: Boolean = false
         var isGlideCacheEnabled: Boolean = false
         var isForceLoadingEnabled: Boolean = false
         var isForceDarkModeEnabled: Boolean = false
@@ -310,6 +311,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get customized options.
         val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
+        isColorfulButtonEnabled = prefs.getBoolean("isColorfulButtonEnabled", false)
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)

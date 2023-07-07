@@ -34,6 +34,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
 import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
+import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.isEasterEggDiscovered
 import org.akanework.symphonica.MainActivity.Companion.isForceDarkModeEnabled
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
@@ -75,6 +76,7 @@ class SettingsFragment : Fragment() {
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
         val versionTag = rootView.findViewById<TextView>(R.id.version_tag)
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
+        val colorfulButtonSwitch = rootView.findViewById<MaterialSwitch>(R.id.home_colorful_button)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
         val darkModeSwitch = rootView.findViewById<MaterialSwitch>(R.id.force_dark_mode_switch)
         val symphonicaIcon = rootView.findViewById<ImageView>(R.id.symphonica_icon)
@@ -85,6 +87,7 @@ class SettingsFragment : Fragment() {
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 
         cacheSwitch.isChecked = isGlideCacheEnabled
+        colorfulButtonSwitch.isChecked = isColorfulButtonEnabled
         reorderSwitch.isChecked = isForceLoadingEnabled
         darkModeSwitch.isChecked = isForceDarkModeEnabled
         enableListShuffleSwitch.isChecked = isListShuffleEnabled
@@ -105,6 +108,21 @@ class SettingsFragment : Fragment() {
                 true
             } else {
                 editor.putBoolean("isGlideCacheEnabled", false)
+                editor.apply()
+                false
+            }
+        }
+
+        colorfulButtonSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isColorfulButtonEnabled = if (isChecked) {
+                editor.putBoolean("isColorfulButtonEnabled", true)
+                editor.apply()
+                true
+            } else {
+                editor.putBoolean("isColorfulButtonEnabled", false)
                 editor.apply()
                 false
             }

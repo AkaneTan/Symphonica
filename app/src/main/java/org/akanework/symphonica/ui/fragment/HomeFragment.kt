@@ -18,6 +18,7 @@
 package org.akanework.symphonica.ui.fragment
 
 import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -34,9 +35,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
@@ -152,8 +155,63 @@ class HomeFragment : Fragment() {
 
         val homeShuffleButton =
             rootView.findViewById<MaterialButton>(R.id.home_shuffle_all)
+        val homeFavouriteButton =
+            rootView.findViewById<MaterialButton>(R.id.home_favourite)
         val homeHistoryButton =
             rootView.findViewById<MaterialButton>(R.id.home_history)
+        val homePlaylistButton =
+            rootView.findViewById<MaterialButton>(R.id.home_playlist)
+
+        if (isColorfulButtonEnabled) {
+            homeShuffleButton.setBackgroundColor(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorTertiaryContainer
+                )
+            )
+            homeShuffleButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorOnTertiaryContainer
+                )
+            )
+            homeFavouriteButton.setBackgroundColor(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorSecondaryContainer
+                )
+            )
+            homeFavouriteButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorOnSecondaryContainer
+                )
+            )
+            homeHistoryButton.setBackgroundColor(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorPrimaryContainer
+                )
+            )
+            homeHistoryButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorOnPrimaryContainer
+                )
+            )
+            homePlaylistButton.setBackgroundColor(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorTertiaryContainer
+                )
+            )
+            homePlaylistButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    homeShuffleButton,
+                    com.google.android.material.R.attr.colorOnTertiaryContainer
+                )
+            )
+        }
 
         val shuffleLayoutManager = CarouselLayoutManager()
         shuffleCarouselRecyclerView.layoutManager = shuffleLayoutManager
