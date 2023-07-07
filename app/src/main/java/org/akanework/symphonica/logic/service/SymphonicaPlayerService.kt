@@ -303,19 +303,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (!isAudioManagerInitialized) {
-
             audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
-            val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                .setOnAudioFocusChangeListener(focusChangeListener)
-                .build()
-
-            val result = audioManager.requestAudioFocus(audioFocusRequest)
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                // Audio focus is granted, resume playback here
-                resumePlayer()
-            }
-
             isAudioManagerInitialized = true
         }
         when (intent.action) {
@@ -399,6 +387,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
                     mediaSession.setCallback(mediaSessionCallback)
                 }
+                requestAudioFocus()
                 setLoopListener()
             }
 
@@ -450,6 +439,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
                         mediaSession.setCallback(mediaSessionCallback)
                     }
+                    requestAudioFocus()
                     setLoopListener()
                     killMiniPlayer()
                 }
@@ -538,6 +528,18 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 }
         }
         updatePlaylistSheetLocation(previousLocation)
+    }
+
+    private fun requestAudioFocus() {
+        val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            .setOnAudioFocusChangeListener(focusChangeListener)
+            .build()
+
+        val result = audioManager.requestAudioFocus(audioFocusRequest)
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            // Audio focus is granted, resume playback here
+            resumePlayer()
+        }
     }
 
 }
