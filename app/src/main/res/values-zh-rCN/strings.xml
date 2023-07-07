@@ -30,7 +30,7 @@
     <string name="library_tab_album">专辑</string>
     <string name="library_tab_list">列表</string>
     <string name="loading_your_library">正在加载你的专辑库。</string>
-    <string name="navigation_view_all_song">全部歌曲</string>
+    <string name="navigation_view_all_song">曲库</string>
     <string name="navigation_view_settings">设置</string>
     <string name="navigation_view_subtitle">欢迎回来!</string>
     <string name="settings_app_name">应用名称</string>

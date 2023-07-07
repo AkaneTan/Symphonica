@@ -42,7 +42,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/library_view_menu"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="@string/app_name"
+            app:title="@string/navigation_view_all_song"
             app:titleCentered="true"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
             app:titleTextColor="?attr/colorControlNormal" />
