@@ -431,6 +431,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     }
                 }
             }
+            musicPlayer!!.setOnErrorListener { _, _, _ ->
+                isMusicPlayerError = true
+                false
+            }
             isMusicPlayerError = false
             if (musicPlayer != null) {
                 musicPlayer!!.reset()
