@@ -538,20 +538,25 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
             }
         }
 
+        bottomFullSizePlayerPreview.alpha = 0f
+
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED && bottomPlayerPreview.isVisible) {
                     bottomFullSizePlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = false
+                    Log.d("TAGTAG", "TAGTAG1")
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     if (booleanViewModel.isBottomSheetOpen) {
                         bottomPlayerPreview.alpha = 0f
                     }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
+                    Log.d("TAGTAG", "TAGTAG2")
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = true
+                    Log.d("TAGTAG", "TAGTAG3")
                 }
             }
 
