@@ -135,7 +135,7 @@
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
                         app:backgroundTint="?attr/colorPrimaryContainer"
-                        app:icon="@drawable/ic_refresh"
+                        app:icon="@drawable/ic_history"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="30sp"
