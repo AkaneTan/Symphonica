@@ -39,7 +39,7 @@
             android:fitsSystemWindows="false"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:navigationIcon="@drawable/ic_library_music"
+            app:navigationIcon="@drawable/ic_menu"
             app:title="@string/navigation_view_settings"
             app:titleCentered="true"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
