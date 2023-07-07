@@ -161,6 +161,7 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         var isGlideCacheEnabled: Boolean = false
         var isForceLoadingEnabled: Boolean = false
         var isForceDarkModeEnabled: Boolean = false
+        var isLibraryShuffleButtonEnabled: Boolean = false
         var isListShuffleEnabled: Boolean = true
         var isEasterEggDiscovered: Boolean = false
         var isAkaneVisible: Boolean = false
@@ -256,6 +257,7 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
+        isLibraryShuffleButtonEnabled = prefs.getBoolean("isLibraryShuffleButtonEnabled", false)
         isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
         isEasterEggDiscovered = prefs.getBoolean("isEasterEggDiscovered", false)
         isAkaneVisible = prefs.getBoolean("isAkaneVisible", false)

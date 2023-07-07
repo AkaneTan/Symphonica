@@ -38,6 +38,7 @@ import org.akanework.symphonica.MainActivity.Companion.isEasterEggDiscovered
 import org.akanework.symphonica.MainActivity.Companion.isForceDarkModeEnabled
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
+import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
@@ -79,6 +80,7 @@ class SettingsFragment : Fragment() {
         val symphonicaIcon = rootView.findViewById<ImageView>(R.id.symphonica_icon)
         val akanePreference = rootView.findViewById<FrameLayout>(R.id.akane_preference)
         val akaneDisplaySwitch = rootView.findViewById<MaterialSwitch>(R.id.akane_display_settings)
+        val libraryShuffleButtonSwitch = rootView.findViewById<MaterialSwitch>(R.id.library_shuffle_button_switch)
         val enableListShuffleSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
 
@@ -87,6 +89,7 @@ class SettingsFragment : Fragment() {
         darkModeSwitch.isChecked = isForceDarkModeEnabled
         enableListShuffleSwitch.isChecked = isListShuffleEnabled
         akaneDisplaySwitch.isChecked = isAkaneVisible
+        libraryShuffleButtonSwitch.isChecked = isLibraryShuffleButtonEnabled
 
         if (isEasterEggDiscovered) {
             akanePreference.visibility = VISIBLE
@@ -167,6 +170,21 @@ class SettingsFragment : Fragment() {
                 editor.putBoolean("isAkaneVisible", false)
                 editor.apply()
                 requireActivity().findViewById<ImageView>(R.id.akane).visibility = GONE
+                false
+            }
+        }
+
+        libraryShuffleButtonSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val editor =
+                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .edit()
+            isLibraryShuffleButtonEnabled = if (isChecked) {
+                editor.putBoolean("isLibraryShuffleButtonEnabled", true)
+                editor.apply()
+                true
+            } else {
+                editor.putBoolean("isLibraryShuffleButtonEnabled", false)
+                editor.apply()
                 false
             }
         }
