@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica.ui.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -35,6 +36,7 @@ import org.akanework.symphonica.logic.util.addToNext
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 /**
  * [HomeHistoryAdapter] is used for displaying song lists
@@ -101,7 +103,32 @@ class HomeHistoryAdapter(private val songList: List<Song>) :
             val addToNextButton = rootView.findViewById<FrameLayout>(R.id.dialog_add_to_next)
             val checkAlbumButton = rootView.findViewById<FrameLayout>(R.id.dialog_check_album)
 
-            checkAlbumButton!!.visibility = GONE
+            checkAlbumButton!!.setOnClickListener {
+                val albumBundle = Bundle().apply {
+                    if (MainActivity.libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
+                        putInt("Position", MainActivity.libraryViewModel.librarySortedAlbumList.indexOf(
+                            MainActivity.libraryViewModel.librarySortedAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    } else {
+                        putInt("Position", MainActivity.libraryViewModel.libraryAlbumList.indexOf(
+                            MainActivity.libraryViewModel.libraryAlbumList.find {
+                                it.songList.contains(songList[position])
+                            }
+                        ))
+                    }
+                }
+                val albumFragment = LibraryAlbumDisplayFragment().apply {
+                    arguments = albumBundle
+                }
+
+                MainActivity.customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, albumFragment)
+                    .addToBackStack(null)
+                    .commit()
+                rootView.dismiss()
+            }
 
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])

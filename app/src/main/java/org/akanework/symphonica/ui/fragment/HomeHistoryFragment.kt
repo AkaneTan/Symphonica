@@ -36,11 +36,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.historyDao
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.HomeHistoryAdapter
 
 /**
@@ -72,11 +74,24 @@ class HomeHistoryFragment : Fragment() {
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.home_history_recyclerview)
 
+        val playButton = rootView.findViewById<MaterialButton>(R.id.home_history_play_button)
         val clearAllButton = rootView.findViewById<MaterialButton>(R.id.home_history_clear_button)
 
         val songNumber = libraryViewModel.libraryHistoryList.size
 
         val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        playButton.setOnClickListener {
+            if (historySongList.size > 0) {
+                if (MainActivity.booleanViewModel.shuffleState) {
+                    MainActivity.booleanViewModel.shuffleState = false
+                    MainActivity.fullSheetShuffleButton!!.isChecked = false
+                    MainActivity.playlistViewModel.originalPlaylist.clear()
+                }
+                replacePlaylist(historySongList, 0)
+                MainActivity.playlistViewModel.currentLocation = 0
+            }
+        }
 
         clearAllButton.setOnClickListener {
 
