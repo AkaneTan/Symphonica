@@ -19,6 +19,8 @@ package org.akanework.symphonica.logic.service
 
 import android.annotation.SuppressLint
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -134,6 +136,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     companion object {
+
+        var managerSymphonica: NotificationManager? = null
+        var channelSymphonica: NotificationChannel? = null
 
         lateinit var playbackStateBuilder: PlaybackState.Builder
 
@@ -252,7 +257,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                         .build()
                 )
             }
-            MainActivity.managerSymphonica.notify(1, notification)
+            managerSymphonica!!.notify(1, notification)
         }
     }
 
@@ -309,6 +314,18 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             isAudioManagerInitialized = true
         }
+
+        if (managerSymphonica == null && channelSymphonica == null) {
+            // Initialize notification service.
+            managerSymphonica = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            channelSymphonica = NotificationChannel(
+                "channel_symphonica",
+                "Symphonica",
+                NotificationManager.IMPORTANCE_NONE
+            )
+            managerSymphonica!!.createNotificationChannel(channelSymphonica!!)
+            startForeground(1, notification)
+        }
         when (intent.action) {
             "ACTION_REPLACE_AND_PLAY" -> {
                 if (musicPlayer == null) {
@@ -335,7 +352,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 if (musicPlayer != null && !musicPlayer!!.isPlaying) {
                     musicPlayer!!.start()
                     broadcastPlayStart()
-                    if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                    if (managerSymphonica!!.activeNotifications.isEmpty()) {
                         mediaSession.setCallback(mediaSessionCallback)
                     }
                     killMiniPlayer()
@@ -375,6 +392,13 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        managerSymphonica?.cancelAll()
+        stopPlaying()
+    }
+
     private fun startPlaying() {
         if (musicPlayer != null) {
             killMiniPlayer()
@@ -387,7 +411,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 setOnPreparedListener(this@SymphonicaPlayerService)
                 prepareAsync()
                 broadcastPlayStart()
-                if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                if (managerSymphonica!!.activeNotifications.isEmpty()) {
                     mediaSession.setCallback(mediaSessionCallback)
                 }
                 requestAudioFocus()
@@ -437,7 +461,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     setOnPreparedListener(this@SymphonicaPlayerService)
                     prepareAsync()
                     broadcastPlayStart()
-                    if (MainActivity.managerSymphonica.activeNotifications.isEmpty()) {
+                    if (managerSymphonica!!.activeNotifications.isEmpty()) {
                         mediaSession.setCallback(mediaSessionCallback)
                     }
                     requestAudioFocus()

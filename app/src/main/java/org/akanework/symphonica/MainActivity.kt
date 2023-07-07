@@ -20,8 +20,6 @@
 package org.akanework.symphonica
 
 import android.animation.ObjectAnimator
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -167,11 +165,6 @@ class MainActivity : AppCompatActivity() {
 
         // This is the handler used to handle the slide task.
         private lateinit var handler: Handler
-
-        // These variables are used inside SymphonicaPlayerService.
-        // They are used to manage the MediaControl notifications.
-        lateinit var managerSymphonica: NotificationManager
-        lateinit var channelSymphonica: NotificationChannel
 
         // These are the views inside MainActivity.
         // They're in companion area because some of the companion
@@ -394,15 +387,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Initialize notification service.
-        managerSymphonica = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        channelSymphonica = NotificationChannel(
-            "channel_symphonica",
-            "Symphonica",
-            NotificationManager.IMPORTANCE_NONE
-        )
-        managerSymphonica.createNotificationChannel(channelSymphonica)
 
         // Inflate the view.
         setContentView(R.layout.activity_main)
@@ -809,7 +793,6 @@ class MainActivity : AppCompatActivity() {
         fullSheetShuffleButton = null
         val intent = Intent(this, SymphonicaPlayerService::class.java)
         stopService(intent)
-        managerSymphonica.cancelAll()
     }
 
     /**
