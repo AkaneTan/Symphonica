@@ -58,7 +58,7 @@ import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.changePlayerStatus
+import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.pausePlayer
 import org.akanework.symphonica.logic.util.prevSong
@@ -122,7 +122,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             }
 
             AudioManager.AUDIOFOCUS_GAIN -> {
-                resumePlayer()
+                if (userRequestedAudioFocus) {
+                    resumePlayer()
+                }
             }
         }
     }
@@ -136,6 +138,8 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     companion object {
+
+        var userRequestedAudioFocus = false
 
         var managerSymphonica: NotificationManager? = null
         var channelSymphonica: NotificationChannel? = null
@@ -278,7 +282,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
         override fun onPause() {
             if (musicPlayer != null) {
-                changePlayerStatus()
+                userChangedPlayerStatus()
             } else if (playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -288,7 +292,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
         override fun onPlay() {
             if (musicPlayer != null) {
-                changePlayerStatus()
+                userChangedPlayerStatus()
             } else if (playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -556,6 +560,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     private fun requestAudioFocus() {
+        userRequestedAudioFocus = true
         val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
             .setOnAudioFocusChangeListener(focusChangeListener)
             .build()

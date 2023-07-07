@@ -69,7 +69,7 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.changePlayerStatus
+import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
@@ -529,7 +529,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
-                changePlayerStatus()
+                userChangedPlayerStatus()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
@@ -559,7 +559,7 @@ class MainActivity : AppCompatActivity() {
 
         fullSheetControlButton.setOnClickListener {
             if (musicPlayer != null) {
-                changePlayerStatus()
+                userChangedPlayerStatus()
             } else if (musicPlayer == null && playlistViewModel.playList.size != 0
                 && playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {

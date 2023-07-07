@@ -23,6 +23,7 @@ import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.userRequestedAudioFocus
 
 /**
  * [replacePlaylist] replaces playlist with the given argument
@@ -113,13 +114,16 @@ fun resumePlayer() {
 }
 
 /**
- * [changePlayerStatus] changes [SymphonicaPlayerService]'s
+ * [userChangedPlayerStatus] changes [SymphonicaPlayerService]'s
  * player status. If paused then play. If is playing then pause.
+ * This method is supposed to be used by user controlled controllers.
  */
-fun changePlayerStatus() {
+fun userChangedPlayerStatus() {
     if (musicPlayer != null && musicPlayer!!.isPlaying) {
         pausePlayer()
+        userRequestedAudioFocus = false
     } else {
         resumePlayer()
+        userRequestedAudioFocus = true
     }
 }
