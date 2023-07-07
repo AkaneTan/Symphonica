@@ -32,7 +32,10 @@ import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
@@ -47,6 +50,7 @@ import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
+import org.akanework.symphonica.MainActivity.Companion.isMainActivityActive
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
@@ -58,12 +62,12 @@ import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.pausePlayer
 import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.resumePlayer
 import org.akanework.symphonica.logic.util.thisSong
+import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 import kotlin.random.Random
 
@@ -110,15 +114,21 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private val focusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         when (focusChange) {
             AudioManager.AUDIOFOCUS_LOSS -> {
-                pausePlayer()
+                if (!booleanViewModel.isSendingRequest) {
+                    pausePlayer()
+                }
             }
 
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                pausePlayer()
+                if (!booleanViewModel.isSendingRequest) {
+                    pausePlayer()
+                }
             }
 
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                pausePlayer()
+                if (!booleanViewModel.isSendingRequest) {
+                    pausePlayer()
+                }
             }
 
             AudioManager.AUDIOFOCUS_GAIN -> {
@@ -321,7 +331,8 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
         if (managerSymphonica == null && channelSymphonica == null) {
             // Initialize notification service.
-            managerSymphonica = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            managerSymphonica =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             channelSymphonica = NotificationChannel(
                 "channel_symphonica",
                 "Symphonica",
@@ -398,9 +409,11 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        stopForeground(STOP_FOREGROUND_REMOVE)
-        managerSymphonica?.cancelAll()
-        stopPlaying()
+        if (isMainActivityActive == null) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            managerSymphonica?.cancelAll()
+            stopPlaying()
+        }
     }
 
     private fun startPlaying() {
@@ -448,6 +461,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                         MainActivity.libraryViewModel.saveSongToLocal()
                     }
                 }
+                requestAudioFocus()
             }
             isMusicPlayerError = false
             if (musicPlayer != null) {
@@ -464,7 +478,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     if (managerSymphonica!!.activeNotifications.isEmpty()) {
                         mediaSession.setCallback(mediaSessionCallback)
                     }
-                    requestAudioFocus()
                     setLoopListener()
                     killMiniPlayer()
                 }
@@ -560,12 +573,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
             .setOnAudioFocusChangeListener(focusChangeListener)
             .build()
-
-        val result = audioManager.requestAudioFocus(audioFocusRequest)
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // Audio focus is granted, resume playback here
-            resumePlayer()
+        booleanViewModel.isSendingRequest = true
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = Runnable {
+            booleanViewModel.isSendingRequest = false
         }
+        handler.postDelayed(runnable, 50)
+
+        audioManager.requestAudioFocus(audioFocusRequest)
     }
 
 }

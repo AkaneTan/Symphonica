@@ -33,4 +33,5 @@ class PlaylistViewModel : ViewModel() {
     var playList = mutableListOf<Song>()
     var originalPlaylist = mutableListOf<Song>()
     var currentLocation: Int = 0
+    var firstTimeExecutionError = false
 }

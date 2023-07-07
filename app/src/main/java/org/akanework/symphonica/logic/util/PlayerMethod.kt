@@ -119,11 +119,11 @@ fun resumePlayer() {
  * This method is supposed to be used by user controlled controllers.
  */
 fun userChangedPlayerStatus() {
-    if (musicPlayer != null && musicPlayer!!.isPlaying) {
+    userRequestedAudioFocus = if (musicPlayer != null && musicPlayer!!.isPlaying) {
         pausePlayer()
-        userRequestedAudioFocus = false
+        false
     } else {
         resumePlayer()
-        userRequestedAudioFocus = true
+        true
     }
 }

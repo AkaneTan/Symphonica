@@ -69,12 +69,12 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
-import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
+import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet
 import org.akanework.symphonica.ui.fragment.HomeFragment
 import org.akanework.symphonica.ui.fragment.LibraryFragment
@@ -154,6 +154,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+
+        var isMainActivityActive: Boolean? = null
 
         var isDBSafe = false
 
@@ -302,6 +304,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isMainActivityActive = true
 
         // Get customized options.
         val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
@@ -618,7 +622,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        bottomFullSizePlayerPreview.alpha = 0f
+        if (booleanViewModel.isExecutingFirstTime && !booleanViewModel.isBottomSheetOpen) {
+            bottomFullSizePlayerPreview.alpha = 0f
+        }
 
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -732,6 +738,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // TODO: Make another pop up when denied to state why you need the permission.
+
+        booleanViewModel.isExecutingFirstTime = false
     }
 
     override fun onRequestPermissionsResult(
@@ -791,6 +799,7 @@ class MainActivity : AppCompatActivity() {
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
+        isMainActivityActive = null
         val intent = Intent(this, SymphonicaPlayerService::class.java)
         stopService(intent)
     }
