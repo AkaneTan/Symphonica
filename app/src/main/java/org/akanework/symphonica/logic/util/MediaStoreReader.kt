@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 Akane Foundation
+ *     Copyright (C) 2023  Akane Foundation
  *
- *     This file is part of Symphonica.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *     Symphonica is free software: you can redistribute it and/or modify it under the terms
- *     of the GNU General Public License as published by the Free Software Foundation,
- *     either version 3 of the License, or (at your option) any later version.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
- *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License along with
- *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.logic.util
@@ -33,6 +33,9 @@ import org.akanework.symphonica.logic.data.Song
 /**
  * [getAllAlbums] flushes your [Album].
  * This is called when first booting up.
+ *
+ * @param externalSongList
+ * @return
  */
 fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
@@ -66,6 +69,9 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
  * should be fast anyways.
  * I'll leave the switch for re-ordering the albumList at the beginning.
  * Thank you for your understanding.
+ *
+ * @param albumList
+ * @return
  */
 fun sortAlbumListByTrackNumber(albumList: List<Album>): List<Album> {
     val maxTrackNumber = albumList
@@ -82,6 +88,10 @@ fun sortAlbumListByTrackNumber(albumList: List<Album>): List<Album> {
 /**
  * [countingSortSongsByTrackNumber] is radix sorting.
  * Despite of its dirtiness, it's fast though.
+ *
+ * @param songList
+ * @param maxTrackNumber
+ * @return
  */
 fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): List<Song> {
     val count = IntArray(maxTrackNumber + 1) { 0 }
@@ -113,6 +123,9 @@ fun countingSortSongsByTrackNumber(songList: List<Song>, maxTrackNumber: Int): L
  * Very fast, huh?
  *
  * [getAllAlbums] uses list which is its output.
+ *
+ * @param context
+ * @return
  */
 fun getAllSongs(context: Context): List<Song> {
     val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
@@ -162,9 +175,9 @@ fun getAllSongs(context: Context): List<Song> {
             val albumId = it.getLong(albumIdColumn)
             val addDate = it.getLongOrNull(addDateColumn)
 
-            val sArtworkUri = Uri.parse("content://media/external/audio/albumart")
+            val artworkUri = Uri.parse("content://media/external/audio/albumart")
             val imgUri = ContentUris.withAppendedId(
-                sArtworkUri,
+                artworkUri,
                 albumId
             )
 
@@ -182,6 +195,9 @@ fun getAllSongs(context: Context): List<Song> {
  * Mediastore.
  *
  * Return values is [Int].
+ *
+ * @param songUri
+ * @return
  */
 fun getTrackNumber(songUri: String): Int {
     val projection = arrayOf(MediaStore.Audio.Media.TRACK)
@@ -199,7 +215,7 @@ fun getTrackNumber(songUri: String): Int {
     cursor?.use {
         if (cursor.moveToFirst()) {
             trackNumber =
-                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
         }
     }
 
@@ -219,6 +235,9 @@ fun getTrackNumber(songUri: String): Int {
  * MediaStore.
  * It is also been used inside [Album]'s display
  * page.
+ *
+ * @param songUri
+ * @return
  */
 fun getYear(songUri: String): String? {
     val projection = arrayOf(MediaStore.Audio.Media.YEAR)
@@ -236,7 +255,7 @@ fun getYear(songUri: String): String? {
     cursor?.use {
         if (cursor.moveToFirst()) {
             year =
-                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
         }
     }
 
@@ -248,6 +267,9 @@ fun getYear(songUri: String): String? {
  * This fills up an [ImageView] with a [Song]'s cover.
  * It requires an [imgUri] to function which can be
  * found in [Song].
+ *
+ * @param imgUri
+ * @param songCover
  */
 fun fillSongCover(imgUri: Uri, songCover: ImageView) {
     Glide.with(context)
@@ -259,10 +281,11 @@ fun fillSongCover(imgUri: Uri, songCover: ImageView) {
 /**
  * [findTopTenSongsByAddDate] arranges the song by [Song.addDate]
  * and outputs ten recently added songs.
+ *
+ * @param songs
+ * @return
  */
-fun findTopTenSongsByAddDate(songs: List<Song>): MutableList<Song> {
-    return songs.asSequence()
-        .sortedByDescending { it.addDate ?: 0 }
-        .take(10)
-        .toMutableList()
-}
+fun findTopTenSongsByAddDate(songs: List<Song>): MutableList<Song> = songs.asSequence()
+    .sortedByDescending { it.addDate ?: 0 }
+    .take(10)
+    .toMutableList()

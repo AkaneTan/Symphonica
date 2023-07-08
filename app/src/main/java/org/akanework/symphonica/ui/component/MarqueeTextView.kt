@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 Akane Foundation
+ *     Copyright (C) 2023  Akane Foundation
  *
- *     This file is part of Symphonica.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *     Symphonica is free software: you can redistribute it and/or modify it under the terms
- *     of the GNU General Public License as published by the Free Software Foundation,
- *     either version 3 of the License, or (at your option) any later version.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
- *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License along with
- *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.component
@@ -37,8 +37,11 @@ class MarqueeTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatTextView(context, attrs, defStyleAttr) {
-
+) : AppCompatTextView(
+    context,
+    attrs,
+    defStyleAttr
+) {
     init {
         isSingleLine = true
         ellipsize = android.text.TextUtils.TruncateAt.MARQUEE
@@ -47,17 +50,21 @@ class MarqueeTextView @JvmOverloads constructor(
         isFocusableInTouchMode = true
     }
 
-    override fun isFocused(): Boolean {
-        return true
-    }
+    override fun isFocused(): Boolean = true
 
-    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
-        if (focused)
+    override fun onFocusChanged(
+        focused: Boolean,
+        direction: Int,
+        previouslyFocusedRect: Rect?
+    ) {
+        if (focused) {
             super.onFocusChanged(focused, direction, previouslyFocusedRect)
+        }
     }
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
-        if (hasWindowFocus)
+        if (hasWindowFocus) {
             super.onWindowFocusChanged(hasWindowFocus)
+        }
     }
 }

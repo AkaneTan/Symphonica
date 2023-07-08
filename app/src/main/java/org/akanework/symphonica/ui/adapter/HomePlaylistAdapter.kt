@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 Akane Foundation
+ *     Copyright (C) 2023  Akane Foundation
  *
- *     This file is part of Symphonica.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *     Symphonica is free software: you can redistribute it and/or modify it under the terms
- *     of the GNU General Public License as published by the Free Software Foundation,
- *     either version 3 of the License, or (at your option) any later version.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
- *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License along with
- *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.adapter
@@ -22,13 +22,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
+import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.data.PlaylistDataEntity
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.PlaylistDataEntity
 
 /**
  * [HomePlaylistAdapter] is used for displaying song lists
@@ -36,16 +38,7 @@ import org.akanework.symphonica.logic.data.PlaylistDataEntity
  */
 class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
     RecyclerView.Adapter<HomePlaylistAdapter.ViewHolder>() {
-
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
-    /**
-     * Upon creation, viewbinding everything.
-     */
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val playlistTitle: TextView = view.findViewById(R.id.playlist_title)
-        val playlistDesc: TextView = view.findViewById(R.id.playlist_desc)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -53,9 +46,7 @@ class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return playlistList.size
-    }
+    override fun getItemCount(): Int = playlistList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.playlistTitle.text = playlistList[position].name
@@ -64,7 +55,7 @@ class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
         }
 
         holder.itemView.setOnClickListener {
-        }
+            }
 
         holder.itemView.setOnLongClickListener {
             val adapterPosition = holder.adapterPosition
@@ -84,4 +75,11 @@ class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
         }
     }
 
+    /**
+     * Upon creation, viewbinding everything.
+     */
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val playlistTitle: TextView = view.findViewById(R.id.playlist_title)
+        val playlistDesc: TextView = view.findViewById(R.id.playlist_desc)
+    }
 }

@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 Akane Foundation
+ *     Copyright (C) 2023  Akane Foundation
  *
- *     This file is part of Symphonica.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *     Symphonica is free software: you can redistribute it and/or modify it under the terms
- *     of the GNU General Public License as published by the Free Software Foundation,
- *     either version 3 of the License, or (at your option) any later version.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
- *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License along with
- *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.fragment
@@ -52,23 +52,23 @@ import org.akanework.symphonica.ui.viewmodel.AlbumDisplayViewModel
  * page.
  */
 class LibraryAlbumDisplayFragment : Fragment() {
-
     private var albumDisplayViewModel: AlbumDisplayViewModel? = null
     private var position: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
         returnTransition =
-            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
-        if (albumDisplayViewModel == null) {
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+        albumDisplayViewModel ?: run {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_library_album_view, container, false)
@@ -80,15 +80,11 @@ class LibraryAlbumDisplayFragment : Fragment() {
         val displayPlay: MaterialButton = rootView.findViewById(R.id.library_album_view_play)
         val displayShuffle: MaterialButton = rootView.findViewById(R.id.library_album_view_shuffle)
 
-        if (albumDisplayViewModel == null) {
+        albumDisplayViewModel ?: run {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
         }
 
-        position = if (albumDisplayViewModel!!.position == null) {
-            requireArguments().getInt("Position")
-        } else {
-            albumDisplayViewModel!!.position
-        }
+        position = albumDisplayViewModel!!.position ?: requireArguments().getInt("Position")
 
         try {
             Glide.with(requireContext())
@@ -102,14 +98,15 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
         albumName.text = libraryViewModel.libraryAlbumList[position!!].title
         albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
-        if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(R.string.library_album_view_unknown_artist)) {
+        if (libraryViewModel.libraryAlbumList[position!!].artist ==
+                requireActivity().getString(R.string.library_album_view_unknown_artist)) {
             albumArtist.text = libraryViewModel.libraryAlbumList[position!!].songList.first().artist
         } else {
             albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
         }
 
         val year = getYear(libraryViewModel.libraryAlbumList[position!!].songList.first().path)
-        if (year != null) {
+        year?.let {
             albumYear.text = year
         }
 
@@ -122,11 +119,11 @@ class LibraryAlbumDisplayFragment : Fragment() {
         val sortedSongList: List<Song>
         if (libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
             libraryAlbumView.adapter =
-                LibraryDisplayAdapter(libraryViewModel.librarySortedAlbumList[position!!].songList)
+                    LibraryDisplayAdapter(libraryViewModel.librarySortedAlbumList[position!!].songList)
             sortedSongList = libraryViewModel.librarySortedAlbumList[position!!].songList
         } else {
             libraryAlbumView.adapter =
-                LibraryDisplayAdapter(libraryViewModel.libraryAlbumList[position!!].songList)
+                    LibraryDisplayAdapter(libraryViewModel.libraryAlbumList[position!!].songList)
             sortedSongList = libraryViewModel.libraryAlbumList[position!!].songList
         }
         libraryAlbumView.layoutManager = LinearLayoutManager(context)
@@ -167,8 +164,8 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
                     dialogName.setText(libraryViewModel.libraryAlbumList[position!!].title)
                     if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(
-                            R.string.library_album_view_unknown_artist
-                        )
+                        R.string.library_album_view_unknown_artist
+                    )
                     ) {
                         dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].songList.first().artist)
                     } else {
@@ -200,5 +197,4 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
         return rootView
     }
-
 }

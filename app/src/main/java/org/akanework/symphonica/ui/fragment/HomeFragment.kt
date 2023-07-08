@@ -1,18 +1,18 @@
 /*
- *     Copyright (C) 2023 Akane Foundation
+ *     Copyright (C) 2023  Akane Foundation
  *
- *     This file is part of Symphonica.
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- *     Symphonica is free software: you can redistribute it and/or modify it under the terms
- *     of the GNU General Public License as published by the Free Software Foundation,
- *     either version 3 of the License, or (at your option) any later version.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- *     Symphonica is distributed in the hope that it will be useful, but WITHOUT ANY
- *     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *     FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License along with
- *     Symphonica. If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.akanework.symphonica.ui.fragment
@@ -50,96 +50,16 @@ import org.akanework.symphonica.ui.adapter.SongCarouselAdapter
  * [HomeFragment] is homepage fragment.
  */
 class HomeFragment : Fragment() {
-
-    companion object {
-
-        private lateinit var loadingPrompt: MaterialCardView
-        private lateinit var shuffleAdapter: SongCarouselAdapter
-        private lateinit var recentAdapter: SongCarouselAdapter
-        private val shuffleList: MutableList<Song> = mutableListOf()
-        private val recentList: MutableList<Song> = mutableListOf()
-
-        private var isInitialized: Boolean = true
-
-        /**
-         * This is used for outer class to switch [loadingPrompt].
-         * e.g. When loading from disk completed.
-         */
-        fun switchPrompt(operation: Int) {
-            if (::loadingPrompt.isInitialized) {
-                when (operation) {
-                    0 -> {
-                        loadingPrompt.visibility = VISIBLE
-                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 0f, 1f)
-                            .setDuration(200)
-                            .start()
-                        isInitialized = false
-                    }
-
-                    1 -> {
-                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 1f, 0f)
-                            .setDuration(200)
-                            .start()
-                        val handler = Handler(Looper.getMainLooper())
-                        val runnable = Runnable {
-                            loadingPrompt.visibility = GONE
-                        }
-                        handler.postDelayed(runnable, 200)
-                        isInitialized = true
-                        initializeList()
-                    }
-
-                    else -> {
-                        throw IllegalArgumentException()
-                    }
-                }
-            }
-        }
-
-        private fun initializeList() {
-            if (shuffleList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleAdapter.notifyItemRangeChanged(0, 5)
-            }
-            if (libraryViewModel.libraryNewestAddedList.isNotEmpty() && recentList.isEmpty()) {
-                recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
-                recentAdapter.notifyItemRangeChanged(0, 10)
-            }
-        }
-
-        /**
-         * [refreshList] refreshes shuffleList.
-         * It is used for the shuffle button.
-         */
-        fun refreshList() {
-            if (shuffleList.isNotEmpty()) {
-                shuffleList.clear()
-            }
-            if (libraryViewModel.librarySongList.isNotEmpty()) {
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleAdapter.notifyItemRangeChanged(0, 5)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         reenterTransition =
-            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
-
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -278,7 +198,7 @@ class HomeFragment : Fragment() {
                 isShow = true
             } else if (isShow) {
                 collapsingToolbar.title =
-                    getString(R.string.home_greetings)
+                        getString(R.string.home_greetings)
                 isShow = false
             }
         }
@@ -290,5 +210,83 @@ class HomeFragment : Fragment() {
         super.onResume()
         // Set the current fragment to library
         MainActivity.switchNavigationViewIndex(2)
+    }
+
+    companion object {
+        private val shuffleList: MutableList<Song> = mutableListOf()
+        private val recentList: MutableList<Song> = mutableListOf()
+        private var isInitialized: Boolean = true
+        private lateinit var loadingPrompt: MaterialCardView
+        private lateinit var shuffleAdapter: SongCarouselAdapter
+        private lateinit var recentAdapter: SongCarouselAdapter
+
+        /**
+         * This is used for outer class to switch [loadingPrompt].
+         * e.g. When loading from disk completed.
+         *
+         * @param operation
+         * @throws IllegalArgumentException
+         */
+        fun switchPrompt(operation: Int) {
+            if (::loadingPrompt.isInitialized) {
+                when (operation) {
+                    0 -> {
+                        loadingPrompt.visibility = VISIBLE
+                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 0f, 1f)
+                            .setDuration(200)
+                            .start()
+                        isInitialized = false
+                    }
+
+                    1 -> {
+                        ObjectAnimator.ofFloat(loadingPrompt, "alpha", 1f, 0f)
+                            .setDuration(200)
+                            .start()
+                        val handler = Handler(Looper.getMainLooper())
+                        val runnable = Runnable {
+                            loadingPrompt.visibility = GONE
+                        }
+                        handler.postDelayed(runnable, 200)
+                        isInitialized = true
+                        initializeList()
+                    }
+
+                    else -> throw IllegalArgumentException()
+                }
+            }
+        }
+
+        private fun initializeList() {
+            if (shuffleList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleAdapter.notifyItemRangeChanged(0, 5)
+            }
+            if (libraryViewModel.libraryNewestAddedList.isNotEmpty() && recentList.isEmpty()) {
+                recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
+                recentAdapter.notifyItemRangeChanged(0, 10)
+            }
+        }
+
+        /**
+         * [refreshList] refreshes shuffleList.
+         * It is used for the shuffle button.
+         */
+        fun refreshList() {
+            if (shuffleList.isNotEmpty()) {
+                shuffleList.clear()
+            }
+            if (libraryViewModel.librarySongList.isNotEmpty()) {
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleAdapter.notifyItemRangeChanged(0, 5)
+            }
+        }
     }
 }
