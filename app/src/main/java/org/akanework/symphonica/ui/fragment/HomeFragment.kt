@@ -119,12 +119,14 @@ class HomeFragment : Fragment() {
             if (shuffleList.isNotEmpty()) {
                 shuffleList.clear()
             }
-            shuffleList.add(libraryViewModel.librarySongList.random())
-            shuffleList.add(libraryViewModel.librarySongList.random())
-            shuffleList.add(libraryViewModel.librarySongList.random())
-            shuffleList.add(libraryViewModel.librarySongList.random())
-            shuffleList.add(libraryViewModel.librarySongList.random())
-            shuffleAdapter.notifyItemRangeChanged(0, 5)
+            if (libraryViewModel.librarySongList.isNotEmpty()) {
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleList.add(libraryViewModel.librarySongList.random())
+                shuffleAdapter.notifyItemRangeChanged(0, 5)
+            }
         }
     }
 
