@@ -233,6 +233,11 @@ class HomeFragment : Fragment() {
                     libraryViewModel.librarySongList.toMutableList(),
                     (0 until libraryViewModel.librarySongList.size).random()
                 )
+                if (MainActivity.booleanViewModel.shuffleState) {
+                    MainActivity.booleanViewModel.shuffleState = false
+                    MainActivity.fullSheetShuffleButton!!.isChecked = false
+                    MainActivity.playlistViewModel.originalPlaylist.clear()
+                }
             }
         }
 

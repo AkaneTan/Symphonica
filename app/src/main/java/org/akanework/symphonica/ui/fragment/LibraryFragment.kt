@@ -29,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
+import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
@@ -85,6 +86,11 @@ class LibraryFragment : Fragment() {
                     libraryViewModel.librarySongList.toMutableList(),
                     (0 until libraryViewModel.librarySongList.size).random()
                 )
+                if (MainActivity.booleanViewModel.shuffleState) {
+                    MainActivity.booleanViewModel.shuffleState = false
+                    MainActivity.fullSheetShuffleButton!!.isChecked = false
+                    MainActivity.playlistViewModel.originalPlaylist.clear()
+                }
             }
         }
 
