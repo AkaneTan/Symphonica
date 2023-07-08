@@ -39,8 +39,12 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
+import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
+import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
+import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
@@ -149,14 +153,25 @@ class HomeFragment : Fragment() {
 
         homeShuffleButton.setOnClickListener {
             if (libraryViewModel.librarySongList.isNotEmpty()) {
-                replacePlaylist(
-                    libraryViewModel.librarySongList.toMutableList(),
-                    (0 until libraryViewModel.librarySongList.size).random()
-                )
-                if (MainActivity.booleanViewModel.shuffleState) {
-                    MainActivity.booleanViewModel.shuffleState = false
-                    MainActivity.fullSheetShuffleButton!!.isChecked = false
-                    MainActivity.playlistViewModel.originalPlaylist.clear()
+                if (!isListShuffleEnabled) {
+                    replacePlaylist(
+                        libraryViewModel.librarySongList.toMutableList(),
+                        (0 until libraryViewModel.librarySongList.size).random()
+                    )
+                    fullSheetShuffleButton?.isChecked = true
+                    fullSheetLoopButton?.isChecked = true
+                } else {
+                    fullSheetShuffleButton?.isChecked = true
+                    val playlist = mutableListOf<Song>()
+                    playlist.addAll(libraryViewModel.librarySongList)
+                    val shuffleSong = playlist.random()
+
+                    val originalPlaylist = playlistViewModel.originalPlaylist
+                    originalPlaylist.addAll(playlist)
+                    playlist.shuffle()
+                    playlist.remove(shuffleSong)
+                    playlist.add(0, shuffleSong)
+                    replacePlaylist(playlist, 0)
                 }
             }
         }

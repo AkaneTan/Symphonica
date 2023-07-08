@@ -31,6 +31,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -351,9 +352,6 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     booleanViewModel.loopButtonStatus = 1
                     fullSheetLoopButton?.isChecked = true
-                    if (!isListShuffleEnabled) {
-                        fullSheetLoopButton?.isChecked = true
-                    }
                 }
 
                 1 -> {
@@ -368,6 +366,10 @@ class MainActivity : AppCompatActivity() {
                     fullSheetLoopButton?.isChecked = false
                     fullSheetLoopButton?.icon =
                             AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
+                    if (!isListShuffleEnabled) {
+                        fullSheetLoopButton?.isChecked = true
+                        booleanViewModel.loopButtonStatus = 2
+                    }
                 }
 
                 else -> throw IllegalStateException()
@@ -382,30 +384,28 @@ class MainActivity : AppCompatActivity() {
             ) {
                 fullSheetLoopButton?.isChecked = isChecked
                 booleanViewModel.shuffleState = isChecked
-            } else if (playlistViewModel.playList.isNotEmpty()) {
+            } else {
                 val playlist = playlistViewModel.playList
                 val originalPlaylist = playlistViewModel.originalPlaylist
-                val currentSong = playlist[playlistViewModel.currentLocation]
+                if (playlistViewModel.playList.isNotEmpty()) {
+                    val currentSong = playlist[playlistViewModel.currentLocation]
+                    if (originalPlaylist.isEmpty()) {
+                        originalPlaylist.addAll(playlist)
+                        playlist.shuffle()
+                        playlist.remove(currentSong)
+                        playlist.add(0, currentSong)
+                        playlistViewModel.currentLocation = 0
+                        broadcastMetaDataUpdate()
+                    } else {
+                        playlist.clear()
+                        playlist.addAll(originalPlaylist)
+                        playlistViewModel.currentLocation = playlist.indexOf(currentSong)
+                        originalPlaylist.clear()
 
-                if (playlist.isNotEmpty() && originalPlaylist.isEmpty()) {
-                    originalPlaylist.addAll(playlist)
-                    playlist.shuffle()
-                    playlist.remove(currentSong)
-                    playlist.add(0, currentSong)
-                    playlistViewModel.currentLocation = 0
-                    broadcastMetaDataUpdate()
-                } else if (playlist.isNotEmpty()) {
-                    playlist.clear()
-                    playlist.addAll(originalPlaylist)
-                    playlistViewModel.currentLocation = playlist.indexOf(currentSong)
-                    originalPlaylist.clear()
-
-                    broadcastMetaDataUpdate()
+                        broadcastMetaDataUpdate()
+                    }
                 }
                 booleanViewModel.shuffleState = isChecked
-            } else {
-                fullSheetShuffleButton?.isChecked = false
-                booleanViewModel.shuffleState = false
             }
         }
 
