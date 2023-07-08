@@ -62,8 +62,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.logic.data.PlaylistDataEntity
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.database.HistoryDatabase
+import org.akanework.symphonica.logic.database.PlaylistDatabase
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
@@ -159,11 +161,18 @@ class MainActivity : AppCompatActivity() {
 
         var isDBSafe = false
 
-        val database = Room.databaseBuilder(
+        val historyDatabase = Room.databaseBuilder(
             context, HistoryDatabase::class.java,
             "history_db"
         ).build()
-        val historyDao = database.historyDao()
+
+        val playlistDatabase = Room.databaseBuilder(
+            context, PlaylistDatabase::class.java,
+            "playlist_db"
+        ).build()
+
+        val historyDao = historyDatabase.historyDao()
+        val playlistDao = playlistDatabase.playlistDao()
 
         // This is the handler used to handle the slide task.
         private lateinit var handler: Handler
@@ -363,8 +372,15 @@ class MainActivity : AppCompatActivity() {
 
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
-                libraryViewModel.libraryHistoryList =
-                    historyDao.getAllItems().map { it.value }.toMutableList()
+                if (libraryViewModel.libraryHistoryList.isEmpty()) {
+                    libraryViewModel.libraryHistoryList =
+                        historyDao.getAllItems().map { it.value }.toMutableList()
+                }
+                if (playlistViewModel.playlistList.isEmpty()) {
+                    playlistViewModel.playlistList.addAll(playlistDao.getAllPlaylists())
+                }
+
+                // TODO: Improve this guard implant
                 isDBSafe = true
             }
         }

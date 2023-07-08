@@ -18,6 +18,8 @@
 package org.akanework.symphonica.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import org.akanework.symphonica.MainActivity.Companion.playlistDatabase
+import org.akanework.symphonica.logic.data.PlaylistDataEntity
 import org.akanework.symphonica.logic.data.Song
 
 /**
@@ -33,5 +35,15 @@ class PlaylistViewModel : ViewModel() {
     var playList = mutableListOf<Song>()
     var originalPlaylist = mutableListOf<Song>()
     var currentLocation: Int = 0
-    var firstTimeExecutionError = false
+    val playlistList: MutableList<PlaylistDataEntity> = mutableListOf()
+
+    suspend fun createPlaylist(name: String, desc: String): PlaylistDataEntity {
+        val playlist = PlaylistDataEntity(name, desc, mutableListOf())
+        val playlistId = playlistDatabase.playlistDao().createPlaylist(playlist)
+        return playlist.copy(id = playlistId)
+    }
+
+    suspend fun deletePlaylist(playlist: PlaylistDataEntity) {
+        playlistDatabase.playlistDao().deletePlaylist(playlist)
+    }
 }

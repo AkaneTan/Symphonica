@@ -101,4 +101,14 @@
     <string name="settings_library_shuffle_button_summary">Shuffle library with one click</string>
     <string name="settings_colorful_buttons">Colorful buttons</string>
     <string name="settings_colorful_buttons_summary">Use different colors for homepage buttons</string>
+    <string name="home_history_view_stub_title">0 Song</string>
+    <string name="home_playlist_view_add_playlist">Add playlist</string>
+    <string name="home_playlist_view_remove_playlist">Remove playlist</string>
+    <string name="home_playlist_add_view_title">Add playlist</string>
+    <string name="home_playlist_add_view_name_empty">Playlist name cannot be empty!</string>
+    <string name="home_playlist_add_view_playlist_name">Playlist name</string>
+    <string name="home_playlist_add_view_playlist_desc">Description</string>
+    <string name="unknown_playlist">Unknown playlist</string>
+    <string name="default_description">No description</string>
+    <string name="home_playlist_view_title">Playlist</string>
 </resources>

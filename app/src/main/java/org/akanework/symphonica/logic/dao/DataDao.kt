@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import org.akanework.symphonica.logic.data.HistoryDataEntity
+import org.akanework.symphonica.logic.data.PlaylistDataEntity
 
 @Dao
 interface HistoryDao {
@@ -19,4 +21,19 @@ interface HistoryDao {
 
     @Query("DELETE FROM history_table")
     suspend fun clearHistoryItems()
+}
+
+@Dao
+interface PlaylistDao {
+    @Query("SELECT * FROM playlist_table")
+    suspend fun getAllPlaylists(): List<PlaylistDataEntity>
+
+    @Insert
+    suspend fun createPlaylist(playlist: PlaylistDataEntity): Long
+
+    @Update
+    suspend fun updatePlaylist(playlist: PlaylistDataEntity)
+
+    @Delete
+    suspend fun deletePlaylist(playlist: PlaylistDataEntity)
 }

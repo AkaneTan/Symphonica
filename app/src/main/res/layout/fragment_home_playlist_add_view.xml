@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.fragment.HomeHistoryFragment">
+    tools:context=".ui.fragment.HomePlaylistAddFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -60,50 +60,14 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_history_view_title"
-                        android:textColor="?attr/colorOnPrimaryContainer"
-                        android:textSize="16sp" />
-
-                    <TextView
                         android:id="@+id/home_history_song_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/home_history_view_stub_title"
+                        android:text="@string/home_playlist_add_view_title"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="22sp"
                         android:textStyle="bold"
                         android:transitionName="album_name" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/home_history_play_button"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:text="@string/library_album_view_play"
-                        android:textStyle="bold"
-                        app:icon="@drawable/ic_sheet_play"
-                        app:iconSize="24dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/home_history_clear_button"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:text="@string/home_history_clear_all"
-                        android:textStyle="bold"
-                        app:icon="@drawable/ic_close"
-                        app:iconSize="24dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -114,18 +78,60 @@
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back" />
+                app:navigationIcon="@drawable/ic_close" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_history_recyclerview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/home_playlist_add_view_playlist_name"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/playlist_add_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/home_playlist_add_view_playlist_desc"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/playlist_add_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="48dp"
+        android:fitsSystemWindows="true"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

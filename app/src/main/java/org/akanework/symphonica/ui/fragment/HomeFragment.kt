@@ -241,6 +241,13 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
+        homePlaylistButton.setOnClickListener {
+            customFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, HomePlaylistFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         topAppBar.setNavigationOnClickListener {
             // Allow open drawer if only initialization have been completed.
             if (isInitialized) {
