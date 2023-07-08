@@ -40,6 +40,7 @@ import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
+import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.getYear
@@ -133,11 +134,23 @@ class LibraryAlbumDisplayFragment : Fragment() {
         }
 
         displayShuffle.setOnClickListener {
-            replacePlaylist(sortedSongList.toMutableList(), 0)
             if (!isListShuffleEnabled) {
+                replacePlaylist(sortedSongList.toMutableList(), 0)
                 fullSheetLoopButton?.isChecked = true
+            } else {
+                fullSheetShuffleButton?.isChecked = true
+                val playlist = mutableListOf<Song>()
+                val originalPlaylist = playlistViewModel.originalPlaylist
+                val shuffleSong = sortedSongList.random()
+
+                playlist.addAll(sortedSongList)
+                originalPlaylist.clear()
+                originalPlaylist.addAll(sortedSongList)
+                playlist.shuffle()
+                playlist.remove(shuffleSong)
+                playlist.add(0, shuffleSong)
+                replacePlaylist(playlist, 0)
             }
-            fullSheetShuffleButton?.isChecked = true
         }
 
         topAppBar.setOnMenuItemClickListener {
