@@ -17,33 +17,18 @@
 
 package org.akanework.symphonica.ui.adapter
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
-import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.PlaylistDataEntity
-import org.akanework.symphonica.logic.data.Song
-import org.akanework.symphonica.logic.util.addToNext
-import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
-import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
-import org.akanework.symphonica.logic.util.replacePlaylist
-import org.akanework.symphonica.logic.util.thisSong
-import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 /**
  * [HomePlaylistAdapter] is used for displaying song lists

@@ -64,7 +64,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.songTitle.text = songList[position].title
-        holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
+        "${songList[position].artist} - ${songList[position].album}".also { holder.songMeta.text = it }
 
         holder.itemView.setOnClickListener {
             val previousLocation = playlistViewModel.currentLocation

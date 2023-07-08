@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,6 +25,7 @@ import android.content.IntentFilter
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -89,6 +91,7 @@ class MiniPlayerActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -96,11 +99,18 @@ class MiniPlayerActivity : AppCompatActivity() {
 
         MainActivity.isMiniPlayerRunning = true
         receiveKill = KillReceiver()
-        registerReceiver(
-            receiveKill,
-            IntentFilter("internal.play_mini_player_stop"),
-            RECEIVER_NOT_EXPORTED
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                receiveKill,
+                IntentFilter("internal.play_mini_player_stop"),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(
+                receiveKill,
+                IntentFilter("internal.play_mini_player_stop")
+            )
+        }
 
         // Kill the main player
         val intentKill = Intent(this, SymphonicaPlayerService::class.java)

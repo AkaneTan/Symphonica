@@ -20,6 +20,7 @@
 package org.akanework.symphonica
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -62,7 +63,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
-import org.akanework.symphonica.logic.data.PlaylistDataEntity
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.database.PlaylistDatabase
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
 
         var isDBSafe = false
 
-        val historyDatabase = Room.databaseBuilder(
+        private val historyDatabase = Room.databaseBuilder(
             context, HistoryDatabase::class.java,
             "history_db"
         ).build()
@@ -311,6 +311,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -349,15 +350,26 @@ class MainActivity : AppCompatActivity() {
         receiverSeek = SheetSeekReceiver()
         receiverUpdate = SheetUpdateReceiver()
 
-        registerReceiver(receiverPause, IntentFilter("internal.play_pause"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverPlay, IntentFilter("internal.play_start"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverStop, IntentFilter("internal.play_stop"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverSeek, IntentFilter("internal.play_seek"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(
-            receiverUpdate,
-            IntentFilter("internal.play_update"),
-            RECEIVER_NOT_EXPORTED
-        )
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(receiverPause, IntentFilter("internal.play_pause"), RECEIVER_NOT_EXPORTED)
+            registerReceiver(receiverPlay, IntentFilter("internal.play_start"), RECEIVER_NOT_EXPORTED)
+            registerReceiver(receiverStop, IntentFilter("internal.play_stop"), RECEIVER_NOT_EXPORTED)
+            registerReceiver(receiverSeek, IntentFilter("internal.play_seek"), RECEIVER_NOT_EXPORTED)
+            registerReceiver(
+                receiverUpdate,
+                IntentFilter("internal.play_update"),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(receiverPause, IntentFilter("internal.play_pause"))
+            registerReceiver(receiverPlay, IntentFilter("internal.play_start"))
+            registerReceiver(receiverStop, IntentFilter("internal.play_stop"))
+            registerReceiver(receiverSeek, IntentFilter("internal.play_seek"))
+            registerReceiver(
+                receiverUpdate,
+                IntentFilter("internal.play_update")
+            )
+        }
 
         // Flatten the decors to fit the system windows.
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -739,19 +751,35 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // Check the permission status.
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_MEDIA_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Ask if was denied.
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.READ_MEDIA_AUDIO),
-                permissionRequestCode
-            )
+        // Check the permission status on Tiramisu.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_MEDIA_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Ask if was denied.
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.READ_MEDIA_AUDIO),
+                    permissionRequestCode
+                )
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Ask if was denied.
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    permissionRequestCode
+                )
+            }
         }
+
 
         // TODO: Make another pop up when denied to state why you need the permission.
 

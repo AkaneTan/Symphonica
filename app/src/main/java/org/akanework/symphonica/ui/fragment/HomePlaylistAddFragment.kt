@@ -17,21 +17,13 @@
 
 package org.akanework.symphonica.ui.fragment
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -40,15 +32,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
-import org.akanework.symphonica.MainActivity.Companion.historyDao
-import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.Song
-import org.akanework.symphonica.logic.util.replacePlaylist
-import org.akanework.symphonica.ui.adapter.HomeHistoryAdapter
 
 /**
  * [HomePlaylistAddFragment] is the history list
@@ -90,7 +76,6 @@ class HomePlaylistAddFragment : Fragment() {
                 coroutineScope.launch {
                     withContext(Dispatchers.IO) {
                         val newPlaylist = playlistViewModel.createPlaylist(nameTextBox.text.toString(), descTextBox.text.toString())
-                        Log.d("TAGTAG", newPlaylist.toString())
                         playlistViewModel.playlistList.add(newPlaylist)
                     }
                 }
