@@ -498,7 +498,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (playerBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+        if (!booleanViewModel.isBottomSheetOpen) {
             bottomFullSizePlayerPreview.alpha = 0f
         }
 
