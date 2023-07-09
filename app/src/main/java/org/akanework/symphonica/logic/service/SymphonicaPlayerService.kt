@@ -97,7 +97,6 @@ import kotlinx.coroutines.withContext
  */
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private var isAudioManagerInitialized = false
-    private var isMusicPlayerError = false
 
     /**
      * [focusChangeListener] is a listener build for [audioManager].
@@ -210,10 +209,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 stopAndPlay()
             } ?: run {
                 musicPlayer = MediaPlayer()
-                musicPlayer!!.setOnErrorListener { _, _, _ ->
-                    isMusicPlayerError = true
-                    false
-                }
                 startPlaying()
                 setLoopListener()
             }
@@ -248,10 +243,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 stopAndPlay()
             } ?: run {
                 musicPlayer = MediaPlayer()
-                musicPlayer!!.setOnErrorListener { _, _, _ ->
-                    isMusicPlayerError = true
-                    false
-                }
                 setLoopListener()
                 startPlaying()
             }
@@ -308,20 +299,17 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun setLoopListener() {
         musicPlayer!!.setOnCompletionListener {
-            if (!isMusicPlayerError) {
-                nextSongDecisionMaker()
-                val coroutineScope = CoroutineScope(Dispatchers.Main)
-                coroutineScope.launch {
-                    withContext(Dispatchers.IO) {
-                        MainActivity.libraryViewModel.addSongToHistory(
-                            playlistViewModel.playList[playlistViewModel.currentLocation]
-                        )
-                        MainActivity.libraryViewModel.saveSongToLocal()
-                    }
+            nextSongDecisionMaker()
+            val coroutineScope = CoroutineScope(Dispatchers.Main)
+            coroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    MainActivity.libraryViewModel.addSongToHistory(
+                        playlistViewModel.playList[playlistViewModel.currentLocation]
+                    )
+                    MainActivity.libraryViewModel.saveSongToLocal()
                 }
-                requestAudioFocus()
             }
-            isMusicPlayerError = false
+            requestAudioFocus()
             musicPlayer?.let {
                 musicPlayer!!.reset()
                 musicPlayer!!.apply {
