@@ -96,6 +96,7 @@ class LibraryFragment : Fragment() {
                     val shuffleSong = playlist.random()
 
                     val originalPlaylist = MainActivity.playlistViewModel.originalPlaylist
+                    originalPlaylist.clear()
                     originalPlaylist.addAll(playlist)
                     playlist.shuffle()
                     playlist.remove(shuffleSong)

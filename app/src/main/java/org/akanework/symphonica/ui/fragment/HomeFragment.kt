@@ -167,6 +167,7 @@ class HomeFragment : Fragment() {
                     val shuffleSong = playlist.random()
 
                     val originalPlaylist = playlistViewModel.originalPlaylist
+                    originalPlaylist.clear()
                     originalPlaylist.addAll(playlist)
                     playlist.shuffle()
                     playlist.remove(shuffleSong)
