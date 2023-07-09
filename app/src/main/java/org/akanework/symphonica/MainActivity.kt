@@ -730,12 +730,21 @@ class MainActivity : AppCompatActivity() {
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
                 // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
+                if (playlistViewModel.playList.size > 1) {
+                    fullSheetLocation.text =
                         getString(
                             R.string.full_sheet_playlist_location,
                             ((playlistViewModel.currentLocation) + 1).toString(),
                             playlistViewModel.playList.size.toString()
                         )
+                } else {
+                    fullSheetLocation.text =
+                        getString(
+                            R.string.full_sheet_playlist_location_single,
+                            ((playlistViewModel.currentLocation) + 1).toString(),
+                            playlistViewModel.playList.size.toString()
+                        )
+                }
 
                 bottomSheetControlButton.icon =
                         ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
@@ -822,12 +831,21 @@ class MainActivity : AppCompatActivity() {
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
                 // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
+                if (playlistViewModel.playList.size > 1) {
+                    fullSheetLocation.text =
                         getString(
                             R.string.full_sheet_playlist_location,
                             ((playlistViewModel.currentLocation) + 1).toString(),
                             playlistViewModel.playList.size.toString()
                         )
+                } else {
+                    fullSheetLocation.text =
+                        getString(
+                            R.string.full_sheet_playlist_location_single,
+                            ((playlistViewModel.currentLocation) + 1).toString(),
+                            playlistViewModel.playList.size.toString()
+                        )
+                }
 
                 if (musicPlayer!!.isPlaying) {
                     bottomSheetControlButton.icon =

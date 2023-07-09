@@ -19,7 +19,7 @@
     <string name="app_name">Symphonica</string>
     <string name="default_album_number">0</string>
     <string name="default_play_time">0:00</string>
-    <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
+    <string name="full_sheet_playlist_location">%1$s in %2$s songs</string>
     <string name="playlist_metadata_information">%1$s • %2$s</string>
     <string name="library_album_view_album">Album</string>
     <string name="library_album_view_more_information">Information</string>
@@ -111,4 +111,5 @@
     <string name="unknown_playlist">Unknown playlist</string>
     <string name="default_description">No description</string>
     <string name="home_playlist_view_title">Playlist</string>
+    <string name="full_sheet_playlist_location_single">%1$s in %2$s song</string>
 </resources>
