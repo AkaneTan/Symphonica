@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.MaterialToolbar
@@ -30,6 +31,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
 import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
@@ -68,6 +70,10 @@ class LibraryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment.
         val rootView = inflater.inflate(R.layout.fragment_library, container, false)
+
+        if (isAkaneVisible) {
+            rootView.findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+        }
 
         val topAppBar: MaterialToolbar = rootView.findViewById(R.id.topAppBar)
         val libraryTabLayout: TabLayout = rootView.findViewById(R.id.library_tablayout)

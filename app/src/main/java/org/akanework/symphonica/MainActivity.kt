@@ -279,10 +279,6 @@ class MainActivity : AppCompatActivity() {
         // Inflate the view.
         setContentView(R.layout.activity_main)
 
-        if (isAkaneVisible) {
-            findViewById<ImageView>(R.id.akane).visibility = VISIBLE
-        }
-
         // Find the views.
         val bottomSheetNextButton = findViewById<MaterialButton>(R.id.bottom_sheet_next)
         val fullSheetBackButton = findViewById<MaterialButton>(R.id.sheet_extract_player)
