@@ -27,6 +27,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
@@ -39,6 +40,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
 import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
@@ -142,6 +144,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
+
+        if (isAkaneVisible) {
+            rootView.findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+        }
 
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
         val shuffleRefreshButton = rootView.findViewById<MaterialButton>(R.id.refresh_shuffle_list)

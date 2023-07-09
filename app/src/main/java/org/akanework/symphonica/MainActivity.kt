@@ -328,10 +328,6 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         // Inflate the view.
         setContentView(R.layout.activity_main)
 
-        if (isAkaneVisible) {
-            findViewById<ImageView>(R.id.akane).visibility = VISIBLE
-        }
-
         // Find the views.
         bottomPlayerPreview = findViewById(R.id.bottom_player)
         val bottomSheetNextButton = findViewById<MaterialButton>(R.id.bottom_sheet_next)

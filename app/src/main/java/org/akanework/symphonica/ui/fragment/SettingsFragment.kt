@@ -72,6 +72,10 @@ class SettingsFragment : Fragment() {
         // Inflate the layout for this fragment.
         val rootView = inflater.inflate(R.layout.fragment_settings, container, false)
 
+        if (isAkaneVisible) {
+            rootView.findViewById<ImageView>(R.id.akane).visibility = VISIBLE
+        }
+
         // Define the topAppBar behavior.
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
         val versionTag = rootView.findViewById<TextView>(R.id.version_tag)

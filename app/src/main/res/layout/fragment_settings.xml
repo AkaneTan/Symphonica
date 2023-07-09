@@ -48,6 +48,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/akane"
+        android:layout_width="300dp"
+        android:layout_height="468dp"
+        android:layout_marginBottom="-150dp"
+        android:layout_gravity="bottom|start"
+        android:importantForAccessibility="no"
+        android:src="@drawable/akane"
+        android:tintMode="src_atop"
+        android:visibility="gone"
+        app:tint="?attr/colorOutline" />
+
     <!-- Note: A RecyclerView can also be used -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/NestedScrollView"
