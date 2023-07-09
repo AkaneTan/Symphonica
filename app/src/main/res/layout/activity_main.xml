@@ -46,7 +46,7 @@
         android:src="@drawable/akane"
         android:tintMode="src_atop"
         android:visibility="gone"
-        app:tint="?attr/colorPrimary" />
+        app:tint="?attr/colorOutline" />
 
     <include
         android:id="@+id/global_bottom_sheet"
