@@ -19,7 +19,10 @@
 
 package org.akanework.symphonica
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -34,6 +37,7 @@ import android.os.Looper
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -311,7 +315,28 @@ class MainActivity : AppCompatActivity() {
                 BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
-        animator = ObjectAnimator.ofFloat(fragmentContainerView, "translationX", 0f, 600f)
+        animator = ValueAnimator.ofFloat(0f, 600f)
+        animator.addUpdateListener { animation ->
+            fragmentContainerView.translationX = animation.animatedValue as Float
+        }
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.duration = DRAWER_ANIMATION_DURATION
+
+        animatorReverse = ValueAnimator.ofFloat(600f, 0f)
+        animatorReverse.addUpdateListener { animation ->
+            fragmentContainerView.translationX = animation.animatedValue as Float
+        }
+        animatorReverse.interpolator = AccelerateDecelerateInterpolator()
+        animatorReverse.duration = DRAWER_ANIMATION_DURATION
+        animatorReverse.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                Handler(Looper.getMainLooper()).post {
+                    isDrawerOpen = false
+                    navigationView?.visibility = GONE
+                }
+            }
+        })
 
         // The behavior of the global sheet starts here.
         playerBottomSheetBehavior.isHideable = false
@@ -945,7 +970,8 @@ class MainActivity : AppCompatActivity() {
         lateinit var diskCacheStrategyCustom: DiskCacheStrategy
 
         // This is the animator needed in companion functions.
-        lateinit var animator: ObjectAnimator
+        lateinit var animator: ValueAnimator
+        lateinit var animatorReverse: ValueAnimator
 
         /**
          * This is the function used to switch the status of
@@ -955,18 +981,9 @@ class MainActivity : AppCompatActivity() {
             if (!isDrawerOpen) {
                 isDrawerOpen = true
                 navigationView?.visibility = VISIBLE
-                animator.setDuration(DRAWER_ANIMATION_DURATION)
                 animator.start()
             } else {
-                isDrawerOpen = false
-                animator.reverse()
-
-                // Make the navigationView disappear delayed.
-                val handler = Handler(Looper.getMainLooper())
-                val runnable = Runnable {
-                    navigationView?.visibility = GONE
-                }
-                handler.postDelayed(runnable, DRAWER_ANIMATION_DURATION)
+                animatorReverse.start()
             }
         }
 
