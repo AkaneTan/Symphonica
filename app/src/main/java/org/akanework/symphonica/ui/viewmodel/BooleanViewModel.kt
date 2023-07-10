@@ -26,8 +26,13 @@ import androidx.lifecycle.ViewModel
  */
 class BooleanViewModel : ViewModel() {
     var isSendingRequest = false
-    var isExecutingFirstTime = true
     var isBottomSheetOpen = false
     var loopButtonStatus = 0
     var shuffleState = false
+
+    companion object {
+        const val NOT_IN_LOOP = 0
+        const val LOOP = 1
+        const val LOOP_SINGLE = 2
+    }
 }

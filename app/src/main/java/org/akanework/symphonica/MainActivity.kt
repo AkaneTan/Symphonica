@@ -86,6 +86,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
+import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP
+import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP_SINGLE
+import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.NOT_IN_LOOP
 
 /**
  * [MainActivity] is the heart of Symphonica.
@@ -93,7 +98,6 @@ import kotlinx.coroutines.withContext
  * "There would be fragments."
  */
 class MainActivity : AppCompatActivity() {
-    private val permissionRequestCode = 123
 
     // These are the variables needed throughout MainActivity.
     private var isUserTracking = false
@@ -107,18 +111,17 @@ class MainActivity : AppCompatActivity() {
             ) {
                 fullSheetSlider.isEnabled = true
 
-                // about the "/ 1000 + 0.2f", check line 396.
-                fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
+                fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
 
-                if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
-                    fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
+                if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE <= fullSheetSlider.valueTo) {
+                    fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
 
                     fullSheetTimeStamp.text =
                             convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
                 }
 
                 // Update it per 200ms.
-                handler.postDelayed(this, 500)
+                handler.postDelayed(this, SLIDER_UPDATE_INTERVAL)
             }
         }
     }
@@ -316,19 +319,19 @@ class MainActivity : AppCompatActivity() {
         val playlistBottomSheet = PlaylistBottomSheet()
 
         when (booleanViewModel.loopButtonStatus) {
-            0 -> {
+            NOT_IN_LOOP -> {
                 fullSheetLoopButton?.isChecked = false
                 fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
-            1 -> {
+            LOOP -> {
                 fullSheetLoopButton?.isChecked = true
                 fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
-            2 -> {
+            LOOP_SINGLE -> {
                 fullSheetLoopButton?.isChecked = true
                 fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
@@ -344,27 +347,28 @@ class MainActivity : AppCompatActivity() {
              * Status 2: Repeat single
              */
             when (booleanViewModel.loopButtonStatus) {
-                0 -> {
-                    booleanViewModel.loopButtonStatus = 1
+                NOT_IN_LOOP -> {
+                    booleanViewModel.loopButtonStatus = LOOP
                     fullSheetLoopButton?.isChecked = true
                 }
 
-                1 -> {
-                    booleanViewModel.loopButtonStatus = 2
+                LOOP -> {
+                    booleanViewModel.loopButtonStatus = LOOP_SINGLE
                     fullSheetLoopButton?.isChecked = true
                     fullSheetLoopButton?.icon =
                             AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
                 }
 
-                2 -> {
-                    booleanViewModel.loopButtonStatus = 0
-                    fullSheetLoopButton?.isChecked = false
+                LOOP_SINGLE -> {
+                    if (!isListShuffleEnabled) {
+                        booleanViewModel.loopButtonStatus = LOOP_SINGLE
+                        fullSheetLoopButton?.isChecked = true
+                    } else {
+                        booleanViewModel.loopButtonStatus = NOT_IN_LOOP
+                        fullSheetLoopButton?.isChecked = false
+                    }
                     fullSheetLoopButton?.icon =
                             AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
-                    if (!isListShuffleEnabled) {
-                        fullSheetLoopButton?.isChecked = true
-                        booleanViewModel.loopButtonStatus = 2
-                    }
                 }
 
                 else -> throw IllegalStateException()
@@ -446,7 +450,7 @@ class MainActivity : AppCompatActivity() {
             playerBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
             ObjectAnimator.ofFloat(bottomFullSizePlayerPreview, "alpha", 1f, 0f)
-                .setDuration(200)
+                .setDuration(FULL_PLAYER_FADE_ANIMATION_DURATION)
                 .start()
 
             bottomPlayerPreview.visibility = VISIBLE
@@ -515,7 +519,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                bottomPlayerPreview.alpha = 1 - (slideOffset * 2f)
+                bottomPlayerPreview.alpha = 1 - (slideOffset * SHEET_OFFSET_MULTIPLE)
                 bottomFullSizePlayerPreview.alpha = slideOffset
             }
         }
@@ -539,7 +543,7 @@ class MainActivity : AppCompatActivity() {
                 // when the number is too big (like when toValue
                 // used the duration directly) we might encounter
                 // some performance problem.
-                musicPlayer?.seekTo((slider.value * 1000).toInt())
+                musicPlayer?.seekTo((slider.value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt())
 
                 broadcastSliderSeek()
 
@@ -552,7 +556,7 @@ class MainActivity : AppCompatActivity() {
         fullSheetSlider.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 fullSheetTimeStamp.text =
-                        convertDurationToTimeStamp((value * 1000).toInt().toString())
+                        convertDurationToTimeStamp((value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString())
             }
         }
         // Slider behavior ends here.
@@ -609,7 +613,7 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.READ_MEDIA_AUDIO),
-                    permissionRequestCode
+                    PERMISSION_REQUEST_CODE
                 )
             }
         } else {
@@ -622,7 +626,7 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    permissionRequestCode
+                    PERMISSION_REQUEST_CODE
                 )
             }
         }
@@ -668,8 +672,8 @@ class MainActivity : AppCompatActivity() {
 
         if (musicPlayer != null && !musicPlayer!!.isPlaying) {
             fullSheetSlider.isEnabled = true
-            fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
-            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
+            fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
             fullSheetTimeStamp.text =
                     convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
         }
@@ -746,8 +750,8 @@ class MainActivity : AppCompatActivity() {
                 fullSheetControlButton.setImageResource(R.drawable.ic_pause)
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
-                setPlaybackState(0)
-                handler.postDelayed(sliderTask, 500)
+                setPlaybackState(OPERATION_PLAY)
+                handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
             }
         }
     }
@@ -765,7 +769,7 @@ class MainActivity : AppCompatActivity() {
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
             fullSheetSlider.isEnabled = false
-            setPlaybackState(1)
+            setPlaybackState(OPERATION_PAUSE)
         }
     }
 
@@ -780,7 +784,7 @@ class MainActivity : AppCompatActivity() {
             bottomSheetControlButton.icon =
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
-            setPlaybackState(1)
+            setPlaybackState(OPERATION_PAUSE)
         }
     }
 
@@ -791,7 +795,7 @@ class MainActivity : AppCompatActivity() {
      */
     inner class SheetSeekReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            setPlaybackState(0)
+            setPlaybackState(OPERATION_PLAY)
         }
     }
 
@@ -853,7 +857,7 @@ class MainActivity : AppCompatActivity() {
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
 
-                handler.postDelayed(sliderTask, 500)
+                handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
             } else if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
                 bottomSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
@@ -951,7 +955,7 @@ class MainActivity : AppCompatActivity() {
             if (!isDrawerOpen) {
                 isDrawerOpen = true
                 navigationView?.visibility = VISIBLE
-                animator.setDuration(400)
+                animator.setDuration(DRAWER_ANIMATION_DURATION)
                 animator.start()
             } else {
                 isDrawerOpen = false
@@ -962,7 +966,7 @@ class MainActivity : AppCompatActivity() {
                 val runnable = Runnable {
                     navigationView?.visibility = GONE
                 }
-                handler.postDelayed(runnable, 400)
+                handler.postDelayed(runnable, DRAWER_ANIMATION_DURATION)
             }
         }
 
@@ -976,7 +980,7 @@ class MainActivity : AppCompatActivity() {
          */
         fun switchNavigationViewIndex(index: Int) {
             when (index) {
-                0 -> navigationView?.post {
+                OPTION_HOME -> navigationView?.post {
                     navigationView?.menu?.let {
                         navigationView?.setCheckedItem(
                             it.findItem(
@@ -986,7 +990,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                1 -> navigationView?.post {
+                OPTION_LIBRARY -> navigationView?.post {
                     navigationView?.menu?.let {
                         navigationView?.setCheckedItem(
                             it.findItem(
@@ -996,7 +1000,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                2 -> navigationView?.post {
+                OPTION_SETTINGS -> navigationView?.post {
                     navigationView?.menu?.let {
                         navigationView?.setCheckedItem(
                             it.findItem(

@@ -71,6 +71,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.LOCK_AUDIO_FOCUS_INTERVAL
 
 /**
  * [SymphonicaPlayerService] is the core of Symphonica.
@@ -430,7 +431,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val runnable = Runnable {
             booleanViewModel.isSendingRequest = false
         }
-        handler.postDelayed(runnable, 50)
+        handler.postDelayed(runnable, LOCK_AUDIO_FOCUS_INTERVAL)
 
         audioManager.requestAudioFocus(audioFocusRequest)
     }
@@ -459,13 +460,13 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         fun setPlaybackState(operation: Int) {
             when (operation) {
 
-                0 -> playbackStateBuilder.setState(
+                OPERATION_PLAY -> playbackStateBuilder.setState(
                     PlaybackState.STATE_PLAYING,
                     musicPlayer!!.currentPosition.toLong(),
                     1.0f
                 )
 
-                1 -> playbackStateBuilder.setState(
+                OPERATION_PAUSE -> playbackStateBuilder.setState(
                     PlaybackState.STATE_PAUSED,
                     musicPlayer?.let {
                         musicPlayer!!.currentPosition.toLong()
@@ -477,6 +478,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             }
             mediaSession.setPlaybackState(playbackStateBuilder.build())
         }
+
+        const val OPERATION_PLAY = 0
+        const val OPERATION_PAUSE = 1
 
         /**
          * [updateMetadata] is used for [notification] to update its

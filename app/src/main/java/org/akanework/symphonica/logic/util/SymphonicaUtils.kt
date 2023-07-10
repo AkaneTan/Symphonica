@@ -17,6 +17,10 @@
 
 package org.akanework.symphonica.logic.util
 
+import org.akanework.symphonica.FORMAT_ZERO_APPEND
+import org.akanework.symphonica.HOUR_IN_MINUTES
+import org.akanework.symphonica.MILLISECOND
+
 /**
  * [convertDurationToTimeStamp] makes a string format
  * of duration (presumably long) converts into timestamp
@@ -26,9 +30,9 @@ package org.akanework.symphonica.logic.util
  * @return
  */
 fun convertDurationToTimeStamp(duration: String): String {
-    val minutes = duration.toInt() / 1000 / 60
-    val seconds = duration.toInt() / 1000 - minutes * 60
-    if (seconds < 10) {
+    val minutes = duration.toInt() / MILLISECOND / HOUR_IN_MINUTES
+    val seconds = duration.toInt() / MILLISECOND - minutes * HOUR_IN_MINUTES
+    if (seconds < FORMAT_ZERO_APPEND) {
         return "$minutes:0$seconds"
     }
     return "$minutes:$seconds"

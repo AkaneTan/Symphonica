@@ -43,6 +43,7 @@ import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEna
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
+import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 
@@ -57,9 +58,11 @@ class SettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                    PAGE_TRANSITION_DURATION)
         reenterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                    PAGE_TRANSITION_DURATION)
     }
 
     override fun onCreateView(

@@ -64,16 +64,16 @@ class MiniPlayerActivity : AppCompatActivity() {
             if (mediaPlayer.isPlaying) {
                 slider.isEnabled = true
 
-                slider.valueTo = mediaPlayer.duration.toFloat() / 1000
+                slider.valueTo = mediaPlayer.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
 
                 if (!isUserTracking) {
-                    slider.value = mediaPlayer.currentPosition.toFloat() / 1000
+                    slider.value = mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
                     timeStamp.text =
                             convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
                 }
 
                 controlButton.setImageResource(R.drawable.ic_pause)
-                handler.postDelayed(this, 200)
+                handler.postDelayed(this, SLIDER_UPDATE_INTERVAL)
             } else if (mediaPlayer.currentPosition >= mediaPlayer.duration - 1000) {
                 slider.isEnabled = false
                 controlButton.setImageResource(R.drawable.ic_sheet_play)
@@ -162,7 +162,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                             // when the number is too big (like when toValue
                             // used the duration directly) we might encounter
                             // some performance problem.
-                            mediaPlayer.seekTo((slider.value * 1000).toInt())
+                            mediaPlayer.seekTo((slider.value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt())
                             isUserTracking = false
                         }
                     }
@@ -173,7 +173,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                 slider.addOnChangeListener { _, value, fromUser ->
                     if (fromUser) {
                         timeStamp.text =
-                                convertDurationToTimeStamp((value * 1000).toInt().toString())
+                                convertDurationToTimeStamp((value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString())
                     }
                 }
                 dialogButton.setOnClickListener {
@@ -214,11 +214,11 @@ class MiniPlayerActivity : AppCompatActivity() {
                         controlButton.setImageResource(R.drawable.ic_sheet_play)
                     } else {
                         mediaPlayer.start()
-                        handler.postDelayed(sliderTask, 500)
+                        handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
                         controlButton.setImageResource(R.drawable.ic_pause)
                     }
                 }
-                handler.postDelayed(sliderTask, 500)
+                handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
             }
         }
         onBackPressedDispatcher.addCallback(

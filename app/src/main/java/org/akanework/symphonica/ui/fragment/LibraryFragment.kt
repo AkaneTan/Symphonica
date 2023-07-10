@@ -36,7 +36,10 @@ import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEna
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
+import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
+import org.akanework.symphonica.TAB_ALBUM
+import org.akanework.symphonica.TAB_LIST
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.NavFragmentPageAdapter
@@ -58,9 +61,11 @@ class LibraryFragment : Fragment() {
 
         // Set the transition animation.
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                    PAGE_TRANSITION_DURATION)
         reenterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                    PAGE_TRANSITION_DURATION)
     }
 
     override fun onCreateView(
@@ -135,8 +140,8 @@ class LibraryFragment : Fragment() {
 
         TabLayoutMediator(libraryTabLayout, fragmentPager) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.library_tab_list)
-                1 -> getString(R.string.library_tab_album)
+                TAB_LIST -> getString(R.string.library_tab_list)
+                TAB_ALBUM -> getString(R.string.library_tab_album)
                 else -> "Unknown"
             }
         }.attach()

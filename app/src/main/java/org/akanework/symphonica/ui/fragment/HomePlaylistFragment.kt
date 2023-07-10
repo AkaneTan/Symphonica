@@ -29,6 +29,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.ui.adapter.HomePlaylistAdapter
 
@@ -42,9 +43,11 @@ class HomePlaylistFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                    PAGE_TRANSITION_DURATION)
         returnTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                    PAGE_TRANSITION_DURATION)
     }
 
     @SuppressLint("StringFormatMatches")

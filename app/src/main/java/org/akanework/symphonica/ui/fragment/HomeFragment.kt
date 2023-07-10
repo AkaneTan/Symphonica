@@ -47,6 +47,7 @@ import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
@@ -60,7 +61,8 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         reenterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(500)
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                    PAGE_TRANSITION_DURATION)
     }
 
     override fun onCreateView(

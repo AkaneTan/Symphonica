@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import org.akanework.symphonica.MAX_ALBUM_LIBRARY_LAYOUT
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.ui.adapter.LibraryGridAdapter
@@ -42,7 +43,7 @@ class LibraryGridFragment : Fragment() {
 
         val libraryGridView: RecyclerView = rootView.findViewById(R.id.library_gridview)
 
-        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = StaggeredGridLayoutManager(MAX_ALBUM_LIBRARY_LAYOUT, StaggeredGridLayoutManager.VERTICAL)
 
         libraryGridView.layoutManager = layoutManager
         val adapter = LibraryGridAdapter(libraryViewModel.libraryAlbumList)
