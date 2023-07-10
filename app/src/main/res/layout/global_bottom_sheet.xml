@@ -37,12 +37,14 @@
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
             android:orientation="vertical"
-            android:padding="16dp"
             android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -133,6 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/rp_album_cover"
                 android:clipToOutline="true">
 
@@ -178,6 +182,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:layout_marginTop="22dp">
 
                 <LinearLayout
@@ -221,20 +227,43 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sheet_slider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:value="0"
-                android:valueFrom="0.0"
-                android:valueTo="100.0"
-                app:labelBehavior="gone"
-                app:thumbRadius="6dp" />
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/squiggly_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+                    <org.akanework.symphonica.ui.component.SquigglyView
+                        android:id="@+id/squiggly"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="start|center" />
+                </FrameLayout>
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sheet_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:enabled="false"
+                    android:value="0"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    app:labelBehavior="gone" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     android:id="@+id/sheet_now_time"
@@ -258,6 +287,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:layout_marginBottom="84dp">
 
                 <LinearLayout

@@ -17,5 +17,4 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="bottom_sheet_height">76dp</dimen>
-    <dimen name="mtrl_slider_track_side_padding" tools:override="true">8dp</dimen>
 </resources>

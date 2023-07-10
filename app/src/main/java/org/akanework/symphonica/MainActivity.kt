@@ -29,6 +29,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -37,6 +38,7 @@ import android.os.Looper
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -53,21 +55,27 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.database.PlaylistDatabase
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
@@ -79,22 +87,16 @@ import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet
+import org.akanework.symphonica.ui.component.SquigglyView
 import org.akanework.symphonica.ui.fragment.HomeFragment
 import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
-import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
-import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
-
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP_SINGLE
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.NOT_IN_LOOP
+import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
+import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 
 /**
  * [MainActivity] is the heart of Symphonica.
@@ -144,6 +146,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetControlButton: MaterialButton
     private lateinit var fullSheetControlButton: FloatingActionButton
     private lateinit var fullSheetSlider: Slider
+    private lateinit var fullSheetSquigglyView: SquigglyView
+    private lateinit var fullSheetSquigglyViewFrame: FrameLayout
     private lateinit var receiverPlay: SheetPlayReceiver
     private lateinit var receiverStop: SheetStopReceiver
     private lateinit var receiverPause: SheetPauseReceiver
@@ -190,6 +194,7 @@ class MainActivity : AppCompatActivity() {
         isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
         isEasterEggDiscovered = prefs.getBoolean("isEasterEggDiscovered", false)
         isAkaneVisible = prefs.getBoolean("isAkaneVisible", false)
+        isSquigglyProgressBarEnabled = prefs.getBoolean("isSquigglyProgressBarEnabled", false)
 
         // Go to dark mode if force dark mode is on.
         if (isForceDarkModeEnabled) {
@@ -307,12 +312,16 @@ class MainActivity : AppCompatActivity() {
         fullSheetLocation = findViewById(R.id.sheet_song_location)
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
         fullSheetSlider = findViewById(R.id.sheet_slider)
+        fullSheetSquigglyView = findViewById(R.id.squiggly)
+        fullSheetSquigglyViewFrame = findViewById(R.id.squiggly_frame)
         fullSheetDuration = findViewById(R.id.sheet_end_time)
         fullSheetTimeStamp = findViewById(R.id.sheet_now_time)
         playlistButton = findViewById(R.id.sheet_playlist)
         bottomFullSizePlayerPreview = findViewById(R.id.full_size_sheet_player)
         playerBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
+
+        checkIfSquigglyProgressBarEnabled()
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
         animator = ValueAnimator.ofFloat(0f, 600f)
@@ -537,6 +546,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
+                    checkIfSquigglyProgressBarEnabled()
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = true
@@ -583,6 +593,7 @@ class MainActivity : AppCompatActivity() {
                 fullSheetTimeStamp.text =
                         convertDurationToTimeStamp((value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString())
             }
+            trackSquigglyProgressBar()
         }
         // Slider behavior ends here.
 
@@ -778,6 +789,7 @@ class MainActivity : AppCompatActivity() {
                 setPlaybackState(OPERATION_PLAY)
                 handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
             }
+            checkIfSquigglyProgressBarEnabled()
         }
     }
 
@@ -795,6 +807,7 @@ class MainActivity : AppCompatActivity() {
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
             fullSheetSlider.isEnabled = false
             setPlaybackState(OPERATION_PAUSE)
+            checkIfSquigglyProgressBarEnabled()
         }
     }
 
@@ -915,6 +928,71 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIfSquigglyProgressBarEnabled() {
+        if (isSquigglyProgressBarEnabled && musicPlayer != null) {
+            setSquigglyActive()
+        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value != 0f && musicPlayer == null) {
+            setSquigglyInactive()
+            trackSquigglyProgressBar()
+        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value != 0f && musicPlayer != null) {
+            setSquigglyGone()
+        } else if (isSquigglyProgressBarEnabled) {
+            trackSquigglyProgressBar()
+        }
+        else {
+            setSquigglyGone()
+        }
+    }
+
+    private fun setSquigglyInactive() {
+        fullSheetSquigglyView.visibility = VISIBLE
+        fullSheetSquigglyView.paint.color = MaterialColors.getColor(
+            fullSheetSquigglyView,
+            com.google.android.material.R.attr.colorSurfaceVariant
+        )
+        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
+            resources.getColor(android.R.color.transparent, theme)
+        )
+    }
+
+    private fun setSquigglyActive() {
+        fullSheetSquigglyView.visibility = VISIBLE
+        fullSheetSquigglyView.paint.color = MaterialColors.getColor(
+            fullSheetSquigglyView,
+            com.google.android.material.R.attr.colorPrimary
+        )
+        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
+            resources.getColor(android.R.color.transparent, theme)
+        )
+    }
+
+    private fun setSquigglyGone() {
+        fullSheetSquigglyView.visibility = GONE
+        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
+            MaterialColors.getColor(
+                fullSheetSlider,
+                com.google.android.material.R.attr.colorPrimary
+            )
+        )
+    }
+
+    private fun trackSquigglyProgressBar() {
+        if (isSquigglyProgressBarEnabled) {
+            val params = fullSheetSquigglyView.layoutParams as? ViewGroup.MarginLayoutParams
+            params?.let {
+                val marginVal = (fullSheetSquigglyViewFrame.width *
+                        (fullSheetSlider.valueTo - fullSheetSlider.value) / fullSheetSlider.valueTo).toInt()
+                if (marginVal != 0) {
+                    fullSheetSquigglyView.visibility = VISIBLE
+                    it.marginEnd = marginVal
+                } else {
+                    fullSheetSquigglyView.visibility = GONE
+                }
+                fullSheetSquigglyView.layoutParams = it
+            }
+        }
+    }
+
     companion object {
         var isMainActivityActive: Boolean? = null
         var isDBSafe = false
@@ -950,6 +1028,7 @@ class MainActivity : AppCompatActivity() {
         var isListShuffleEnabled: Boolean = true
         var isEasterEggDiscovered: Boolean = false
         var isAkaneVisible: Boolean = false
+        var isSquigglyProgressBarEnabled: Boolean = false
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null

@@ -19,3 +19,6 @@ const val OPTION_SETTINGS = 2
 
 const val TAB_LIST = 0
 const val TAB_ALBUM = 1
+
+const val SQUIGGLY_VIEW_UPDATING = 0
+const val SQUIGGLY_VIEW_RESUMING = 1

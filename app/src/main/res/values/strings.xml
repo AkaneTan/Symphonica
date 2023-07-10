@@ -112,4 +112,6 @@
     <string name="default_description">No description</string>
     <string name="home_playlist_view_title">Playlist</string>
     <string name="full_sheet_playlist_location_single">%1$s in %2$s song</string>
+    <string name="settings_enable_squiggly_progress_bar">Enable squiggly progress bar</string>
+    <string name="settings_enable_squiggly_progress_bar_summary">Come up with the flow</string>
 </resources>
