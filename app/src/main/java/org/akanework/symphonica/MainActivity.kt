@@ -120,7 +120,10 @@ class MainActivity : AppCompatActivity() {
                 fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
 
                 if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE <= fullSheetSlider.valueTo) {
-                    fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    val addVar = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    if (addVar <= fullSheetSlider.valueTo) {
+                        fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    }
 
                     fullSheetTimeStamp.text =
                             convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
@@ -709,7 +712,10 @@ class MainActivity : AppCompatActivity() {
         if (musicPlayer != null && !musicPlayer!!.isPlaying) {
             fullSheetSlider.isEnabled = true
             fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
-            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+            val addVar = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+            if (addVar <= fullSheetSlider.valueTo) {
+                fullSheetSlider.value = addVar
+            }
             fullSheetTimeStamp.text =
                     convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
         }

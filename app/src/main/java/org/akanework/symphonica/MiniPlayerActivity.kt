@@ -67,7 +67,10 @@ class MiniPlayerActivity : AppCompatActivity() {
                 slider.valueTo = mediaPlayer.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
 
                 if (!isUserTracking) {
-                    slider.value = mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    val addVar = mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    if (addVar <= slider.valueTo) {
+                        slider.value = addVar
+                    }
                     timeStamp.text =
                             convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
                 }
