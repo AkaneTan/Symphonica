@@ -221,6 +221,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
             "ACTION_RESUME" -> if (musicPlayer != null && !musicPlayer!!.isPlaying) {
                 musicPlayer!!.start()
+                requestAudioFocus()
                 broadcastPlayStart()
                 if (managerSymphonica!!.activeNotifications.isEmpty()) {
                     mediaSession.setCallback(mediaSessionCallback)
