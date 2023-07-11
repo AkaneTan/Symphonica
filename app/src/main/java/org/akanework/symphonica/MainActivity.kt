@@ -157,6 +157,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var receiverPause: SheetPauseReceiver
     private lateinit var receiverSeek: SheetSeekReceiver
     private lateinit var receiverUpdate: SheetUpdateReceiver
+    private lateinit var receiverSquigglyUpdate: SheetSquigglyReceiver
     private lateinit var playlistButton: MaterialButton
     private lateinit var fragmentContainerView: FragmentContainerView
     private lateinit var playerBottomSheetBehavior: BottomSheetBehavior<View>
@@ -221,6 +222,7 @@ class MainActivity : AppCompatActivity() {
         receiverStop = SheetStopReceiver()
         receiverSeek = SheetSeekReceiver()
         receiverUpdate = SheetUpdateReceiver()
+        receiverSquigglyUpdate = SheetSquigglyReceiver()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(receiverPause, IntentFilter("internal.play_pause"), RECEIVER_NOT_EXPORTED)
@@ -232,6 +234,11 @@ class MainActivity : AppCompatActivity() {
                 IntentFilter("internal.play_update"),
                 RECEIVER_NOT_EXPORTED
             )
+            registerReceiver(
+                receiverSquigglyUpdate,
+                IntentFilter("internal.play_squiggly_update"),
+                RECEIVER_NOT_EXPORTED
+            )
         } else {
             registerReceiver(receiverPause, IntentFilter("internal.play_pause"))
             registerReceiver(receiverPlay, IntentFilter("internal.play_start"))
@@ -240,6 +247,10 @@ class MainActivity : AppCompatActivity() {
             registerReceiver(
                 receiverUpdate,
                 IntentFilter("internal.play_update")
+            )
+            registerReceiver(
+                receiverSquigglyUpdate,
+                IntentFilter("internal.play_squiggly_update")
             )
         }
 
@@ -553,7 +564,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
-                    checkIfSquigglyProgressBarEnabled()
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
                     controllerViewModel.isBottomSheetOpen = true
@@ -738,6 +748,7 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiverPlay)
         unregisterReceiver(receiverSeek)
         unregisterReceiver(receiverUpdate)
+        unregisterReceiver(receiverSquigglyUpdate)
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
@@ -941,6 +952,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * This is the [SheetSquigglyReceiver]
+     * It receives a broadcast from [receiverSquigglyUpdate].
+     */
+    inner class SheetSquigglyReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            checkIfSquigglyProgressBarEnabled()
+        }
+    }
+
 
     private fun checkIfSquigglyProgressBarEnabled() {
         if (isSquigglyProgressBarEnabled && musicPlayer != null) {

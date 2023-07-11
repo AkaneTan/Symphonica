@@ -60,3 +60,12 @@ fun broadcastPlayStart() {
     val intentBroadcast = Intent("internal.play_start")
     context.sendBroadcast(intentBroadcast)
 }
+
+/**
+ * [broadcastSquigglyUpdate] broadcast in case of needing to seek
+ * the player for the notification.
+ */
+fun broadcastSquigglyUpdate() {
+    val intentBroadcast = Intent("internal.play_squiggly_update")
+    context.sendBroadcast(intentBroadcast)
+}

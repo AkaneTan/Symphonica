@@ -47,6 +47,7 @@ import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
+import org.akanework.symphonica.logic.util.broadcastSquigglyUpdate
 
 /**
  * [SettingsFragment] is the fragment that is used
@@ -192,10 +193,12 @@ class SettingsFragment : Fragment() {
             isSquigglyProgressBarEnabled = if (isChecked) {
                 editor.putBoolean("isSquigglyProgressBarEnabled", true)
                 editor.apply()
+                broadcastSquigglyUpdate()
                 true
             } else {
                 editor.putBoolean("isSquigglyProgressBarEnabled", false)
                 editor.apply()
+                broadcastSquigglyUpdate()
                 false
             }
         }
