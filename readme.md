@@ -36,3 +36,6 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Notice
 - This project is still WIP(work in progress), which means some of the features listed in the `Features` secion might not be available at this time. We appreciate any help!
 - For bug reporting: [Telegram](https://t.me/AkaneFoundation)
+
+# Friends
+[SongSync](https://github.com/lambada10/songsync)
