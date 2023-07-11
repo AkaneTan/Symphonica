@@ -255,6 +255,7 @@
                     android:value="0"
                     android:valueFrom="0.0"
                     android:valueTo="100.0"
+                    app:thumbRadius="8dp"
                     app:labelBehavior="gone" />
 
             </FrameLayout>

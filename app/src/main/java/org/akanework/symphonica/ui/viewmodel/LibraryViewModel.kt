@@ -35,6 +35,7 @@ class LibraryViewModel : ViewModel() {
     var libraryAlbumList: List<Album> = listOf()
     var libraryNewestAddedList: MutableList<Song> = mutableListOf()
     var libraryHistoryList: MutableList<Long> = mutableListOf()
+    var sessionSongPlayed: Int = 0
 
     /**
      * @param song
@@ -42,6 +43,7 @@ class LibraryViewModel : ViewModel() {
     fun addSongToHistory(song: Song) {
         if (isDBSafe) {
             libraryHistoryList.add(song.id)
+            sessionSongPlayed ++
         }
     }
 

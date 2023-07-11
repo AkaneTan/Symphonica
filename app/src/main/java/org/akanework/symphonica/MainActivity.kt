@@ -35,6 +35,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -91,10 +92,10 @@ import org.akanework.symphonica.ui.component.SquigglyView
 import org.akanework.symphonica.ui.fragment.HomeFragment
 import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
-import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
-import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP
-import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.LOOP_SINGLE
-import org.akanework.symphonica.ui.viewmodel.BooleanViewModel.Companion.NOT_IN_LOOP
+import org.akanework.symphonica.ui.viewmodel.ControllerViewModel
+import org.akanework.symphonica.ui.viewmodel.ControllerViewModel.Companion.LOOP
+import org.akanework.symphonica.ui.viewmodel.ControllerViewModel.Companion.LOOP_SINGLE
+import org.akanework.symphonica.ui.viewmodel.ControllerViewModel.Companion.NOT_IN_LOOP
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
 import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 
@@ -251,7 +252,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize view models.
         libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
-        booleanViewModel = ViewModelProvider(this)[BooleanViewModel::class.java]
+        controllerViewModel = ViewModelProvider(this)[ControllerViewModel::class.java]
 
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
@@ -325,6 +326,9 @@ class MainActivity : AppCompatActivity() {
                 BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
 
         checkIfSquigglyProgressBarEnabled()
+        if (isSquigglyProgressBarEnabled) {
+            trackSquigglyProgressBar()
+        }
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
         animator = ValueAnimator.ofFloat(0f, 600f)
@@ -355,7 +359,7 @@ class MainActivity : AppCompatActivity() {
 
         val playlistBottomSheet = PlaylistBottomSheet()
 
-        when (booleanViewModel.loopButtonStatus) {
+        when (controllerViewModel.loopButtonStatus) {
             NOT_IN_LOOP -> {
                 fullSheetLoopButton?.isChecked = false
                 fullSheetLoopButton?.icon =
@@ -383,14 +387,14 @@ class MainActivity : AppCompatActivity() {
              * Status 1: Loop
              * Status 2: Repeat single
              */
-            when (booleanViewModel.loopButtonStatus) {
+            when (controllerViewModel.loopButtonStatus) {
                 NOT_IN_LOOP -> {
-                    booleanViewModel.loopButtonStatus = LOOP
+                    controllerViewModel.loopButtonStatus = LOOP
                     fullSheetLoopButton?.isChecked = true
                 }
 
                 LOOP -> {
-                    booleanViewModel.loopButtonStatus = LOOP_SINGLE
+                    controllerViewModel.loopButtonStatus = LOOP_SINGLE
                     fullSheetLoopButton?.isChecked = true
                     fullSheetLoopButton?.icon =
                             AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
@@ -398,10 +402,10 @@ class MainActivity : AppCompatActivity() {
 
                 LOOP_SINGLE -> {
                     if (!isListShuffleEnabled) {
-                        booleanViewModel.loopButtonStatus = LOOP_SINGLE
+                        controllerViewModel.loopButtonStatus = LOOP_SINGLE
                         fullSheetLoopButton?.isChecked = true
                     } else {
-                        booleanViewModel.loopButtonStatus = NOT_IN_LOOP
+                        controllerViewModel.loopButtonStatus = NOT_IN_LOOP
                         fullSheetLoopButton?.isChecked = false
                     }
                     fullSheetLoopButton?.icon =
@@ -412,14 +416,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fullSheetShuffleButton?.isChecked = booleanViewModel.shuffleState
+        fullSheetShuffleButton?.isChecked = controllerViewModel.shuffleState
 
         fullSheetShuffleButton?.addOnCheckedChangeListener { _, isChecked ->
             if (!isListShuffleEnabled &&
                     playlistViewModel.playList.isNotEmpty()
             ) {
                 fullSheetLoopButton?.isChecked = isChecked
-                booleanViewModel.shuffleState = isChecked
+                controllerViewModel.shuffleState = isChecked
             } else {
                 val playlist = playlistViewModel.playList
                 val originalPlaylist = playlistViewModel.originalPlaylist
@@ -441,7 +445,7 @@ class MainActivity : AppCompatActivity() {
                         broadcastMetaDataUpdate()
                     }
                 }
-                booleanViewModel.shuffleState = isChecked
+                controllerViewModel.shuffleState = isChecked
             }
         }
 
@@ -534,7 +538,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (!booleanViewModel.isBottomSheetOpen) {
+        if (!controllerViewModel.isBottomSheetOpen) {
             bottomFullSizePlayerPreview.alpha = 0f
         }
 
@@ -542,17 +546,16 @@ class MainActivity : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED && bottomPlayerPreview.isVisible) {
                     bottomFullSizePlayerPreview.visibility = GONE
-                    booleanViewModel.isBottomSheetOpen = false
+                    controllerViewModel.isBottomSheetOpen = false
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    if (booleanViewModel.isBottomSheetOpen) {
+                    if (controllerViewModel.isBottomSheetOpen) {
                         bottomPlayerPreview.alpha = 0f
                     }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
-                    checkIfSquigglyProgressBarEnabled()
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
-                    booleanViewModel.isBottomSheetOpen = true
+                    controllerViewModel.isBottomSheetOpen = true
                 }
             }
 
@@ -596,7 +599,9 @@ class MainActivity : AppCompatActivity() {
                 fullSheetTimeStamp.text =
                         convertDurationToTimeStamp((value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString())
             }
-            trackSquigglyProgressBar()
+            if (isSquigglyProgressBarEnabled) {
+                trackSquigglyProgressBar()
+            }
         }
         // Slider behavior ends here.
 
@@ -690,7 +695,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         // Update bottom sheet's status.
-        if (booleanViewModel.isBottomSheetOpen) {
+        if (controllerViewModel.isBottomSheetOpen) {
             playerBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomFullSizePlayerPreview.visibility = VISIBLE
             bottomPlayerPreview.visibility = GONE
@@ -719,6 +724,8 @@ class MainActivity : AppCompatActivity() {
             fullSheetTimeStamp.text =
                     convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
         }
+
+        checkIfSquigglyProgressBarEnabled()
     }
 
     override fun onDestroy() {
@@ -936,11 +943,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkIfSquigglyProgressBarEnabled() {
         if (isSquigglyProgressBarEnabled && musicPlayer != null) {
+            // When player is active.
+            Log.d("TAGTAG", "SIT1")
             setSquigglyActive()
+            if (libraryViewModel.sessionSongPlayed <= 1 && !fullSheetSlider.isEnabled &&
+                !controllerViewModel.hasInitializedSquigglyView) {
+                fullSheetSquigglyView.visibility = GONE
+                controllerViewModel.hasInitializedSquigglyView = true
+            }
         } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value != 0f && musicPlayer == null) {
+            // When stopped at last song in the list.
             setSquigglyInactive()
             trackSquigglyProgressBar()
-        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value != 0f && musicPlayer != null) {
+        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value == 0f && musicPlayer == null) {
+            // When no music is played and no progress is set.
             setSquigglyGone()
         } else if (isSquigglyProgressBarEnabled) {
             trackSquigglyProgressBar()
@@ -983,19 +999,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun trackSquigglyProgressBar() {
-        if (isSquigglyProgressBarEnabled) {
-            val params = fullSheetSquigglyView.layoutParams as? ViewGroup.MarginLayoutParams
-            params?.let {
-                val marginVal = (fullSheetSquigglyViewFrame.width *
-                        (fullSheetSlider.valueTo - fullSheetSlider.value) / fullSheetSlider.valueTo).toInt()
-                if (marginVal != 0) {
-                    fullSheetSquigglyView.visibility = VISIBLE
-                    it.marginEnd = marginVal
-                } else {
-                    fullSheetSquigglyView.visibility = GONE
-                }
-                fullSheetSquigglyView.layoutParams = it
+        val params = fullSheetSquigglyView.layoutParams as? ViewGroup.MarginLayoutParams
+        params?.let {
+            val marginVal = (fullSheetSquigglyViewFrame.width *
+                    (fullSheetSlider.valueTo - fullSheetSlider.value) / fullSheetSlider.valueTo).toInt()
+            if (marginVal != 0) {
+                it.marginEnd = marginVal
+                controllerViewModel.squigglyViewMargin = marginVal
+            } else {
+                it.marginEnd = controllerViewModel.squigglyViewMargin
             }
+            if (controllerViewModel.squigglyViewMargin != 0) {
+                fullSheetSquigglyView.visibility = VISIBLE
+            }
+            fullSheetSquigglyView.layoutParams = it
         }
     }
 
@@ -1049,7 +1066,7 @@ class MainActivity : AppCompatActivity() {
         // These are the view models used across the app.
         lateinit var libraryViewModel: LibraryViewModel
         lateinit var playlistViewModel: PlaylistViewModel
-        lateinit var booleanViewModel: BooleanViewModel
+        lateinit var controllerViewModel: ControllerViewModel
 
         // This is the default disk cache behavior.
         lateinit var diskCacheStrategyCustom: DiskCacheStrategy

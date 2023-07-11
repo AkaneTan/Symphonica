@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
+import org.akanework.symphonica.MainActivity.Companion.controllerViewModel
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
@@ -77,8 +77,8 @@ class LibraryListAdapter(private val songList: List<Song>) :
         }
 
         holder.itemView.setOnClickListener {
-            if (booleanViewModel.shuffleState) {
-                booleanViewModel.shuffleState = false
+            if (controllerViewModel.shuffleState) {
+                controllerViewModel.shuffleState = false
                 fullSheetShuffleButton!!.isChecked = false
                 playlistViewModel.originalPlaylist.clear()
             }

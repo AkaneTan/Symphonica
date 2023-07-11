@@ -20,15 +20,17 @@ package org.akanework.symphonica.ui.viewmodel
 import androidx.lifecycle.ViewModel
 
 /**
- * [BooleanViewModel] is a [ViewModel] that
+ * [ControllerViewModel] is a [ViewModel] that
  * contains several important booleans used across
  * MainActivity.
  */
-class BooleanViewModel : ViewModel() {
+class ControllerViewModel : ViewModel() {
     var isSendingRequest = false
     var isBottomSheetOpen = false
     var loopButtonStatus = 0
+    var squigglyViewMargin = 0
     var shuffleState = false
+    var hasInitializedSquigglyView = false
 
     companion object {
         const val NOT_IN_LOOP = 0

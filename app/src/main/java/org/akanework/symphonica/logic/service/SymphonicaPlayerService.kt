@@ -43,7 +43,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
+import org.akanework.symphonica.MainActivity.Companion.controllerViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.isMainActivityActive
@@ -110,15 +110,15 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
      */
     private val focusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         when (focusChange) {
-            AudioManager.AUDIOFOCUS_LOSS -> if (!booleanViewModel.isSendingRequest) {
+            AudioManager.AUDIOFOCUS_LOSS -> if (!controllerViewModel.isSendingRequest) {
                 pausePlayer()
             }
 
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> if (!booleanViewModel.isSendingRequest) {
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> if (!controllerViewModel.isSendingRequest) {
                 pausePlayer()
             }
 
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> if (!booleanViewModel.isSendingRequest) {
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> if (!controllerViewModel.isSendingRequest) {
                 pausePlayer()
             }
 
@@ -351,12 +351,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun prevSongDecisionMaker() {
         val previousLocation = playlistViewModel.currentLocation
-        if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
+        if (!isListShuffleEnabled && controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1 &&
+                    if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1 &&
                             !fullSheetShuffleButton!!.isChecked) {
                         playlistViewModel.playList.size - 1
-                    } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0 &&
+                    } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0 &&
                             !fullSheetShuffleButton!!.isChecked) {
                         stopPlaying()
                         0
@@ -367,11 +367,11 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     } else {
                         0
                     }
-        } else if (booleanViewModel.loopButtonStatus != 2) {
+        } else if (controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 0) {
+                    if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0) {
                         playlistViewModel.playList.size - 1
-                    } else if (playlistViewModel.currentLocation == 0 && booleanViewModel.loopButtonStatus == 1) {
+                    } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1) {
                         stopPlaying()
                         0
                     } else {
@@ -386,13 +386,13 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun nextSongDecisionMaker() {
         val previousLocation = playlistViewModel.currentLocation
-        if (!isListShuffleEnabled && booleanViewModel.loopButtonStatus != 2) {
+        if (!isListShuffleEnabled && controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && booleanViewModel
+                    if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && controllerViewModel
                         .loopButtonStatus == 1 && !fullSheetShuffleButton!!.isChecked) {
                         0
                     } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            booleanViewModel
+                            controllerViewModel
                                 .loopButtonStatus == 0 && !fullSheetShuffleButton!!.isChecked) {
                         stopPlaying()
                         0
@@ -404,14 +404,14 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                     } else {
                         0
                     }
-        } else if (booleanViewModel.loopButtonStatus != 2) {
+        } else if (controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
                     if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            booleanViewModel.loopButtonStatus == 1
+                            controllerViewModel.loopButtonStatus == 1
                     ) {
                         0
                     } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            booleanViewModel.loopButtonStatus == 0
+                            controllerViewModel.loopButtonStatus == 0
                     ) {
                         stopPlaying()
                         0
@@ -427,10 +427,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
             .setOnAudioFocusChangeListener(focusChangeListener)
             .build()
-        booleanViewModel.isSendingRequest = true
+        controllerViewModel.isSendingRequest = true
         val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
-            booleanViewModel.isSendingRequest = false
+            controllerViewModel.isSendingRequest = false
         }
         handler.postDelayed(runnable, LOCK_AUDIO_FOCUS_INTERVAL)
 

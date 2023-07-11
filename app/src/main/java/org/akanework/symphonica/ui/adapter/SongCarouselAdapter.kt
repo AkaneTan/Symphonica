@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.carousel.MaskableFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
+import org.akanework.symphonica.MainActivity.Companion.controllerViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
@@ -60,8 +60,8 @@ class SongCarouselAdapter(private val songList: MutableList<Song>) :
             .into(holder.songCover)
 
         holder.container.setOnClickListener {
-            if (booleanViewModel.shuffleState) {
-                booleanViewModel.shuffleState = false
+            if (controllerViewModel.shuffleState) {
+                controllerViewModel.shuffleState = false
                 fullSheetShuffleButton!!.isChecked = false
             }
             replacePlaylist(songList, position)

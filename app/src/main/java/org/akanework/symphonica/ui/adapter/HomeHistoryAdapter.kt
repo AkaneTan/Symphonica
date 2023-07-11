@@ -68,8 +68,8 @@ class HomeHistoryAdapter(private val songList: List<Song>) :
         holder.itemView.setOnClickListener {
             MainActivity.playlistViewModel.currentLocation = position
             MainActivity.playlistViewModel.playList = songList.toMutableList()
-            if (MainActivity.booleanViewModel.shuffleState) {
-                MainActivity.booleanViewModel.shuffleState = false
+            if (MainActivity.controllerViewModel.shuffleState) {
+                MainActivity.controllerViewModel.shuffleState = false
                 MainActivity.fullSheetShuffleButton!!.isChecked = false
             }
             replacePlaylist(songList.toMutableList(), position)

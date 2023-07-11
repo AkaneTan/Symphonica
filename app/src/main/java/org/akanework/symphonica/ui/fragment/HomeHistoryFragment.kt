@@ -88,8 +88,8 @@ class HomeHistoryFragment : Fragment() {
 
         playButton.setOnClickListener {
             if (historySongList.size > 0) {
-                if (MainActivity.booleanViewModel.shuffleState) {
-                    MainActivity.booleanViewModel.shuffleState = false
+                if (MainActivity.controllerViewModel.shuffleState) {
+                    MainActivity.controllerViewModel.shuffleState = false
                     MainActivity.fullSheetShuffleButton!!.isChecked = false
                     MainActivity.playlistViewModel.originalPlaylist.clear()
                 }
