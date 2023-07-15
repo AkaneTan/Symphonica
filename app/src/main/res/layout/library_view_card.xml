@@ -37,8 +37,8 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:background="@drawable/rp_album_cover"
             android:clipToOutline="true">
 
@@ -48,13 +48,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/default_album_number"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:textStyle="" />
 
             <ImageView
                 android:id="@+id/empty_note"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_song_default_cover" />
 

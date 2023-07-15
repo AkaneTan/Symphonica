@@ -17,7 +17,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="226dp"
+    android:layout_height="240dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:clickable="true"
@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/song_cover"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="162dp"
+            android:layout_height="162dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/rp_album_cover"
             android:clipToOutline="true"
@@ -46,7 +46,7 @@
             android:transitionName="album_imageview" />
 
         <LinearLayout
-            android:layout_width="150dp"
+            android:layout_width="162dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"

@@ -62,7 +62,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
@@ -148,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullSheetLocation: TextView
     private lateinit var fullSheetTimeStamp: TextView
     private lateinit var bottomSheetControlButton: MaterialButton
-    private lateinit var fullSheetControlButton: FloatingActionButton
+    private lateinit var fullSheetControlButton: MaterialButton
     private lateinit var fullSheetSlider: Slider
     private lateinit var fullSheetSquigglyView: SquigglyView
     private lateinit var fullSheetSquigglyViewFrame: FrameLayout
@@ -808,7 +807,7 @@ class MainActivity : AppCompatActivity() {
 
                 bottomSheetControlButton.icon =
                         ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
-                fullSheetControlButton.setImageResource(R.drawable.ic_pause)
+                fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
                 setPlaybackState(OPERATION_PLAY)
@@ -829,7 +828,7 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             bottomSheetControlButton.icon =
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
-            fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
+            fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetSlider.isEnabled = false
             setPlaybackState(OPERATION_PAUSE)
             checkIfSquigglyProgressBarEnabled()
@@ -846,7 +845,7 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             bottomSheetControlButton.icon =
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
-            fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
+            fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             setPlaybackState(OPERATION_PAUSE)
         }
     }
@@ -915,7 +914,7 @@ class MainActivity : AppCompatActivity() {
                                 SymphonicaApplication.context,
                                 R.drawable.ic_pause
                             )
-                    fullSheetControlButton.setImageResource(R.drawable.ic_pause)
+                    fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
                 }
 
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))

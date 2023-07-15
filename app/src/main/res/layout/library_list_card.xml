@@ -17,7 +17,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="77dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
@@ -31,10 +31,10 @@
 
         <ImageView
             android:id="@+id/song_cover"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/rp_album_cover"
             android:clipToOutline="true"
             android:contentDescription="@string/desc_album_cover"
@@ -42,26 +42,27 @@
             android:src="@drawable/ic_song_default_cover" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="58dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/song_title"
-                android:layout_width="200sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:letterSpacing="0.01"
                 android:singleLine="true"
                 android:text="@string/unknown_song"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/song_meta"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxEms="10"
                 android:singleLine="true"
@@ -78,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/default_play_time"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="12sp" />
