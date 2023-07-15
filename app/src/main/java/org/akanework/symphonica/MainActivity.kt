@@ -117,7 +117,11 @@ class MainActivity : AppCompatActivity() {
             ) {
                 fullSheetSlider.isEnabled = true
 
-                fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                val valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                if (valueTo < fullSheetSlider.value) {
+                    fullSheetSlider.value = 0f
+                }
+                fullSheetSlider.valueTo = valueTo
 
                 if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE <= fullSheetSlider.valueTo) {
                     val addVar = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
@@ -726,7 +730,12 @@ class MainActivity : AppCompatActivity() {
 
         if (musicPlayer != null && !musicPlayer!!.isPlaying) {
             fullSheetSlider.isEnabled = true
-            fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+
+            val valueTo = musicPlayer!!.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+            if (valueTo < fullSheetSlider.value) {
+                fullSheetSlider.value = 0f
+            }
+            fullSheetSlider.valueTo = valueTo
             val addVar = musicPlayer!!.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
             if (addVar <= fullSheetSlider.valueTo) {
                 fullSheetSlider.value = addVar

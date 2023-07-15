@@ -64,7 +64,11 @@ class MiniPlayerActivity : AppCompatActivity() {
             if (mediaPlayer.isPlaying) {
                 slider.isEnabled = true
 
-                slider.valueTo = mediaPlayer.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                val valueTo = mediaPlayer.duration.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                if (valueTo < slider.value) {
+                    slider.value = 0f
+                }
+                slider.valueTo = valueTo
 
                 if (!isUserTracking) {
                     val addVar = mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
