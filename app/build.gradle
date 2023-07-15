@@ -14,8 +14,8 @@ android {
         applicationId "org.akanework.symphonica"
         minSdk 29
         targetSdk 34
-        versionCode 4
-        versionName "0.58b.hotfix"
+        versionCode 5
+        versionName "0.5.9"
     }
 
     buildTypes {
