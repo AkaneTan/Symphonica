@@ -38,10 +38,14 @@ import android.os.Looper
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.akanework.symphonica.LOCK_AUDIO_FOCUS_INTERVAL
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.controllerViewModel
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
@@ -59,19 +63,11 @@ import org.akanework.symphonica.logic.util.broadcastPlayStart
 import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.nextSong
-import org.akanework.symphonica.logic.util.pausePlayer
 import org.akanework.symphonica.logic.util.prevSong
-import org.akanework.symphonica.logic.util.resumePlayer
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
-
 import kotlin.random.Random
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.akanework.symphonica.LOCK_AUDIO_FOCUS_INTERVAL
 
 /**
  * [SymphonicaPlayerService] is the core of Symphonica.
@@ -98,6 +94,21 @@ import org.akanework.symphonica.LOCK_AUDIO_FOCUS_INTERVAL
  */
 class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private var isAudioManagerInitialized = false
+
+    private fun pausePlayer() {
+        musicPlayer!!.pause()
+        broadcastPlayPaused()
+    }
+
+    private fun resumePlayer() {
+        musicPlayer!!.start()
+        requestAudioFocus()
+        broadcastPlayStart()
+        if (managerSymphonica!!.activeNotifications.isEmpty()) {
+            mediaSession.setCallback(mediaSessionCallback)
+        }
+        killMiniPlayer()
+    }
 
     /**
      * [focusChangeListener] is a listener build for [audioManager].
@@ -127,6 +138,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             }
         }
     }
+
     private val mediaSessionCallback = object : MediaSession.Callback() {
         override fun onSeekTo(pos: Long) {
             musicPlayer?.seekTo(pos.toInt())
