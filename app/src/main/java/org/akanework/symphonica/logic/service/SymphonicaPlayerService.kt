@@ -360,6 +360,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         musicPlayer = null
         broadcastPlayStopped()
         broadcastMetaDataUpdate()
+        abandonAudioFocus()
     }
 
     private fun prevSongDecisionMaker() {
