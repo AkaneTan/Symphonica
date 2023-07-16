@@ -32,6 +32,7 @@ import android.os.Looper
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.button.MaterialButton
@@ -79,20 +80,20 @@ class MiniPlayerActivity : AppCompatActivity() {
                             convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
                 }
 
-                controlButton.setImageResource(R.drawable.ic_pause)
+                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
                 handler.postDelayed(this, SLIDER_UPDATE_INTERVAL)
             } else if (mediaPlayer.currentPosition >= mediaPlayer.duration - 1000) {
                 slider.isEnabled = false
-                controlButton.setImageResource(R.drawable.ic_sheet_play)
+                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             } else {
-                controlButton.setImageResource(R.drawable.ic_sheet_play)
+                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             }
         }
     }
     private lateinit var receiveKill: KillReceiver
     private lateinit var slider: Slider
     private lateinit var timeStamp: TextView
-    private lateinit var controlButton: FloatingActionButton
+    private lateinit var controlButton: MaterialButton
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -218,11 +219,11 @@ class MiniPlayerActivity : AppCompatActivity() {
                 controlButton.setOnClickListener {
                     if (mediaPlayer.isPlaying) {
                         mediaPlayer.pause()
-                        controlButton.setImageResource(R.drawable.ic_sheet_play)
+                        controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
                     } else {
                         mediaPlayer.start()
                         handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
-                        controlButton.setImageResource(R.drawable.ic_pause)
+                        controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
                     }
                 }
                 handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
