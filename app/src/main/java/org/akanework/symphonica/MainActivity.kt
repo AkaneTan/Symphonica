@@ -996,10 +996,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSquigglyInactive() {
         fullSheetSquigglyView.visibility = VISIBLE
-        fullSheetSquigglyView.paint.color = MaterialColors.getColor(
-            fullSheetSquigglyView,
-            com.google.android.material.R.attr.colorSurfaceVariant
-        )
         fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
             resources.getColor(android.R.color.transparent, theme)
         )

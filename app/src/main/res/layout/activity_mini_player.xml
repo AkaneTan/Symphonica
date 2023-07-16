@@ -242,6 +242,7 @@
                         android:valueTo="100.0"
                         app:thumbRadius="9dp"
                         app:thumbColor="?attr/colorPrimary"
+                        app:trackColorActive="?attr/colorPrimary"
                         app:labelBehavior="gone" />
 
                 </FrameLayout>
