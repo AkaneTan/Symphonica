@@ -562,9 +562,6 @@ class MainActivity : AppCompatActivity() {
                     bottomFullSizePlayerPreview.visibility = GONE
                     controllerViewModel.isBottomSheetOpen = false
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    if (controllerViewModel.isBottomSheetOpen) {
-                        bottomPlayerPreview.alpha = 0f
-                    }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
