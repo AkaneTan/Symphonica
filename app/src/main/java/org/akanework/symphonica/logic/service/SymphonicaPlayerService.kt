@@ -97,6 +97,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun pausePlayer() {
         musicPlayer!!.pause()
+        abandonAudioFocus()
         broadcastPlayPaused()
     }
 
@@ -228,6 +229,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
             "ACTION_PAUSE" -> if (musicPlayer != null && musicPlayer!!.isPlaying) {
                 musicPlayer!!.pause()
+                abandonAudioFocus()
                 broadcastPlayPaused()
             }
 
@@ -434,11 +436,12 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         updatePlaylistSheetLocation(previousLocation)
     }
 
+    private val audioFocusRequest: AudioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+        .setOnAudioFocusChangeListener(focusChangeListener)
+        .build()
+
     private fun requestAudioFocus() {
         userRequestedAudioFocus = true
-        val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-            .setOnAudioFocusChangeListener(focusChangeListener)
-            .build()
         controllerViewModel.isSendingRequest = true
         val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
@@ -447,6 +450,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         handler.postDelayed(runnable, LOCK_AUDIO_FOCUS_INTERVAL)
 
         audioManager.requestAudioFocus(audioFocusRequest)
+    }
+
+    private fun abandonAudioFocus() {
+        audioManager.abandonAudioFocusRequest(audioFocusRequest)
     }
 
     companion object {
