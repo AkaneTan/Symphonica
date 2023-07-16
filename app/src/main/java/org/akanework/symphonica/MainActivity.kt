@@ -838,6 +838,9 @@ class MainActivity : AppCompatActivity() {
             fullSheetSlider.isEnabled = false
             setPlaybackState(OPERATION_PAUSE)
             checkIfSquigglyProgressBarEnabled()
+            if (musicPlayer != null) {
+                updateMetadata()
+            }
         }
     }
 
@@ -853,6 +856,9 @@ class MainActivity : AppCompatActivity() {
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
             setPlaybackState(OPERATION_PAUSE)
+            if (musicPlayer != null) {
+                updateMetadata()
+            }
         }
     }
 
