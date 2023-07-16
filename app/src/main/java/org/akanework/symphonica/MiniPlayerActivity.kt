@@ -37,7 +37,6 @@ import androidx.core.net.toUri
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import org.akanework.symphonica.logic.data.Song
@@ -115,12 +114,6 @@ class MiniPlayerActivity : AppCompatActivity() {
                 IntentFilter("internal.play_mini_player_stop")
             )
         }
-
-        // Kill the main player
-        val intentKill = Intent(this, SymphonicaPlayerService::class.java).apply {
-            action = "ACTION_PAUSE"
-        }
-        this.startService(intentKill)
 
         val tempSongList: List<Song> = getAllSongs(applicationContext)
 
