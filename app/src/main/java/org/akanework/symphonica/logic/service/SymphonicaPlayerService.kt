@@ -97,7 +97,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun pausePlayer() {
         musicPlayer!!.pause()
-        abandonAudioFocus()
         broadcastPlayPaused()
     }
 
