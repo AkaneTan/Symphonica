@@ -16,5 +16,5 @@
   -->
 
 <resources>
-    <color name="ic_launcher_background">@android:color/system_accent1_500</color>
+    <color name="ic_launcher_background">@android:color/system_accent1_100</color>
 </resources>
