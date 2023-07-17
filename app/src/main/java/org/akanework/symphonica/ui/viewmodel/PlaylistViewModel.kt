@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica.ui.viewmodel
 
+import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistDatabase
 import org.akanework.symphonica.logic.data.PlaylistDataEntity
@@ -36,6 +37,8 @@ class PlaylistViewModel : ViewModel() {
     var originalPlaylist = mutableListOf<Song>()
     var currentLocation: Int = 0
     val playlistList: MutableList<PlaylistDataEntity> = mutableListOf()
+    var timer: CountDownTimer? = null
+    var timerValue: Float = 0f
 
     /**
      * @param name

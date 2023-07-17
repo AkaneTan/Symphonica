@@ -471,9 +471,6 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             .build()
         lateinit var playbackStateBuilder: PlaybackState.Builder
 
-        var timer: CountDownTimer? = null
-        var timerValue: Float = 0f
-
         /**
          * [setPlaybackState] sets the playback state of the
          * media control notification.

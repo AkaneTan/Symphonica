@@ -18,6 +18,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.google.android.material.slider.Slider
@@ -29,6 +30,7 @@
         android:layout_marginTop="8dp"
         android:valueFrom="0"
         android:valueTo="2.0"
-        android:stepSize="0.5"  />
+        android:stepSize="0.5"
+        app:labelBehavior="floating"/>
 
 </LinearLayout>

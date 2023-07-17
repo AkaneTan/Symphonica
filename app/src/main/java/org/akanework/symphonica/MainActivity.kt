@@ -36,7 +36,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -78,12 +77,9 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timer
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timerValue
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastPlayPaused
-import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -153,7 +149,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullSheetArtist: TextView
     private lateinit var fullSheetAlbum: TextView
     private lateinit var fullSheetDuration: TextView
-    private lateinit var fullSheetLocation: TextView
     private lateinit var fullSheetTimeStamp: TextView
     private lateinit var bottomSheetControlButton: MaterialButton
     private lateinit var fullSheetControlButton: MaterialButton
@@ -320,7 +315,6 @@ class MainActivity : AppCompatActivity() {
         val fullSheetBackButton = findViewById<MaterialButton>(R.id.sheet_extract_player)
         val fullSheetNextButton = findViewById<MaterialButton>(R.id.sheet_next_song)
         val fullSheetPrevButton = findViewById<MaterialButton>(R.id.sheet_previous_song)
-        val fullSheetSongInfo = findViewById<MaterialButton>(R.id.sheet_song_info)
 
         fragmentContainerView = findViewById(R.id.fragmentContainer)
         navigationView = findViewById(R.id.navigation_view)
@@ -333,7 +327,6 @@ class MainActivity : AppCompatActivity() {
         fullSheetAlbum = findViewById(R.id.sheet_album)
         fullSheetLoopButton = findViewById(R.id.sheet_loop)
         fullSheetShuffleButton = findViewById(R.id.sheet_random)
-        fullSheetLocation = findViewById(R.id.sheet_song_location)
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
         fullSheetSlider = findViewById(R.id.sheet_slider)
         fullSheetSquigglyView = findViewById(R.id.squiggly)
@@ -376,9 +369,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         // The behavior of the global sheet starts here.
-        if (timer == null) {
-            fullSheetTimerButton.isChecked = false
-        }
+        fullSheetTimerButton.isChecked = playlistViewModel.timer != null
 
         playerBottomSheetBehavior.isHideable = false
 
@@ -522,7 +513,7 @@ class MainActivity : AppCompatActivity() {
             bottomPlayerPreview.visibility = VISIBLE
         }
 
-        fullSheetSongInfo.setOnClickListener {
+        findViewById<ImageView>(R.id.sheet_cover).setOnLongClickListener {
             val rootView = MaterialAlertDialogBuilder(
                 this,
                 com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
@@ -555,6 +546,8 @@ class MainActivity : AppCompatActivity() {
                     dialogAlbum.setText(song.album)
                 }
             }
+
+            true
         }
 
         playlistButton.setOnClickListener {
@@ -590,7 +583,7 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
         fullSheetTimerButton.setOnClickListener {
-            if (timer != null) {
+            if (playlistViewModel.timer != null) {
                 fullSheetTimerButton.isChecked = true
             }
             if (musicPlayer != null) {
@@ -600,15 +593,19 @@ class MainActivity : AppCompatActivity() {
                 )
                     .setTitle(getString(R.string.dialog_timer_title))
                     .setView(R.layout.alert_dialog_timer)
+                    .setNeutralButton(getString(R.string.dialog_song_dismiss)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
                     .setOnDismissListener {
-                        if (timer == null) {
+                        if (playlistViewModel.timer == null) {
                             fullSheetTimerButton.isChecked = false
                         }
                     }
                     .show()
                 val rangeSlider = rootView.findViewById<Slider>(R.id.timer_slider)!!
-                if (timer != null)
-                rangeSlider.value = timerValue
+                if (playlistViewModel.timer != null) {
+                    rangeSlider.value = playlistViewModel.timerValue
+                }
                 rangeSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                     override fun onStartTrackingTouch(slider: Slider) {
                         // Keep this empty
@@ -616,13 +613,13 @@ class MainActivity : AppCompatActivity() {
 
                     override fun onStopTrackingTouch(slider: Slider) {
                         if (rangeSlider.value != 0f) {
-                            if (timerValue != 0f) {
-                                timer?.cancel()
-                                timer = null
-                                timerValue = 0f
+                            if (playlistViewModel.timerValue != 0f) {
+                                playlistViewModel.timer?.cancel()
+                                playlistViewModel.timer = null
+                                playlistViewModel.timerValue = 0f
                             }
-                            timerValue = rangeSlider.value
-                            timer = object : CountDownTimer((rangeSlider.value * 3600 * 1000).toLong(), 1000) {
+                            playlistViewModel.timerValue = rangeSlider.value
+                            playlistViewModel.timer = object : CountDownTimer((rangeSlider.value * 3600 * 1000).toLong(), 1000) {
                                 override fun onTick(millisUntilFinished: Long) {
                                 }
 
@@ -630,14 +627,14 @@ class MainActivity : AppCompatActivity() {
                                     musicPlayer?.pause()
                                     broadcastPlayPaused()
                                     broadcastMetaDataUpdate()
-                                    timerValue = 0f
+                                    playlistViewModel.timerValue = 0f
                                 }
                             }
-                            (timer as CountDownTimer).start()
+                            (playlistViewModel.timer as CountDownTimer).start()
                         } else {
-                            timer?.cancel()
-                            timer = null
-                            timerValue = 0f
+                            playlistViewModel.timer?.cancel()
+                            playlistViewModel.timer = null
+                            playlistViewModel.timerValue = 0f
                         }
                     }
                 })
@@ -833,8 +830,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverPlay] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist],
-     * [fullSheetLocation].
+     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
      * It also uses [updateAlbumView].
      */
     inner class SheetPlayReceiver : BroadcastReceiver() {
@@ -860,22 +856,6 @@ class MainActivity : AppCompatActivity() {
                         convertDurationToTimeStamp(
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                if (playlistViewModel.playList.size > 1) {
-                    fullSheetLocation.text =
-                        getString(
-                            R.string.full_sheet_playlist_location,
-                            ((playlistViewModel.currentLocation) + 1).toString(),
-                            playlistViewModel.playList.size.toString()
-                        )
-                } else {
-                    fullSheetLocation.text =
-                        getString(
-                            R.string.full_sheet_playlist_location_single,
-                            ((playlistViewModel.currentLocation) + 1).toString(),
-                            playlistViewModel.playList.size.toString()
-                        )
-                }
 
                 bottomSheetControlButton.icon =
                         ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
@@ -909,8 +889,8 @@ class MainActivity : AppCompatActivity() {
             if (musicPlayer != null) {
                 updateMetadata()
             }
-            timer?.cancel()
-            timer = null
+            playlistViewModel.timer?.cancel()
+            playlistViewModel.timer = null
             fullSheetTimerButton.isChecked = false
         }
     }
@@ -930,12 +910,12 @@ class MainActivity : AppCompatActivity() {
             if (musicPlayer != null) {
                 updateMetadata()
             }
-            if (timer == null) {
+            if (playlistViewModel.timer == null) {
                 fullSheetTimerButton.isChecked = false
-            } else if (timerValue == 0f) {
+            } else if (playlistViewModel.timerValue == 0f) {
                 fullSheetTimerButton.isChecked = false
-                timer!!.cancel()
-                timer = null
+                playlistViewModel.timer!!.cancel()
+                playlistViewModel.timer = null
             }
         }
     }
@@ -956,8 +936,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverUpdate] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist],
-     * [fullSheetLocation].
+     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
      * This receiver is used when resuming the activity.
      */
     inner class SheetUpdateReceiver : BroadcastReceiver() {
@@ -981,22 +960,6 @@ class MainActivity : AppCompatActivity() {
                         convertDurationToTimeStamp(
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                if (playlistViewModel.playList.size > 1) {
-                    fullSheetLocation.text =
-                        getString(
-                            R.string.full_sheet_playlist_location,
-                            ((playlistViewModel.currentLocation) + 1).toString(),
-                            playlistViewModel.playList.size.toString()
-                        )
-                } else {
-                    fullSheetLocation.text =
-                        getString(
-                            R.string.full_sheet_playlist_location_single,
-                            ((playlistViewModel.currentLocation) + 1).toString(),
-                            playlistViewModel.playList.size.toString()
-                        )
-                }
 
                 if (musicPlayer!!.isPlaying) {
                     bottomSheetControlButton.icon =
@@ -1029,17 +992,8 @@ class MainActivity : AppCompatActivity() {
                         convertDurationToTimeStamp(
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
-                        getString(
-                            R.string.full_sheet_playlist_location,
-                            ((playlistViewModel.currentLocation) + 1).toString(),
-                            playlistViewModel.playList.size.toString()
-                        )
-                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
-                updateMetadata()
             }
-            if (timer == null) {
+            if (playlistViewModel.timer == null) {
                 fullSheetTimerButton.isChecked = false
             }
         }
