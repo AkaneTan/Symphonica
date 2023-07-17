@@ -33,7 +33,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:cardCornerRadius="6dp">
+            app:cardCornerRadius="6dp"
+            style="?attr/materialCardViewElevatedStyle">
             <ImageView
                 android:id="@+id/carousel_image_view"
                 android:layout_width="match_parent"
