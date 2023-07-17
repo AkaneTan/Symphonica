@@ -891,6 +891,7 @@ class MainActivity : AppCompatActivity() {
             }
             playlistViewModel.timer?.cancel()
             playlistViewModel.timer = null
+            updateAlbumView(findViewById(R.id.global_bottom_sheet))
             fullSheetTimerButton.isChecked = false
         }
     }
