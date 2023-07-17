@@ -2,8 +2,11 @@
 ![GitHub](https://img.shields.io/github/license/AkaneTan/Symphonica)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/AkaneTan/Symphonica)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f8fa63a2b74c42d78fbd1f782884b289)](https://app.codacy.com/gh/AkaneTan/Symphonica/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Telegram](https://img.shields.io/badge/-telegram-red?color=white&logo=telegram&logoColor=blue)](https://t.me/AkaneFoundation)
 
 A simple md3 music player aiming for simplicity and minimal.
+
+*Join our telegram group to get test beta versions.*
 
 ## Features
 - Up-to-date material 3 design
