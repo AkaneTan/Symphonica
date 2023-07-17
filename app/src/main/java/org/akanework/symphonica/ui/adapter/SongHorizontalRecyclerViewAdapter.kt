@@ -43,11 +43,11 @@ import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
  * This is the carousel adapter used for
  * songs.
  */
-class SongRecyclerViewAdapter(private val songList: MutableList<Song>) :
-    RecyclerView.Adapter<SongRecyclerViewAdapter.ViewHolder>() {
+class SongHorizontalRecyclerViewAdapter(private val songList: MutableList<Song>) :
+    RecyclerView.Adapter<SongHorizontalRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_carousel_card, parent, false)
+            .inflate(R.layout.home_carousel_card_recent, parent, false)
         return ViewHolder(view)
     }
 
@@ -61,6 +61,7 @@ class SongRecyclerViewAdapter(private val songList: MutableList<Song>) :
             .into(holder.songCover)
 
         holder.songName.text = songList[position].title
+        holder.songAuthor.text = songList[position].artist
 
         holder.container.setOnClickListener {
             if (controllerViewModel.shuffleState) {
@@ -132,5 +133,6 @@ class SongRecyclerViewAdapter(private val songList: MutableList<Song>) :
         val songCover: ImageView = view.findViewById(R.id.carousel_image_view)
         val container: MaterialCardView = view.findViewById(R.id.carousel_item_container)
         val songName: TextView = view.findViewById(R.id.carousel_song_name)
+        val songAuthor: TextView = view.findViewById(R.id.carousel_author_name)
     }
 }

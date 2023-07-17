@@ -207,13 +207,13 @@
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconSize="30sp"
-                    app:iconTint="?attr/colorControlNormal" />
+                    app:iconTint="?attr/colorOnSurface" />
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shuffle_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="196dp"
+                android:layout_height="180dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp" />
 
@@ -235,12 +235,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recent_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="196dp"
+                android:layout_height="204dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom
-
-                    ="32dp" />
+                android:layout_marginBottom="32dp" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

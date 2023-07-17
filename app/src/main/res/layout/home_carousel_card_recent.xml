@@ -19,22 +19,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carousel_item_container"
     android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
-    android:layout_width="wrap_content"
-    android:layout_height="180dp"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:strokeWidth="0dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="12dp">
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="6dp">
             <ImageView
                 android:id="@+id/carousel_image_view"
                 android:layout_width="match_parent"
@@ -44,16 +43,31 @@
                 android:src="@drawable/ic_song_outline_default_cover" />
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/carousel_song_name"
-            android:layout_marginTop="8dp"
+        <LinearLayout
+            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unknown_song"
-            android:singleLine="true"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/carousel_song_name"
+                android:layout_marginStart="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unknown_song"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurface"/>
+
+            <TextView
+                android:id="@+id/carousel_author_name"
+                android:layout_marginStart="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unknown_song"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurfaceVariant"/>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -32,6 +32,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -54,6 +55,7 @@ import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.ui.adapter.SongHorizontalRecyclerViewAdapter
 import org.akanework.symphonica.ui.adapter.SongRecyclerViewAdapter
 import kotlin.math.abs
 
@@ -186,10 +188,9 @@ class HomeFragment : Fragment() {
         shuffleAdapter = SongRecyclerViewAdapter(shuffleList)
         shuffleRecyclerView.adapter = shuffleAdapter
 
-        val recentLayoutManager = LinearLayoutManager(context)
-        recentLayoutManager.orientation = RecyclerView.HORIZONTAL
+        val recentLayoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
         recentRecyclerView.layoutManager = recentLayoutManager
-        recentAdapter = SongRecyclerViewAdapter(recentList)
+        recentAdapter = SongHorizontalRecyclerViewAdapter(recentList)
         recentRecyclerView.adapter = recentAdapter
 
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
@@ -277,7 +278,7 @@ class HomeFragment : Fragment() {
         private var isInitialized: Boolean = true
         private lateinit var loadingPrompt: MaterialCardView
         private lateinit var shuffleAdapter: SongRecyclerViewAdapter
-        private lateinit var recentAdapter: SongRecyclerViewAdapter
+        private lateinit var recentAdapter: SongHorizontalRecyclerViewAdapter
 
         /**
          * This is used for outer class to switch [loadingPrompt].
