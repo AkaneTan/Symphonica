@@ -484,7 +484,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 OPERATION_PLAY -> playbackStateBuilder.setState(
                     PlaybackState.STATE_PLAYING,
                     musicPlayer!!.currentPosition.toLong(),
-                    musicPlayer!!.playbackParams.speed
+                    1.0f
                 )
 
                 OPERATION_PAUSE -> playbackStateBuilder.setState(
