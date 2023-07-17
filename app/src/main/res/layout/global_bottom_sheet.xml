@@ -114,7 +114,7 @@
                             app:iconGravity="textStart"
                             app:iconPadding="0dp"
                             app:iconSize="30sp"
-                            app:iconTint="?attr/colorControlNormal" />
+                            app:iconTint="?attr/colorOnSurface" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/sheet_song_info"
@@ -130,7 +130,7 @@
                             app:iconGravity="textStart"
                             app:iconPadding="0dp"
                             app:iconSize="30sp"
-                            app:iconTint="?attr/colorControlNormal" />
+                            app:iconTint="?attr/colorOnSurface" />
                     </LinearLayout>
 
                 </FrameLayout>
