@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica.ui.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -25,8 +26,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
+import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
@@ -48,6 +51,12 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
     override fun getItemCount(): Int = songList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Glide.with(holder.songCover.context)
+            .load(songList[position].imgUri)
+            .diskCacheStrategy(MainActivity.diskCacheStrategyCustom)
+            .placeholder(R.drawable.ic_song_outline_default_cover)
+            .into(holder.songCover)
+
         holder.songTitle.text = songList[position].title
         "${songList[position].artist} - ${songList[position].album}".also { holder.songMeta.text = it }
 
@@ -86,6 +95,11 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                 )
             )
             holder.activeBackground.visibility = VISIBLE
+            holder.dismissButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    holder.dismissButton,
+                    com.google.android.material.R.attr.colorOnPrimaryContainer
+                ))
         } else {
             holder.songTitle.setTextColor(
                 MaterialColors.getColor(
@@ -100,6 +114,11 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                 )
             )
             holder.activeBackground.visibility = GONE
+            holder.dismissButton.iconTint = ColorStateList.valueOf(
+                MaterialColors.getColor(
+                    holder.dismissButton,
+                    com.google.android.material.R.attr.colorOnSurface
+                ))
         }
     }
 
@@ -107,6 +126,7 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
      * Upon creation, viewbinding everything.
      */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val songCover: ImageView = view.findViewById(R.id.playlist_album_art)
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songMeta: TextView = view.findViewById(R.id.song_meta)
         val dismissButton: MaterialButton = view.findViewById(R.id.playlist_delete)
