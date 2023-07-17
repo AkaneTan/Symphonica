@@ -20,7 +20,7 @@ package org.akanework.symphonica.logic.data
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.SymphonicaApplication
-import org.akanework.symphonica.logic.util.findTopTenSongsByAddDate
+import org.akanework.symphonica.logic.util.findTopTwelveSongsByAddDate
 import org.akanework.symphonica.logic.util.getAllAlbums
 import org.akanework.symphonica.logic.util.getAllSongs
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
@@ -54,7 +54,7 @@ suspend fun loadDataFromDisk() {
     withContext(Dispatchers.Main) {
         if (libraryViewModel.libraryNewestAddedList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
             libraryViewModel.libraryNewestAddedList =
-                    findTopTenSongsByAddDate(libraryViewModel.librarySongList)
+                    findTopTwelveSongsByAddDate(libraryViewModel.librarySongList)
         }
         HomeFragment.switchPrompt(1)
     }

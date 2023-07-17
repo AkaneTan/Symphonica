@@ -279,13 +279,13 @@ fun fillSongCover(imgUri: Uri, songCover: ImageView) {
 }
 
 /**
- * [findTopTenSongsByAddDate] arranges the song by [Song.addDate]
+ * [findTopTwelveSongsByAddDate] arranges the song by [Song.addDate]
  * and outputs ten recently added songs.
  *
  * @param songs
  * @return
  */
-fun findTopTenSongsByAddDate(songs: List<Song>): MutableList<Song> = songs.asSequence()
+fun findTopTwelveSongsByAddDate(songs: List<Song>): MutableList<Song> = songs.asSequence()
     .sortedByDescending { it.addDate ?: 0 }
-    .take(10)
+    .take(12)
     .toMutableList()

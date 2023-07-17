@@ -325,7 +325,7 @@ class HomeFragment : Fragment() {
             }
             if (libraryViewModel.libraryNewestAddedList.isNotEmpty() && recentList.isEmpty()) {
                 recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
-                recentAdapter.notifyItemRangeChanged(0, 10)
+                recentAdapter.notifyItemRangeChanged(0, 12)
             }
         }
 
