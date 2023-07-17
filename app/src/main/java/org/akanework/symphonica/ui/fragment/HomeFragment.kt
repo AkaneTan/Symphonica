@@ -318,12 +318,10 @@ class HomeFragment : Fragment() {
 
         private fun initializeList() {
             if (shuffleList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleAdapter.notifyItemRangeChanged(0, 5)
+                for (i in 1..10) {
+                    shuffleList.add(libraryViewModel.librarySongList.random())
+                }
+                shuffleAdapter.notifyItemRangeChanged(0, 10)
             }
             if (libraryViewModel.libraryNewestAddedList.isNotEmpty() && recentList.isEmpty()) {
                 recentList.addAll(0, libraryViewModel.libraryNewestAddedList)
@@ -340,12 +338,10 @@ class HomeFragment : Fragment() {
                 shuffleList.clear()
             }
             if (libraryViewModel.librarySongList.isNotEmpty()) {
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleList.add(libraryViewModel.librarySongList.random())
-                shuffleAdapter.notifyItemRangeChanged(0, 5)
+                for (i in 1..10) {
+                    shuffleList.add(libraryViewModel.librarySongList.random())
+                }
+                shuffleAdapter.notifyItemRangeChanged(0, 10)
             }
         }
     }
