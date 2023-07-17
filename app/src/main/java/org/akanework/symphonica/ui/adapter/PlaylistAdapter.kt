@@ -31,7 +31,6 @@ import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.jumpTo
-import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet.Companion.updatePlaylistSheetLocation
 
 /**
@@ -59,11 +58,9 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
             updatePlaylistSheetLocation(previousLocation)
         }
         holder.dismissButton.setOnClickListener {
-            if (playlistViewModel.playList.size != 1) {
+            if (playlistViewModel.playList.size != 1 &&
+                holder.adapterPosition != playlistViewModel.currentLocation) {
                 val buttonPosition = holder.adapterPosition
-                if (buttonPosition == playlistViewModel.currentLocation) {
-                    thisSong()
-                }
                 if (buttonPosition != RecyclerView.NO_POSITION) {
                     // Delete the item.
                     songList.removeAt(buttonPosition)
