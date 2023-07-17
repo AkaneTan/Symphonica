@@ -22,10 +22,10 @@ A simple md3 music player aiming for simplicity and minimal.
 - Friendly for inline compile with custom ROMs
 
 ## Screenshots
-| ![Screenshot 1](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_1.png) | ![Screenshot 2](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_2.png) | ![Screenshot 3](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_3.png) |
+| ![Screenshot 1](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_1.jpg) | ![Screenshot 2](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_2.jpg) | ![Screenshot 3](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_3.jpg) |
 | --- | --- | --- |
-| ![Screenshot 4](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_4.png) | ![Screenshot 5](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_5.png) | ![Screenshot 6](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_6.png) |
-| ![Screenshot 7](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_7.png) | ![Screenshot 8](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_8.png) |![Screenshot 9](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_9.png) |
+| ![Screenshot 4](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_4.jpg) | ![Screenshot 5](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_5.jpg) | ![Screenshot 6](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_6.jpg) |
+| ![Screenshot 7](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_7.jpg) | ![Screenshot 8](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_8.jpg) |![Screenshot 9](https://github.com/AkaneTan/Symphonica/raw/beta/docs/screenshots/screenshot_9.jpg) |
 
 ## Installation
 You can download the latest version of the app from the [releases page](https://github.com/AkaneTan/Symphonica/releases).
