@@ -30,13 +30,13 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
@@ -54,7 +54,7 @@ import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
-import org.akanework.symphonica.ui.adapter.SongCarouselAdapter
+import org.akanework.symphonica.ui.adapter.SongRecyclerViewAdapter
 import kotlin.math.abs
 
 /**
@@ -115,9 +115,9 @@ class HomeFragment : Fragment() {
         val collapsingToolbar =
             rootView.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
         val appBarLayout = rootView.findViewById<AppBarLayout>(R.id.appBarLayout)
-        val shuffleCarouselRecyclerView =
+        val shuffleRecyclerView =
             rootView.findViewById<RecyclerView>(R.id.shuffle_recycler_view)
-        val recentCarouselRecyclerView =
+        val recentRecyclerView =
             rootView.findViewById<RecyclerView>(R.id.recent_recycler_view)
 
         val homeShuffleButton =
@@ -180,15 +180,17 @@ class HomeFragment : Fragment() {
             )
         }
 
-        val shuffleLayoutManager = CarouselLayoutManager()
-        shuffleCarouselRecyclerView.layoutManager = shuffleLayoutManager
-        shuffleAdapter = SongCarouselAdapter(shuffleList)
-        shuffleCarouselRecyclerView.adapter = shuffleAdapter
+        val shuffleLayoutManager = LinearLayoutManager(context)
+        shuffleLayoutManager.orientation = RecyclerView.HORIZONTAL
+        shuffleRecyclerView.layoutManager = shuffleLayoutManager
+        shuffleAdapter = SongRecyclerViewAdapter(shuffleList)
+        shuffleRecyclerView.adapter = shuffleAdapter
 
-        val recentLayoutManager = CarouselLayoutManager()
-        recentCarouselRecyclerView.layoutManager = recentLayoutManager
-        recentAdapter = SongCarouselAdapter(recentList)
-        recentCarouselRecyclerView.adapter = recentAdapter
+        val recentLayoutManager = LinearLayoutManager(context)
+        recentLayoutManager.orientation = RecyclerView.HORIZONTAL
+        recentRecyclerView.layoutManager = recentLayoutManager
+        recentAdapter = SongRecyclerViewAdapter(recentList)
+        recentRecyclerView.adapter = recentAdapter
 
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
 
@@ -274,8 +276,8 @@ class HomeFragment : Fragment() {
         private val recentList: MutableList<Song> = mutableListOf()
         private var isInitialized: Boolean = true
         private lateinit var loadingPrompt: MaterialCardView
-        private lateinit var shuffleAdapter: SongCarouselAdapter
-        private lateinit var recentAdapter: SongCarouselAdapter
+        private lateinit var shuffleAdapter: SongRecyclerViewAdapter
+        private lateinit var recentAdapter: SongRecyclerViewAdapter
 
         /**
          * This is used for outer class to switch [loadingPrompt].
