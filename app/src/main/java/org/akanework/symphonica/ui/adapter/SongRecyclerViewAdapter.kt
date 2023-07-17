@@ -67,7 +67,9 @@ class SongRecyclerViewAdapter(private val songList: MutableList<Song>) :
                 controllerViewModel.shuffleState = false
                 fullSheetShuffleButton!!.isChecked = false
             }
-            replacePlaylist(songList, position)
+            val dummyList: MutableList<Song> = mutableListOf()
+            dummyList.addAll(songList)
+            replacePlaylist(dummyList, position)
         }
 
         holder.itemView.setOnLongClickListener {
