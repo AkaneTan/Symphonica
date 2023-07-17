@@ -33,6 +33,7 @@ import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -77,8 +78,12 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timer
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timerValue
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
+import org.akanework.symphonica.logic.util.broadcastPlayPaused
+import org.akanework.symphonica.logic.util.broadcastPlayStopped
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -155,6 +160,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullSheetSlider: Slider
     private lateinit var fullSheetSquigglyView: SquigglyView
     private lateinit var fullSheetSquigglyViewFrame: FrameLayout
+    private lateinit var fullSheetTimerButton: MaterialButton
     private lateinit var receiverPlay: SheetPlayReceiver
     private lateinit var receiverStop: SheetStopReceiver
     private lateinit var receiverPause: SheetPauseReceiver
@@ -334,6 +340,7 @@ class MainActivity : AppCompatActivity() {
         fullSheetSquigglyViewFrame = findViewById(R.id.squiggly_frame)
         fullSheetDuration = findViewById(R.id.sheet_end_time)
         fullSheetTimeStamp = findViewById(R.id.sheet_now_time)
+        fullSheetTimerButton = findViewById(R.id.full_timer)
         playlistButton = findViewById(R.id.sheet_playlist)
         bottomFullSizePlayerPreview = findViewById(R.id.full_size_sheet_player)
         playerBottomSheetBehavior =
@@ -369,6 +376,10 @@ class MainActivity : AppCompatActivity() {
         })
 
         // The behavior of the global sheet starts here.
+        if (timer == null) {
+            fullSheetTimerButton.isChecked = false
+        }
+
         playerBottomSheetBehavior.isHideable = false
 
         val playlistBottomSheet = PlaylistBottomSheet()
@@ -577,6 +588,61 @@ class MainActivity : AppCompatActivity() {
         }
 
         playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+
+        fullSheetTimerButton.setOnClickListener {
+            if (timer != null) {
+                fullSheetTimerButton.isChecked = true
+            }
+            if (musicPlayer != null) {
+                val rootView = MaterialAlertDialogBuilder(
+                    this,
+                    com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+                )
+                    .setTitle(getString(R.string.dialog_timer_title))
+                    .setView(R.layout.alert_dialog_timer)
+                    .setOnDismissListener {
+                        if (timer == null) {
+                            fullSheetTimerButton.isChecked = false
+                        }
+                    }
+                    .show()
+                val rangeSlider = rootView.findViewById<Slider>(R.id.timer_slider)!!
+                if (timer != null)
+                rangeSlider.value = timerValue
+                rangeSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+                    override fun onStartTrackingTouch(slider: Slider) {
+                        // Keep this empty
+                    }
+
+                    override fun onStopTrackingTouch(slider: Slider) {
+                        if (rangeSlider.value != 0f) {
+                            if (timerValue != 0f) {
+                                timer?.cancel()
+                                timer = null
+                                timerValue = 0f
+                            }
+                            timerValue = rangeSlider.value
+                            timer = object : CountDownTimer((rangeSlider.value * 3600 * 1000).toLong(), 1000) {
+                                override fun onTick(millisUntilFinished: Long) {
+                                }
+
+                                override fun onFinish() {
+                                    musicPlayer?.pause()
+                                    broadcastPlayPaused()
+                                    broadcastMetaDataUpdate()
+                                    timerValue = 0f
+                                }
+                            }
+                            (timer as CountDownTimer).start()
+                        } else {
+                            timer?.cancel()
+                            timer = null
+                            timerValue = 0f
+                        }
+                    }
+                })
+            }
+        }
         // The behavior of the global sheet ends here.
 
         // Slider behavior starts here.
@@ -843,6 +909,9 @@ class MainActivity : AppCompatActivity() {
             if (musicPlayer != null) {
                 updateMetadata()
             }
+            timer?.cancel()
+            timer = null
+            fullSheetTimerButton.isChecked = false
         }
     }
 
@@ -860,6 +929,13 @@ class MainActivity : AppCompatActivity() {
             setPlaybackState(OPERATION_PAUSE)
             if (musicPlayer != null) {
                 updateMetadata()
+            }
+            if (timer == null) {
+                fullSheetTimerButton.isChecked = false
+            } else if (timerValue == 0f) {
+                fullSheetTimerButton.isChecked = false
+                timer!!.cancel()
+                timer = null
             }
         }
     }
@@ -963,6 +1039,9 @@ class MainActivity : AppCompatActivity() {
                 updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
                 updateMetadata()
             }
+            if (timer == null) {
+                fullSheetTimerButton.isChecked = false
+            }
         }
     }
 
@@ -980,7 +1059,6 @@ class MainActivity : AppCompatActivity() {
     private fun checkIfSquigglyProgressBarEnabled() {
         if (isSquigglyProgressBarEnabled && musicPlayer != null) {
             // When player is active.
-            Log.d("TAGTAG", "SIT1")
             setSquigglyActive()
             if (libraryViewModel.sessionSongPlayed <= 1 && !fullSheetSlider.isEnabled &&
                 !controllerViewModel.hasInitializedSquigglyView) {

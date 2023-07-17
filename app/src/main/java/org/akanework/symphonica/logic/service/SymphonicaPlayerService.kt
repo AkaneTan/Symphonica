@@ -32,6 +32,7 @@ import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -470,6 +471,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             .build()
         lateinit var playbackStateBuilder: PlaybackState.Builder
 
+        var timer: CountDownTimer? = null
+        var timerValue: Float = 0f
+
         /**
          * [setPlaybackState] sets the playback state of the
          * media control notification.
@@ -483,7 +487,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 OPERATION_PLAY -> playbackStateBuilder.setState(
                     PlaybackState.STATE_PLAYING,
                     musicPlayer!!.currentPosition.toLong(),
-                    1.0f
+                    musicPlayer!!.playbackParams.speed
                 )
 
                 OPERATION_PAUSE -> playbackStateBuilder.setState(

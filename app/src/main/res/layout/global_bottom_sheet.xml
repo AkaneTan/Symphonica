@@ -101,22 +101,6 @@
                         android:layout_gravity="end">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/sheet_playlist"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:backgroundTint="?attr/colorSurface"
-                            android:elevation="0dp"
-                            android:insetLeft="0dp"
-                            android:insetTop="0dp"
-                            android:insetRight="0dp"
-                            android:insetBottom="0dp"
-                            app:icon="@drawable/ic_playlist"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:iconSize="30sp"
-                            app:iconTint="?attr/colorOnSurface" />
-
-                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/sheet_song_info"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
@@ -445,6 +429,81 @@
 
                     </FrameLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom|center_horizontal">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/full_timer"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:checkable="true"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:saveEnabled="false"
+                        app:icon="@drawable/ic_timer"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="24dp"
+                        app:iconTint="@color/sl_check_button" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/full_favourite"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:checkable="true"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:saveEnabled="false"
+                        app:icon="@drawable/ic_favourite_border"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="24dp"
+                        app:iconTint="@color/sl_check_button" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/full_playlist_add"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:checkable="true"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:saveEnabled="false"
+                        app:icon="@drawable/ic_playlist_add"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="24dp"
+                        app:iconTint="@color/sl_check_button" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sheet_playlist"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="?attr/colorSurface"
+                        android:elevation="0dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_queue_music"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="24dp"
+                        app:iconTint="?attr/colorOnSurface" />
                 </LinearLayout>
 
             </FrameLayout>
