@@ -671,42 +671,27 @@ class MainActivity : AppCompatActivity() {
 
         // Set the drawer's behavior.
         navigationView?.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.title) {
-                getString(R.string.navigation_home) -> {
-                    val homeFragment = HomeFragment()
-                    customFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, homeFragment)
-                        .commit()
-                }
-
-                getString(R.string.navigation_view_settings) -> {
-                    customFragmentManager.popBackStack(
-                        null,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE
-                    )
-                    val settingsFragment = SettingsFragment()
-                    customFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, settingsFragment)
-                        .addToBackStack("SETTINGS")
-                        .commit()
-                }
-
-                getString(R.string.navigation_view_all_song) -> {
-                    customFragmentManager.popBackStack(
-                        null,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE
-                    )
-                    val libraryFragment = LibraryFragment()
-                    customFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, libraryFragment)
-                        .addToBackStack("LIBRARY")
-                        .commit()
-                }
-                else -> {
-                    // this is a generated else block
-                }
+            if (menuItem.title == getString(R.string.navigation_home)) {
+                val homeFragment = HomeFragment()
+                customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, homeFragment)
+                    .commit()
+                switchDrawer()
             }
-            switchDrawer()
+            if (menuItem.title == getString(R.string.navigation_view_settings)) {
+                val settingsFragment = SettingsFragment()
+                customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, settingsFragment)
+                    .commit()
+                switchDrawer()
+            }
+            if (menuItem.title == getString(R.string.navigation_view_all_song)) {
+                val libraryFragment = LibraryFragment()
+                customFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, libraryFragment)
+                    .commit()
+                switchDrawer()
+            }
             true
         }
 
