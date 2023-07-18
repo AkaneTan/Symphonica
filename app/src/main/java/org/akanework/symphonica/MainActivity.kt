@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get customized options.
         val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
-        isColorfulButtonEnabled = prefs.getBoolean("isColorfulButtonEnabled", false)
+        isColorfulButtonEnabled = prefs.getBoolean("isColorfulButtonEnabled", true)
         isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
