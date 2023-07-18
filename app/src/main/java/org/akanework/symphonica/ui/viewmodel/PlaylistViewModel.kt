@@ -37,8 +37,6 @@ class PlaylistViewModel : ViewModel() {
     var originalPlaylist = mutableListOf<Song>()
     var currentLocation: Int = 0
     val playlistList: MutableList<PlaylistDataEntity> = mutableListOf()
-    var timer: CountDownTimer? = null
-    var timerValue: Float = 0f
 
     /**
      * @param name

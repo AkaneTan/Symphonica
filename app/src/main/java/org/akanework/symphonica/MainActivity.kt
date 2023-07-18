@@ -77,6 +77,8 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PAUSE
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.OPERATION_PLAY
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timer
+import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.timerValue
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastPlayPaused
@@ -369,7 +371,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         // The behavior of the global sheet starts here.
-        fullSheetTimerButton.isChecked = playlistViewModel.timer != null
+        fullSheetTimerButton.isChecked = timer != null
 
         playerBottomSheetBehavior.isHideable = false
 
@@ -585,7 +587,7 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
         fullSheetTimerButton.setOnClickListener {
-            if (playlistViewModel.timer != null) {
+            if (timer != null) {
                 fullSheetTimerButton.isChecked = true
             }
             if (musicPlayer != null) {
@@ -599,14 +601,14 @@ class MainActivity : AppCompatActivity() {
                         dialog.dismiss()
                     }
                     .setOnDismissListener {
-                        if (playlistViewModel.timer == null) {
+                        if (timer == null) {
                             fullSheetTimerButton.isChecked = false
                         }
                     }
                     .show()
                 val rangeSlider = rootView.findViewById<Slider>(R.id.timer_slider)!!
-                if (playlistViewModel.timer != null) {
-                    rangeSlider.value = playlistViewModel.timerValue
+                if (timer != null) {
+                    rangeSlider.value = timerValue
                 }
                 rangeSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                     override fun onStartTrackingTouch(slider: Slider) {
@@ -615,13 +617,13 @@ class MainActivity : AppCompatActivity() {
 
                     override fun onStopTrackingTouch(slider: Slider) {
                         if (rangeSlider.value != 0f) {
-                            if (playlistViewModel.timerValue != 0f) {
-                                playlistViewModel.timer?.cancel()
-                                playlistViewModel.timer = null
-                                playlistViewModel.timerValue = 0f
+                            if (timerValue != 0f) {
+                                timer?.cancel()
+                                timer = null
+                                timerValue = 0f
                             }
-                            playlistViewModel.timerValue = rangeSlider.value
-                            playlistViewModel.timer = object : CountDownTimer((rangeSlider.value * 3600 * 1000).toLong(), 1000) {
+                            timerValue = rangeSlider.value
+                            timer = object : CountDownTimer((rangeSlider.value * 3600 * 1000).toLong(), 1000) {
                                 override fun onTick(millisUntilFinished: Long) {
                                 }
 
@@ -629,14 +631,14 @@ class MainActivity : AppCompatActivity() {
                                     musicPlayer?.pause()
                                     broadcastPlayPaused()
                                     broadcastMetaDataUpdate()
-                                    playlistViewModel.timerValue = 0f
+                                    timerValue = 0f
                                 }
                             }
-                            (playlistViewModel.timer as CountDownTimer).start()
+                            (timer as CountDownTimer).start()
                         } else {
-                            playlistViewModel.timer?.cancel()
-                            playlistViewModel.timer = null
-                            playlistViewModel.timerValue = 0f
+                            timer?.cancel()
+                            timer = null
+                            timerValue = 0f
                         }
                     }
                 })
@@ -891,8 +893,8 @@ class MainActivity : AppCompatActivity() {
             if (musicPlayer != null) {
                 updateMetadata()
             }
-            playlistViewModel.timer?.cancel()
-            playlistViewModel.timer = null
+            timer?.cancel()
+            timer = null
             updateAlbumView(findViewById(R.id.global_bottom_sheet))
             fullSheetTimerButton.isChecked = false
         }
@@ -913,12 +915,12 @@ class MainActivity : AppCompatActivity() {
             if (musicPlayer != null) {
                 updateMetadata()
             }
-            if (playlistViewModel.timer == null) {
+            if (timer == null) {
                 fullSheetTimerButton.isChecked = false
-            } else if (playlistViewModel.timerValue == 0f) {
+            } else if (timerValue == 0f) {
                 fullSheetTimerButton.isChecked = false
-                playlistViewModel.timer!!.cancel()
-                playlistViewModel.timer = null
+                timer!!.cancel()
+                timer = null
             }
         }
     }
@@ -996,7 +998,7 @@ class MainActivity : AppCompatActivity() {
                             playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
                         )
             }
-            if (playlistViewModel.timer == null) {
+            if (timer == null) {
                 fullSheetTimerButton.isChecked = false
             }
         }
