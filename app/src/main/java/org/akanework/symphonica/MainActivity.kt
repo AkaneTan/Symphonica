@@ -558,6 +558,8 @@ class MainActivity : AppCompatActivity() {
 
         if (!controllerViewModel.isBottomSheetOpen) {
             bottomFullSizePlayerPreview.alpha = 0f
+        } else {
+            bottomPlayerPreview.alpha = 0f
         }
 
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
