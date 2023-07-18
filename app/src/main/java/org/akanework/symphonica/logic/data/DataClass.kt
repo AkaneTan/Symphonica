@@ -19,6 +19,7 @@ package org.akanework.symphonica.logic.data
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 
 /**
  * [Song] stores & labels Symphonica's library.
@@ -75,3 +76,40 @@ data class Album(
     val cover: Drawable?,
     val songList: List<Song>
 )
+
+/**
+ * Represents a lyric object containing lines of lyrics and their corresponding start times.
+ * Each line of lyrics is associated with a start time indicating when it should be displayed or played.
+ *
+ * @property lines The list of lyric lines.
+ * @property startTimes The list of start times for each lyric line.
+ */
+data class Lyric(
+    val lines: MutableList<String>,
+    val startTimes: MutableList<Long>
+) {
+    fun parseLrcFile(lrcContent: String) {
+        val linesRegex = "\\[(\\d{2}:\\d{2}\\.\\d{2})](.*)".toRegex()
+
+        lrcContent.lines().forEach { line ->
+            val matchResult = linesRegex.find(line)
+            if (matchResult != null) {
+                val startTime = parseTime(matchResult.groupValues[1])
+                val lyricLine = matchResult.groupValues[2]
+                lines.add(lyricLine)
+                startTimes.add(startTime)
+            }
+        }
+    }
+
+    private fun parseTime(timeString: String): Long {
+        val timeRegex = "(\\d{2}):(\\d{2})\\.(\\d{2})".toRegex()
+        val matchResult = timeRegex.find(timeString)
+
+        val minutes = matchResult?.groupValues?.get(1)?.toLongOrNull() ?: 0
+        val seconds = matchResult?.groupValues?.get(2)?.toLongOrNull() ?: 0
+        val milliseconds = matchResult?.groupValues?.get(3)?.toLongOrNull() ?: 0
+
+        return minutes * 60000 + seconds * 1000 + milliseconds * 10
+    }
+}

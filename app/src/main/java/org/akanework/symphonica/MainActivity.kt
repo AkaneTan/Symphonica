@@ -58,6 +58,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -73,6 +76,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.logic.data.Lyric
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.database.PlaylistDatabase
@@ -92,6 +96,7 @@ import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.logic.util.userChangedPlayerStatus
+import org.akanework.symphonica.ui.adapter.LyricAdapter
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet
 import org.akanework.symphonica.ui.component.SquigglyView
 import org.akanework.symphonica.ui.fragment.HomeFragment
@@ -160,6 +165,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullSheetSquigglyView: SquigglyView
     private lateinit var fullSheetSquigglyViewFrame: FrameLayout
     private lateinit var fullSheetTimerButton: MaterialButton
+    private lateinit var fullSheetLyricRecyclerView: RecyclerView
     private lateinit var receiverPlay: SheetPlayReceiver
     private lateinit var receiverStop: SheetStopReceiver
     private lateinit var receiverPause: SheetPauseReceiver
@@ -336,6 +342,7 @@ class MainActivity : AppCompatActivity() {
         fullSheetDuration = findViewById(R.id.sheet_end_time)
         fullSheetTimeStamp = findViewById(R.id.sheet_now_time)
         fullSheetTimerButton = findViewById(R.id.full_timer)
+        fullSheetLyricRecyclerView = findViewById(R.id.lyric_recyclerview)
         playlistButton = findViewById(R.id.sheet_playlist)
         bottomFullSizePlayerPreview = findViewById(R.id.full_size_sheet_player)
         playerBottomSheetBehavior =
@@ -347,6 +354,21 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.attributes = params
         }
+
+        val fullSheetCoverDummyView: ImageView = findViewById(R.id.sheet_cover)
+        val fullSheetCoverFrame: FrameLayout = findViewById(R.id.album_frame)
+        fullSheetCoverDummyView.setOnClickListener {
+            fullSheetCoverFrame.visibility = GONE
+        }
+        fullSheetLyricRecyclerView.setOnClickListener {
+            fullSheetCoverFrame.visibility = VISIBLE
+        }
+        val layoutManager = LinearLayoutManager(context)
+        fullSheetLyricRecyclerView.layoutManager = layoutManager
+        val adapter = LyricAdapter(Lyric(mutableListOf("No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided.","No lyric provided."), mutableListOf(0)))
+        val linearSnapHelper = LinearSnapHelper()
+        fullSheetLyricRecyclerView.adapter = adapter
+        linearSnapHelper.attachToRecyclerView(fullSheetLyricRecyclerView)
 
         checkIfSquigglyProgressBarEnabled()
         if (isSquigglyProgressBarEnabled) {
@@ -522,7 +544,7 @@ class MainActivity : AppCompatActivity() {
             bottomPlayerPreview.visibility = VISIBLE
         }
 
-        findViewById<ImageView>(R.id.sheet_cover).setOnLongClickListener {
+        fullSheetCoverDummyView.setOnLongClickListener {
             val rootView = MaterialAlertDialogBuilder(
                 this,
                 com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
