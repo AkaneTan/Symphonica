@@ -182,8 +182,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp">
+                            android:layout_marginStart="24dp"
+                            android:layout_marginEnd="24dp">
                             <org.akanework.symphonica.ui.component.SquigglyView
                                 android:id="@+id/squiggly"
                                 android:layout_width="match_parent"
@@ -202,6 +202,7 @@
                             android:valueFrom="0.0"
                             android:valueTo="100.0"
                             app:thumbRadius="9dp"
+                            app:trackHeight="3.25dp"
                             app:thumbColor="?attr/colorPrimary"
                             app:trackColorActive="?attr/colorPrimary"
                             app:labelBehavior="gone" />

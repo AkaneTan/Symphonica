@@ -28,7 +28,7 @@ class SquigglyView @JvmOverloads constructor(
      */
     private val strokeWidthPx = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
-        3.5f,
+        3.25f,
         context.resources.displayMetrics
     )
 
@@ -82,9 +82,9 @@ class SquigglyView @JvmOverloads constructor(
         path.moveTo(-xOffset, height / 2f)
         var i = -xOffset
         while (i < width) {
-            path.rQuadTo(25f, -22.5f, 50f, 0f)
-            path.rQuadTo(25f, 22.5f, 50f, 0f)
-            i += 100
+            path.rQuadTo(25f, -32.5f, 50f, 0f)
+            path.rQuadTo(25f, 32.5f, 50f, 0f)
+            i += 90
         }
 
         canvas.drawPath(path, paint)
