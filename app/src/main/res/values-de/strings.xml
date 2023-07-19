@@ -72,7 +72,5 @@
     <string name="settings_force_dark_mode">Dunkelmodus erzwingen</string>
     <string name="settings_force_dark_mode_content">Lässt die Nacht ewig andauern</string>
     <string name="settings_appearance">Aussehen</string>
-    <string name="settings_enable_list_shuffle">Zufällige Liste aktivieren</string>
-    <string name="settings_enable_list_shuffle_content">Generiert eine neue zufällige Songliste</string>
     <string name="settings_behavior">Verhalten</string>
 </resources>

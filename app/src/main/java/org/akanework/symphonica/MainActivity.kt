@@ -163,7 +163,6 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         var isForceLoadingEnabled: Boolean = false
         var isForceDarkModeEnabled: Boolean = false
         var isLibraryShuffleButtonEnabled: Boolean = false
-        var isListShuffleEnabled: Boolean = true
         var isEasterEggDiscovered: Boolean = false
         var isAkaneVisible: Boolean = false
 
@@ -260,7 +259,6 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
         isForceLoadingEnabled = prefs.getBoolean("isForceLoadingEnabled", false)
         isForceDarkModeEnabled = prefs.getBoolean("isForceDarkModeEnabled", false)
         isLibraryShuffleButtonEnabled = prefs.getBoolean("isLibraryShuffleButtonEnabled", false)
-        isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
         isEasterEggDiscovered = prefs.getBoolean("isEasterEggDiscovered", false)
         isAkaneVisible = prefs.getBoolean("isAkaneVisible", false)
 
@@ -394,9 +392,6 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
                 LoopingMode.LOOPING_MODE_NONE -> {
                     musicPlayer.loopingMode = LoopingMode.LOOPING_MODE_PLAYLIST
                     fullSheetLoopButton?.isChecked = true
-                    if (!isListShuffleEnabled) {
-                        fullSheetLoopButton?.isChecked = true
-                    }
                 }
 
                 LoopingMode.LOOPING_MODE_PLAYLIST -> {
@@ -545,7 +540,6 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED && bottomPlayerPreview.isVisible) {
                     bottomFullSizePlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = false
-                    Log.d("TAGTAG", "TAGTAG1")
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     if (booleanViewModel.isBottomSheetOpen) {
                         bottomPlayerPreview.alpha = 0f
