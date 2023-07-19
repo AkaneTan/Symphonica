@@ -19,6 +19,7 @@ package org.akanework.symphonica.logic.data
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import org.akanework.symphonica.logic.util.Playable
 
 /**
  * [Song] stores & labels Symphonica's library.
@@ -43,7 +44,10 @@ data class Song(
     val path: String,
     val imgUri: Uri?,
     val addDate: Long?
-)
+) : Playable {
+    override val uri: Uri
+        get() = Uri.parse(path)
+}
 
 /**
  * [Album] stores album list information.

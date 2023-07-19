@@ -22,16 +22,13 @@ package org.akanework.symphonica
 import android.animation.ObjectAnimator
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -63,11 +60,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromDisk
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.setPlaybackState
-import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
+import org.akanework.symphonica.logic.util.LoopingMode
+import org.akanework.symphonica.logic.util.MediaStateCallback
+import org.akanework.symphonica.logic.util.Playlist
+import org.akanework.symphonica.logic.util.PlaylistCallbacks
+import org.akanework.symphonica.logic.util.Timestamp
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
-import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.changePlayerStatus
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
@@ -80,14 +80,13 @@ import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
 import org.akanework.symphonica.ui.viewmodel.BooleanViewModel
 import org.akanework.symphonica.ui.viewmodel.LibraryViewModel
-import org.akanework.symphonica.ui.viewmodel.PlaylistViewModel
 
 /**
  * [MainActivity] is the heart of Symphonica.
  * Google said, let there be fragments, so akane answered:
  * "There would be fragments."
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<Song> {
 
     private val permissionRequestCode = 123
 
@@ -108,12 +107,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fullSheetSlider: Slider
 
-    private lateinit var receiverPlay: SheetPlayReceiver
-    private lateinit var receiverStop: SheetStopReceiver
-    private lateinit var receiverPause: SheetPauseReceiver
-    private lateinit var receiverSeek: SheetSeekReceiver
-    private lateinit var receiverUpdate: SheetUpdateReceiver
-
     private lateinit var playlistButton: MaterialButton
 
     private lateinit var fragmentContainerView: FragmentContainerView
@@ -128,33 +121,7 @@ class MainActivity : AppCompatActivity() {
     // This is the coroutineScope used across MainActivity.
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    private val sliderTask = object : Runnable {
-        override fun run() {
-            if (musicPlayer != null && musicPlayer!!.isPlaying && playlistViewModel.currentLocation !=
-                playlistViewModel.playList.size
-            ) {
-                fullSheetSlider.isEnabled = true
-
-                // about the "/ 1000 + 0.2f", check line 396.
-                fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
-
-                if (!isUserTracking && musicPlayer!!.currentPosition.toFloat() / 1000 <= fullSheetSlider.valueTo) {
-                    fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
-
-                    fullSheetTimeStamp.text =
-                        convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
-                }
-
-                // Update it per 200ms.
-                handler.postDelayed(this, 500)
-            }
-        }
-    }
-
     companion object {
-
-        // This is the handler used to handle the slide task.
-        private lateinit var handler: Handler
 
         // These variables are used inside SymphonicaPlayerService.
         // They are used to manage the MediaControl notifications.
@@ -172,7 +139,6 @@ class MainActivity : AppCompatActivity() {
 
         // These are the view models used across the app.
         lateinit var libraryViewModel: LibraryViewModel
-        lateinit var playlistViewModel: PlaylistViewModel
         lateinit var booleanViewModel: BooleanViewModel
 
         // This is drawer needed in companion functions to decide
@@ -192,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         var isAkaneVisible: Boolean = false
 
         // This is the core of Symphonica, the music player.
-        var musicPlayer: MediaPlayer? = null
+        var musicPlayer = context.musicPlayer
 
         // This is the animator needed in companion functions.
         lateinit var animator: ObjectAnimator
@@ -274,25 +240,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun updateAlbumView(view: View) {
-        val sheetAlbumCover: ImageView? = view.findViewById(R.id.sheet_album_cover)
-        val fullSheetCover: ImageView? = view.findViewById(R.id.sheet_cover)
-        sheetAlbumCover?.setImageResource(R.drawable.ic_song_default_cover)
-        if (sheetAlbumCover != null) {
-            Glide.with(context)
-                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-                .diskCacheStrategy(diskCacheStrategyCustom)
-                .into(sheetAlbumCover)
-        }
-        fullSheetCover?.setImageResource(R.drawable.ic_song_default_cover)
-        if (fullSheetCover != null) {
-            Glide.with(context)
-                .load(playlistViewModel.playList[playlistViewModel.currentLocation].imgUri)
-                .diskCacheStrategy(diskCacheStrategyCustom)
-                .into(fullSheetCover)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -317,26 +264,6 @@ class MainActivity : AppCompatActivity() {
             DiskCacheStrategy.NONE
         }
 
-        // Register event receiver for bottom sheet.
-        // This receiver should be receiving Broadcast from
-        // SymphonicaPlayerService.kt .
-
-        receiverPause = SheetPauseReceiver()
-        receiverPlay = SheetPlayReceiver()
-        receiverStop = SheetStopReceiver()
-        receiverSeek = SheetSeekReceiver()
-        receiverUpdate = SheetUpdateReceiver()
-
-        registerReceiver(receiverPause, IntentFilter("internal.play_pause"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverPlay, IntentFilter("internal.play_start"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverStop, IntentFilter("internal.play_stop"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(receiverSeek, IntentFilter("internal.play_seek"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(
-            receiverUpdate,
-            IntentFilter("internal.play_update"),
-            RECEIVER_NOT_EXPORTED
-        )
-
         // Flatten the decors to fit the system windows.
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -345,7 +272,6 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize view models.
         libraryViewModel = ViewModelProvider(this)[LibraryViewModel::class.java]
-        playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         booleanViewModel = ViewModelProvider(this)[BooleanViewModel::class.java]
 
         // Open external audio files.
@@ -423,27 +349,23 @@ class MainActivity : AppCompatActivity() {
 
         val playlistBottomSheet = PlaylistBottomSheet()
 
-        when (booleanViewModel.loopButtonStatus) {
-            0 -> {
+        when (musicPlayer.loopingMode) {
+            LoopingMode.LOOPING_MODE_NONE -> {
                 fullSheetLoopButton?.isChecked = false
                 fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
-            1 -> {
+            LoopingMode.LOOPING_MODE_PLAYLIST -> {
                 fullSheetLoopButton?.isChecked = true
                 fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
             }
 
-            2 -> {
+            LoopingMode.LOOPING_MODE_TRACK -> {
                 fullSheetLoopButton?.isChecked = true
                 fullSheetLoopButton?.icon =
                     AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
-            }
-
-            else -> {
-                throw IllegalStateException()
             }
         }
         fullSheetLoopButton?.addOnCheckedChangeListener { _, _ ->
@@ -453,45 +375,45 @@ class MainActivity : AppCompatActivity() {
              * Status 1: Loop
              * Status 2: Repeat single
              */
-            when (booleanViewModel.loopButtonStatus) {
-                0 -> {
-                    booleanViewModel.loopButtonStatus = 1
+            when (musicPlayer.loopingMode) {
+                LoopingMode.LOOPING_MODE_NONE -> {
+                    musicPlayer.loopingMode = LoopingMode.LOOPING_MODE_PLAYLIST
                     fullSheetLoopButton?.isChecked = true
                     if (!isListShuffleEnabled) {
                         fullSheetLoopButton?.isChecked = true
                     }
                 }
 
-                1 -> {
-                    booleanViewModel.loopButtonStatus = 2
+                LoopingMode.LOOPING_MODE_PLAYLIST -> {
+                    musicPlayer.loopingMode = LoopingMode.LOOPING_MODE_TRACK
                     fullSheetLoopButton?.isChecked = true
                     fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat_one)
                 }
 
-                2 -> {
-                    booleanViewModel.loopButtonStatus = 0
+                LoopingMode.LOOPING_MODE_TRACK -> {
+                    musicPlayer.loopingMode = LoopingMode.LOOPING_MODE_NONE
                     fullSheetLoopButton?.isChecked = false
                     fullSheetLoopButton?.icon =
                         AppCompatResources.getDrawable(this, R.drawable.ic_repeat)
                 }
-
-                else -> {
-                    throw IllegalStateException()
-                }
             }
         }
+
+        /*
 
         fullSheetShuffleButton?.isChecked = booleanViewModel.shuffleState
 
         fullSheetShuffleButton?.addOnCheckedChangeListener { _, isChecked ->
             if (!isListShuffleEnabled &&
-                playlistViewModel.playList.isNotEmpty()
+                musicPlayer.playlist != null &&
+                musicPlayer.playlist!!.size != 0
             ) {
                 fullSheetLoopButton?.isChecked = isChecked
                 booleanViewModel.shuffleState = isChecked
-            } else if (playlistViewModel.playList.isNotEmpty()) {
-                val playlist = playlistViewModel.playList
+            } else if (musicPlayer.playlist != null &&
+                musicPlayer.playlist!!.size != 0) {
+                val playlist = musicPlayer.playlist
                 val originalPlaylist = playlistViewModel.originalPlaylist
                 val currentSong = playlist[playlistViewModel.currentLocation]
 
@@ -518,15 +440,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+         */
+
 
         bottomSheetControlButton.setOnClickListener {
-            if (musicPlayer != null) {
-                changePlayerStatus()
-            } else if (musicPlayer == null && playlistViewModel.playList.size != 0
-                && playlistViewModel.currentLocation != playlistViewModel.playList.size
-            ) {
-                thisSong()
-            }
+            changePlayerStatus()
         }
 
         bottomPlayerPreview.setOnClickListener {
@@ -550,13 +468,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fullSheetControlButton.setOnClickListener {
-            if (musicPlayer != null) {
-                changePlayerStatus()
-            } else if (musicPlayer == null && playlistViewModel.playList.size != 0
-                && playlistViewModel.currentLocation != playlistViewModel.playList.size
-            ) {
-                thisSong()
-            }
+            changePlayerStatus()
         }
 
         fullSheetBackButton.setOnClickListener {
@@ -587,8 +499,9 @@ class MainActivity : AppCompatActivity() {
             val dialogDuration: TextInputEditText = rootView.findViewById(R.id.dialog_duration)!!
             val dialogPath: TextInputEditText = rootView.findViewById(R.id.dialog_path)!!
 
-            if (playlistViewModel.playList.size > playlistViewModel.currentLocation) {
-                val song = playlistViewModel.playList[playlistViewModel.currentLocation]
+            if (musicPlayer.playlist != null &&
+                musicPlayer.playlist!!.size != musicPlayer.playlist!!.currentPosition) {
+                val song = musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!
                 dialogID.setText(song.id.toString())
                 dialogPath.setText(song.path)
                 dialogDuration.setText(song.duration.toString())
@@ -636,10 +549,6 @@ class MainActivity : AppCompatActivity() {
         playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
         // The behavior of the global sheet ends here.
 
-        // Slider behavior starts here.
-        // Register handler for updating slider.
-        handler = Handler(Looper.getMainLooper())
-
         // When the slider is dragged by user, mark it
         // to use this state later.
         val touchListener: Slider.OnSliderTouchListener = object : Slider.OnSliderTouchListener {
@@ -648,13 +557,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
-                // This value is multiplied by 1000 is because
-                // when the number is too big (like when toValue
-                // used the duration directly) we might encounter
-                // some performance problem.
-                musicPlayer?.seekTo((slider.value * 1000).toInt())
-
-                broadcastSliderSeek()
+                musicPlayer.seekTo((slider.value * musicPlayer.duration).toLong() / 100)
 
                 isUserTracking = false
             }
@@ -664,7 +567,7 @@ class MainActivity : AppCompatActivity() {
 
         fullSheetSlider.addOnChangeListener { _, value, fromUser ->
             if (fromUser) fullSheetTimeStamp.text =
-                convertDurationToTimeStamp((value * 1000).toInt().toString())
+                convertDurationToTimeStamp((value * musicPlayer.duration).toLong() / 100)
         }
         // Slider behavior ends here.
 
@@ -714,6 +617,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // TODO: Make another pop up when denied to state why you need the permission.
+
+        musicPlayer.addMediaStateCallback(this)
+        musicPlayer.registerPlaylistCallback(this)
     }
 
     override fun onRequestPermissionsResult(
@@ -745,211 +651,155 @@ class MainActivity : AppCompatActivity() {
 
         // Update the data if resumed.
         // They might be lost if don't do so.
-        if (playlistViewModel.playList.size != 0) {
-            updateMetadata()
+        if (musicPlayer.playlist != null &&
+            musicPlayer.playlist!!.size > 0) {
             updateAlbumView(this.findViewById(R.id.global_bottom_sheet))
         }
 
         broadcastMetaDataUpdate()
-
-        if (musicPlayer != null && !musicPlayer!!.isPlaying) {
-            fullSheetSlider.isEnabled = true
-            fullSheetSlider.valueTo = musicPlayer!!.duration.toFloat() / 1000
-            fullSheetSlider.value = musicPlayer!!.currentPosition.toFloat() / 1000
-            fullSheetTimeStamp.text =
-                convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
-        }
     }
 
     override fun onDestroy() {
         // Unregister everything.
-        handler.removeCallbacks(sliderTask)
-        unregisterReceiver(receiverPause)
-        unregisterReceiver(receiverStop)
-        unregisterReceiver(receiverPlay)
-        unregisterReceiver(receiverSeek)
-        unregisterReceiver(receiverUpdate)
+        musicPlayer.removeMediaStateCallback(this)
+        musicPlayer.unregisterPlaylistCallback(this)
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
         super.onDestroy()
     }
 
-    /**
-     * This is the SheetPlayReceiver.
-     * It receives a broadcast from [receiverPlay] and involves
-     * changes of various UI components including:
-     * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist],
-     * [fullSheetLocation].
-     * It also uses [updateAlbumView].
-     */
-    inner class SheetPlayReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (musicPlayer != null && playlistViewModel.currentLocation !=
-                playlistViewModel.playList.size
-            ) {
-                bottomSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                bottomSheetArtistAndAlbum.text =
-                    getString(
-                        R.string.playlist_metadata_information,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].artist,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
-                    )
-                fullSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].album
-                fullSheetArtist.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].artist
-                fullSheetDuration.text =
-                    convertDurationToTimeStamp(
-                        playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
-                    )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
-                    getString(
-                        R.string.full_sheet_playlist_location,
-                        ((playlistViewModel.currentLocation) + 1).toString(),
-                        playlistViewModel.playList.size.toString()
-                    )
+    override fun onPlaylistReplaced(oldPlaylist: Playlist<Song>?, newPlaylist: Playlist<Song>?) {
+        // TODO
+    }
 
-                bottomSheetControlButton.icon =
-                    ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
-                fullSheetControlButton.setImageResource(R.drawable.ic_pause)
-
-                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
-                setPlaybackState(0)
-                handler.postDelayed(sliderTask, 500)
-            }
+    override fun onPlaylistPositionChanged(oldPosition: Int, newPosition: Int) {
+        if (musicPlayer.playlist != null &&
+            musicPlayer.playlist!!.size > 0) {
+            updateBottomPlayerMetadata()
+            updateAlbumView(findViewById(R.id.global_bottom_sheet))
         }
     }
 
-    /**
-     * This is the SheetStopReceiver.
-     * It receives a broadcast from [receiverStop] and involves
-     * changes of various UI components including:
-     * [bottomSheetControlButton], [fullSheetControlButton],
-     * [fullSheetSlider].
-     */
-    inner class SheetStopReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onPlaylistItemAdded(position: Int) {
+        // TODO
+    }
+
+    override fun onPlaylistItemRemoved(position: Int) {
+        // TODO
+    }
+
+    override fun onPlayingStatusChanged(playing: Boolean) {
+        Log.d("onPlayingStatusChanged", playing.toString())
+        if (playing) {
+
+            updateBottomPlayerMetadata()
+            updateAlbumView(findViewById(R.id.global_bottom_sheet))
+
             bottomSheetControlButton.icon =
-                ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
-            fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
-            fullSheetSlider.isEnabled = false
-            setPlaybackState(1)
-        }
+                ContextCompat.getDrawable(this, R.drawable.ic_pause)
+            fullSheetControlButton.setImageResource(R.drawable.ic_pause)
 
-    }
-
-    /**
-     * This is the SheetPauseReceiver.
-     * It receives a broadcast from [receiverPause] and involves
-     * changes of various UI components including:
-     * [bottomSheetControlButton], [fullSheetControlButton].
-     */
-    inner class SheetPauseReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
+        } else {
             bottomSheetControlButton.icon =
-                ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
+                ContextCompat.getDrawable(this, R.drawable.ic_sheet_play)
             fullSheetControlButton.setImageResource(R.drawable.ic_sheet_play)
-            setPlaybackState(1)
-        }
-
-    }
-
-    /**
-     * This is the SheetSeekReceiver
-     * It receives a broadcast from [receiverSeek] and involves
-     * changes of [setPlaybackState].
-     */
-    inner class SheetSeekReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            setPlaybackState(0)
         }
     }
 
-    /**
-     * This is the SheetUpdateReceiver.
-     * It receives a broadcast from [receiverUpdate] and involves
-     * changes of various UI components including:
-     * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist],
-     * [fullSheetLocation].
-     * This receiver is used when resuming the activity.
-     */
-    inner class SheetUpdateReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (musicPlayer != null && playlistViewModel.currentLocation < playlistViewModel.playList.size) {
-                bottomSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                bottomSheetArtistAndAlbum.text =
-                    getString(
-                        R.string.playlist_metadata_information,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].artist,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
-                    )
-                fullSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].album
-                fullSheetArtist.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].artist
-                fullSheetDuration.text =
-                    convertDurationToTimeStamp(
-                        playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
-                    )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
-                    getString(
-                        R.string.full_sheet_playlist_location,
-                        ((playlistViewModel.currentLocation) + 1).toString(),
-                        playlistViewModel.playList.size.toString()
-                    )
+    override fun onUserPlayingStatusChanged(playing: Boolean) {
+        // TODO
+    }
 
-                if (musicPlayer!!.isPlaying) {
-                    bottomSheetControlButton.icon =
-                        ContextCompat.getDrawable(
-                            SymphonicaApplication.context,
-                            R.drawable.ic_pause
-                        )
-                    fullSheetControlButton.setImageResource(R.drawable.ic_pause)
-                }
+    override fun onLiveInfoAvailable(text: String) {
+        // TODO
+    }
 
-                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
+    override fun onMediaTimestampBaseChanged(timestampBase: Timestamp) {
+        // We care about onMediaTimestampChanged() instead, which is kept up to date for us
+    }
 
-                handler.postDelayed(sliderTask, 500)
-            } else if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
-                bottomSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                bottomSheetArtistAndAlbum.text =
-                    getString(
-                        R.string.playlist_metadata_information,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].artist,
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
-                    )
-                fullSheetSongName.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].album
-                fullSheetArtist.text =
-                    playlistViewModel.playList[playlistViewModel.currentLocation].artist
-                fullSheetDuration.text =
-                    convertDurationToTimeStamp(
-                        playlistViewModel.playList[playlistViewModel.currentLocation].duration.toString()
-                    )
-                // If you don't use a round bracket here the ViewModel would die from +1s.
-                fullSheetLocation.text =
-                    getString(
-                        R.string.full_sheet_playlist_location,
-                        ((playlistViewModel.currentLocation) + 1).toString(),
-                        playlistViewModel.playList.size.toString()
-                    )
-                updateAlbumView(this@MainActivity.findViewById(R.id.global_bottom_sheet))
-                updateMetadata()
-            }
+    override fun onMediaTimestampChanged(timestampMillis: Long) {
+        if (!isUserTracking) {
+            fullSheetSlider.value = ((musicPlayer.currentTimestamp * 100f)
+                    / musicPlayer.duration).coerceAtMost(100f)
+            fullSheetTimeStamp.text =
+                convertDurationToTimeStamp(musicPlayer.currentTimestamp)
+        }
+    }
+
+    override fun onSetSeekable(seekable: Boolean) {
+        fullSheetSlider.isEnabled = seekable
+    }
+
+    override fun onMediaBufferSlowStatus(slowBuffer: Boolean) {
+        // TODO
+    }
+
+    override fun onMediaBufferProgress(progress: Float) {
+        // TODO
+    }
+
+    override fun onMediaHasDecreasedPerformance() {
+        // TODO
+    }
+
+    override fun onPlaybackError(what: Int) {
+        // TODO
+    }
+
+    override fun onDurationAvailable(durationMillis: Long) {
+        fullSheetSlider.value = 0f
+    }
+
+    override fun onPlaybackSettingsChanged(volume: Float, speed: Float, pitch: Float) {
+        // TODO
+    }
+
+    private fun updateBottomPlayerMetadata() {
+        bottomSheetSongName.text =
+            musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.title
+        bottomSheetArtistAndAlbum.text =
+            getString(
+                R.string.playlist_metadata_information,
+                musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.artist,
+                musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.album
+            )
+        fullSheetSongName.text =
+            musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.title
+        fullSheetAlbum.text =
+            musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.album
+        fullSheetArtist.text =
+            musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.artist
+        fullSheetDuration.text =
+            convertDurationToTimeStamp(
+                musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.duration
+            )
+        // If you don't use a round bracket here the ViewModel would die from +1s.
+        fullSheetLocation.text =
+            getString(
+                R.string.full_sheet_playlist_location,
+                ((musicPlayer.playlist!!.currentPosition) + 1).toString(),
+                musicPlayer.playlist!!.size.toString()
+            )
+    }
+
+    private fun updateAlbumView(view: View) {
+        val sheetAlbumCover: ImageView? = view.findViewById(R.id.sheet_album_cover)
+        val fullSheetCover: ImageView? = view.findViewById(R.id.sheet_cover)
+        sheetAlbumCover?.setImageResource(R.drawable.ic_song_default_cover)
+        if (sheetAlbumCover != null) {
+            Glide.with(context)
+                .load(musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(sheetAlbumCover)
+        }
+        fullSheetCover?.setImageResource(R.drawable.ic_song_default_cover)
+        if (fullSheetCover != null) {
+            Glide.with(context)
+                .load(musicPlayer.playlist!!.getItem(musicPlayer.playlist!!.currentPosition)!!.imgUri)
+                .diskCacheStrategy(diskCacheStrategyCustom)
+                .into(fullSheetCover)
         }
     }
 

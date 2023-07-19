@@ -193,8 +193,7 @@ class SettingsFragment : Fragment() {
 
         versionTag.text = getString(
             R.string.settings_version_format,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.GIT_HASH
+            BuildConfig.VERSION_NAME
         )
 
         return rootView

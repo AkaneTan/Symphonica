@@ -15,7 +15,7 @@
   ~     Symphonica. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Symphonica</string>
     <string name="default_album_number">0</string>
     <string name="default_play_time">0:00</string>
@@ -35,7 +35,7 @@
     <string name="navigation_view_subtitle">Welcome back!</string>
     <string name="settings_app_name">App Name</string>
     <string name="settings_version">Version</string>
-    <string name="settings_version_format">%1$s(%2$s)</string>
+    <string name="settings_version_format" translatable="false">%1$s</string>
     <string name="settings_version_tag">Unknown Version (Unknown VSC Version)</string>
     <string name="sheet_no_playing">No Song Playing</string>
     <string name="sheet_now_playing">Now Playing</string>
@@ -64,7 +64,7 @@
     <string name="library_album_view_shuffle">Shuffle</string>
     <string name="library_album_view_album_art">Album art</string>
     <string name="settings_symphonica_icon">Symphonica Icon</string>
-    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetic Order)</string>
+    <string name="settings_contributors_content">AkaneTan, nift4, NurKeinNeid (Alphabetic Order)</string>
     <string name="settings_contributors">Contributors</string>
     <string name="settings_media">Media</string>
     <string name="settings_glide_enable_cache">Enable cache</string>

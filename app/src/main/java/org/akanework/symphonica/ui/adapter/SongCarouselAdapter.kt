@@ -28,9 +28,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.carousel.MaskableFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
-import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
@@ -74,13 +71,7 @@ class SongCarouselAdapter(private val songList: MutableList<Song>) :
         val tempSongList: MutableList<Song> = mutableListOf()
         tempSongList.addAll(songList)
         holder.container.setOnClickListener {
-            playlistViewModel.currentLocation = holder.adapterPosition
-            playlistViewModel.playList = tempSongList
-            if (booleanViewModel.shuffleState) {
-                booleanViewModel.shuffleState = false
-                fullSheetShuffleButton!!.isChecked = false
-            }
-            replacePlaylist(playlistViewModel.playList, position)
+            replacePlaylist(tempSongList, position)
         }
 
         holder.itemView.setOnLongClickListener {

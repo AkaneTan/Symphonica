@@ -75,7 +75,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                 if (!isUserTracking) {
                     slider.value = mediaPlayer.currentPosition.toFloat() / 1000
                     timeStamp.text =
-                        convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
+                        convertDurationToTimeStamp(mediaPlayer.currentPosition.toLong())
                 }
 
                 controlButton.setImageResource(R.drawable.ic_pause)
@@ -128,7 +128,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.miniplayer_sheet_author).text = targetSong.artist
                 findViewById<TextView>(R.id.miniplayer_sheet_album).text = targetSong.album
                 findViewById<TextView>(R.id.miniplayer_end_time).text =
-                    convertDurationToTimeStamp(targetSong.duration.toString())
+                    convertDurationToTimeStamp(targetSong.duration)
                 findViewById<TextView>(R.id.miniplayer_song_path).text = targetSong.path
                 val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
                 MainActivity.isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
@@ -177,7 +177,7 @@ class MiniPlayerActivity : AppCompatActivity() {
 
                 slider.addOnChangeListener { _, value, fromUser ->
                     if (fromUser) timeStamp.text =
-                        convertDurationToTimeStamp((value * 1000).toInt().toString())
+                        convertDurationToTimeStamp(value.toLong() * 1000)
                 }
 
                 dialogButton.setOnClickListener {

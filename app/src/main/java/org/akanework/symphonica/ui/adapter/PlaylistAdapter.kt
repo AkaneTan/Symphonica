@@ -27,7 +27,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.jumpTo
@@ -67,29 +67,32 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         holder.songMeta.text = "${songList[position].artist} - ${songList[position].album}"
 
         holder.itemView.setOnClickListener {
-            val previousLocation = playlistViewModel.currentLocation
-            playlistViewModel.currentLocation = holder.adapterPosition
+            val previousLocation = musicPlayer.playlist!!.currentPosition
             jumpTo(holder.adapterPosition)
             updatePlaylistSheetLocation(previousLocation)
         }
         holder.dismissButton.setOnClickListener {
-            if (playlistViewModel.playList.size != 1) {
+            if (musicPlayer.playlist != null &&
+                musicPlayer.playlist!!.size != 1) {
                 val buttonPosition = holder.adapterPosition
-                if (buttonPosition == playlistViewModel.currentLocation) {
+                if (buttonPosition == musicPlayer.playlist!!.currentPosition) {
                     thisSong()
                 }
                 if (buttonPosition != RecyclerView.NO_POSITION) {
                     // Delete the item.
                     songList.removeAt(buttonPosition)
                     notifyItemRemoved(buttonPosition)
-                    if (buttonPosition < playlistViewModel.currentLocation) {
-                        playlistViewModel.currentLocation--
+                    musicPlayer.playlist!!.remove(buttonPosition)
+                    if (musicPlayer.playlist != null &&
+                        buttonPosition < musicPlayer.playlist!!.currentPosition) {
+                        musicPlayer.playlist!!.currentPosition --
                     }
                 }
             }
         }
 
-        if (holder.adapterPosition == playlistViewModel.currentLocation) {
+        if (musicPlayer.playlist != null &&
+            holder.adapterPosition == musicPlayer.playlist!!.currentPosition) {
             holder.songTitle.setTextColor(
                 MaterialColors.getColor(
                     holder.itemView,

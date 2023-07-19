@@ -28,16 +28,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.booleanViewModel
 import org.akanework.symphonica.MainActivity.Companion.diskCacheStrategyCustom
-import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.addToNext
-import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
@@ -78,7 +74,7 @@ class LibraryListAdapter(private val songList: List<Song>) :
             songList[position].album
         )
         holder.songDuration.text =
-            convertDurationToTimeStamp(songList[position].duration.toString())
+            convertDurationToTimeStamp(songList[position].duration)
 
         try {
             Glide.with(holder.songCover.context)
@@ -91,13 +87,7 @@ class LibraryListAdapter(private val songList: List<Song>) :
         }
 
         holder.itemView.setOnClickListener {
-            playlistViewModel.currentLocation = position
-            playlistViewModel.playList = songList.toMutableList()
-            if (booleanViewModel.shuffleState) {
-                booleanViewModel.shuffleState = false
-                fullSheetShuffleButton!!.isChecked = false
-            }
-            replacePlaylist(playlistViewModel.playList, position)
+            replacePlaylist(songList.toMutableList(), position)
         }
 
         holder.itemView.setOnLongClickListener {
@@ -144,9 +134,6 @@ class LibraryListAdapter(private val songList: List<Song>) :
 
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
-
-                broadcastMetaDataUpdate()
-
                 rootView.dismiss()
             }
 

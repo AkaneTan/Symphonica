@@ -24,7 +24,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.ui.adapter.PlaylistAdapter
@@ -47,7 +47,7 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
         fun updatePlaylistSheetLocation(prevLocation: Int) {
             if (::adapter.isInitialized) {
                 adapter.notifyItemChanged(prevLocation)
-                adapter.notifyItemChanged(playlistViewModel.currentLocation)
+                adapter.notifyItemChanged(musicPlayer.playlist!!.currentPosition)
             }
         }
     }
@@ -61,13 +61,13 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
         val playlistView: RecyclerView = rootView.findViewById(R.id.playlist_recyclerview)
 
         val layoutManager = LinearLayoutManager(SymphonicaApplication.context)
-        adapter = PlaylistAdapter(playlistViewModel.playList)
+        adapter = PlaylistAdapter(musicPlayer.playlist!!.toMutableList())
 
         playlistView.layoutManager = layoutManager
         playlistView.adapter = adapter
 
         playlistView.post {
-            layoutManager.scrollToPositionWithOffset(playlistViewModel.currentLocation, 20)
+            layoutManager.scrollToPositionWithOffset(musicPlayer.playlist!!.currentPosition, 20)
         }
         return rootView
     }

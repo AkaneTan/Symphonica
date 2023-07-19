@@ -35,7 +35,6 @@
     <string name="navigation_view_subtitle">Selamat Datang Kembali</string>
     <string name="settings_app_name">Nama Aplikasi</string>
     <string name="settings_version">Versi</string>
-    <string name="settings_version_format">%1$s(%2$s)</string>
     <string name="settings_version_tag">Versi Tidak Diketahui (Versi VSC Tidak Diketahui)</string>
     <string name="sheet_no_playing">Musik Tidak Diputar</string>
     <string name="sheet_now_playing">Diputar Sekarang</string>
@@ -64,7 +63,7 @@
     <string name="library_album_view_shuffle">Acak</string>
     <string name="library_album_view_album_art">Art Album</string>
     <string name="settings_symphonica_icon">Symphonica Ikon</string>
-    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetic Order)</string>
+    <string name="settings_contributors_content">AkaneTan, nift4, NurKeinNeid (Alphabetic Order)</string>
     <string name="settings_contributors">Contributors</string>
     <string name="settings_media">Media</string>
     <string name="settings_glide_enable_cache">Nyalakan Cache</string>

@@ -54,7 +54,7 @@
     <string name="library_album_view_shuffle">Zufällige Wiedergabe</string>
     <string name="library_album_view_album_art">Album-Cover</string>
     <string name="settings_symphonica_icon">Symphonica-Symbol</string>
-    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetische Reihenfolge)</string>
+    <string name="settings_contributors_content">AkaneTan, nift4, NurKeinNeid (Alphabetische Reihenfolge)</string>
     <string name="settings_contributors">Mitwirkende</string>
     <string name="settings_media">Medien</string>
     <string name="settings_glide_enable_cache">Cache aktivieren</string>

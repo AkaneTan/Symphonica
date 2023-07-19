@@ -19,7 +19,6 @@ package org.akanework.symphonica.logic.util
 
 import android.content.Intent
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
@@ -29,10 +28,10 @@ import org.akanework.symphonica.logic.service.SymphonicaPlayerService
  * and jump to the desired location inside the new playlist.
  */
 fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
+    musicPlayer.playlist = Playlist(targetPlaylist)
+    musicPlayer.playlist!!.currentPosition = index
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
-    playlistViewModel.playList = targetPlaylist
-    playlistViewModel.currentLocation = index
-    intent.action = "ACTION_REPLACE_AND_PLAY"
+    intent.action = "ACTION_PLAY"
     SymphonicaApplication.context.startService(intent)
 }
 
@@ -40,26 +39,16 @@ fun replacePlaylist(targetPlaylist: MutableList<Song>, index: Int) {
  * [addToNext] adds a song to the next position of the playlist.
  */
 fun addToNext(nextSong: Song) {
-    if (playlistViewModel.currentLocation < playlistViewModel.playList.size) {
-        playlistViewModel.playList.add(playlistViewModel.currentLocation + 1, nextSong)
-    } else {
-        playlistViewModel.playList.add(playlistViewModel.currentLocation, nextSong)
-    }
-    if (musicPlayer == null) {
-        if (playlistViewModel.playList.size != 1) {
-            playlistViewModel.currentLocation++
-        }
-        thisSong()
-    }
+    musicPlayer.playlist!!.add(nextSong, musicPlayer.playlist!!.size - 1)
 }
 
 /**
  * [jumpTo] will jump to the position in playlist.
  */
 fun jumpTo(index: Int) {
-    playlistViewModel.currentLocation = index
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_JUMP"
+    intent.putExtra("index", index)
     SymphonicaApplication.context.startService(intent)
 }
 
@@ -67,9 +56,6 @@ fun jumpTo(index: Int) {
  * [nextSong] will jump to the next song in the playlist.
  */
 fun nextSong() {
-    if (musicPlayer != null && !musicPlayer!!.isPlaying) {
-        thisSong()
-    }
     val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
     intent.action = "ACTION_NEXT"
     SymphonicaApplication.context.startService(intent)
@@ -79,10 +65,7 @@ fun nextSong() {
  * [thisSong] will stop the music player and play current song.
  */
 fun thisSong() {
-    val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
-    intent.action = "ACTION_REPLACE_AND_PLAY"
-    intent.putExtra("Position", playlistViewModel.currentLocation)
-    SymphonicaApplication.context.startService(intent)
+    SymphonicaApplication.context.musicPlayer.playlist?.currentPosition?.let { jumpTo(it) }
 }
 
 /**
@@ -95,31 +78,11 @@ fun prevSong() {
 }
 
 /**
- * [pausePlayer] pauses [SymphonicaPlayerService]'s player.
- */
-fun pausePlayer() {
-    val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
-    intent.action = "ACTION_PAUSE"
-    SymphonicaApplication.context.startService(intent)
-}
-
-/**
- * [resumePlayer] resumes [SymphonicaPlayerService]'s player.
- */
-fun resumePlayer() {
-    val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
-    intent.action = "ACTION_RESUME"
-    SymphonicaApplication.context.startService(intent)
-}
-
-/**
  * [changePlayerStatus] changes [SymphonicaPlayerService]'s
  * player status. If paused then play. If is playing then pause.
  */
 fun changePlayerStatus() {
-    if (musicPlayer != null && musicPlayer!!.isPlaying) {
-        pausePlayer()
-    } else {
-        resumePlayer()
-    }
+    val intent = Intent(SymphonicaApplication.context, SymphonicaPlayerService::class.java)
+    intent.action = "ACTION_PLAY_PAUSE"
+    SymphonicaApplication.context.startService(intent)
 }

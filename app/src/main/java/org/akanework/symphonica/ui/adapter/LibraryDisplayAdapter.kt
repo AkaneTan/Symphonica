@@ -27,12 +27,10 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.addToNext
-import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.getTrackNumber
 import org.akanework.symphonica.logic.util.replacePlaylist
@@ -68,7 +66,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.songTitle.text = songList[position].title
         holder.songDuration.text =
-            convertDurationToTimeStamp(songList[position].duration.toString())
+            convertDurationToTimeStamp(songList[position].duration)
         holder.songUri.text = songList[position].path.toUri().toString()
         val trackNumber = getTrackNumber(songList[position].path)
         if (trackNumber != 0) {
@@ -77,12 +75,6 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
         }
 
         holder.itemView.setOnClickListener {
-            MainActivity.playlistViewModel.currentLocation = position
-            MainActivity.playlistViewModel.playList = songList.toMutableList()
-            if (MainActivity.booleanViewModel.shuffleState) {
-                MainActivity.booleanViewModel.shuffleState = false
-                MainActivity.fullSheetShuffleButton!!.isChecked = false
-            }
             replacePlaylist(songList.toMutableList(), position)
         }
 
@@ -105,9 +97,6 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
 
             addToNextButton!!.setOnClickListener {
                 addToNext(songList[position])
-
-                broadcastMetaDataUpdate()
-
                 rootView.dismiss()
             }
 

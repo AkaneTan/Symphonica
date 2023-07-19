@@ -17,10 +17,10 @@
 
 package org.akanework.symphonica
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import com.google.android.material.color.DynamicColors
+import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.MusicPlayer
 
 /**
  * [SymphonicaApplication] provides context
@@ -29,13 +29,16 @@ import com.google.android.material.color.DynamicColors
 class SymphonicaApplication : Application() {
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
+        lateinit var context: SymphonicaApplication
     }
+
+    lateinit var musicPlayer: MusicPlayer<Song>
 
     override fun onCreate() {
         super.onCreate()
-        context = applicationContext
+        context = this
+        musicPlayer = MusicPlayer(this)
+
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }

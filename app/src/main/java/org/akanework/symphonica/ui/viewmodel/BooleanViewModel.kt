@@ -26,6 +26,5 @@ import androidx.lifecycle.ViewModel
  */
 class BooleanViewModel : ViewModel() {
     var isBottomSheetOpen = false
-    var loopButtonStatus = 0
     var shuffleState = false
 }
