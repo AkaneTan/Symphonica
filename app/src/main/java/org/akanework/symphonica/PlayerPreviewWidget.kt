@@ -40,17 +40,22 @@ class PlayerPreviewWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
+        updateAppWidget(context)
     }
 
     override fun onEnabled(context: Context) {
-        // TODO
+        updateAppWidget(context)
     }
 
     override fun onDisabled(context: Context) {
-        // TODO
+        updateAppWidget(context)
+    }
+
+    override fun onRestored(context: Context?, oldWidgetIds: IntArray?, newWidgetIds: IntArray?) {
+        super.onRestored(context, oldWidgetIds, newWidgetIds)
+        if (context != null) {
+            updateAppWidget(context)
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -82,33 +87,33 @@ class PlayerPreviewWidget : AppWidgetProvider() {
             }
         }
     }
-}
 
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.player_preview_widget)
+    private fun updateAppWidget(
+        context: Context
+    ) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        // Construct the RemoteViews object
+        val views = RemoteViews(context.packageName, R.layout.player_preview_widget)
 
-    val intentChangeStatus = Intent(context, PlayerPreviewWidget::class.java)
-    val intentNextSong = Intent(context, PlayerPreviewWidget::class.java)
-    intentChangeStatus.action = WIDGET_UPDATE_PLAYER_STATUS
-    intentNextSong.action = WIDGET_UPDATE_PLAYER_NEXT_SONG
+        val intentChangeStatus = Intent(context, PlayerPreviewWidget::class.java)
+        val intentNextSong = Intent(context, PlayerPreviewWidget::class.java)
+        intentChangeStatus.action = WIDGET_UPDATE_PLAYER_STATUS
+        intentNextSong.action = WIDGET_UPDATE_PLAYER_NEXT_SONG
 
-    val pendingIntentStatus = PendingIntent.getBroadcast(context, 0,  intentChangeStatus, FLAG_IMMUTABLE)
-    val pendingIntentNext = PendingIntent.getBroadcast(context, 0, intentNextSong, FLAG_IMMUTABLE)
+        val pendingIntentStatus = PendingIntent.getBroadcast(context, 0,  intentChangeStatus, FLAG_IMMUTABLE)
+        val pendingIntentNext = PendingIntent.getBroadcast(context, 0, intentNextSong, FLAG_IMMUTABLE)
 
-    if (musicPlayer != null && musicPlayer!!.isPlaying) {
-        views.setImageViewResource(R.id.widget_button, R.drawable.ic_pause)
-    } else {
-        views.setImageViewResource(R.id.widget_button, R.drawable.ic_sheet_play)
+        if (musicPlayer != null && musicPlayer!!.isPlaying) {
+            views.setImageViewResource(R.id.widget_button, R.drawable.ic_pause)
+        } else {
+            views.setImageViewResource(R.id.widget_button, R.drawable.ic_sheet_play)
+        }
+
+        views.setOnClickPendingIntent(R.id.widget_button, pendingIntentStatus)
+        views.setOnClickPendingIntent(R.id.widget_button_next, pendingIntentNext)
+
+        val widget = ComponentName(context, PlayerPreviewWidget::class.java)
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(widget, views)
     }
-
-    views.setOnClickPendingIntent(R.id.widget_button, pendingIntentStatus)
-    views.setOnClickPendingIntent(R.id.widget_button_next, pendingIntentNext)
-
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
 }
