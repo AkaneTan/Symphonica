@@ -60,10 +60,10 @@ class LibraryAlbumDisplayFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true).setDuration(
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
                     PAGE_TRANSITION_DURATION)
         returnTransition =
-                MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false).setDuration(
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
                     PAGE_TRANSITION_DURATION)
         albumDisplayViewModel ?: run {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]

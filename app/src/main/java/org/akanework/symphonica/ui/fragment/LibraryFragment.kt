@@ -60,16 +60,14 @@ class LibraryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition =
-            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                PAGE_TRANSITION_DURATION)
-        returnTransition =
-            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                PAGE_TRANSITION_DURATION)
+
+        // Set the transition animation.
+        exitTransition =
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                    PAGE_TRANSITION_DURATION)
         reenterTransition =
-            MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false).setDuration(
-                PAGE_TRANSITION_DURATION
-            )
+                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                    PAGE_TRANSITION_DURATION)
     }
 
     override fun onCreateView(
