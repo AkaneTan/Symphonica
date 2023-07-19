@@ -546,11 +546,9 @@ class MainActivity : AppCompatActivity(), MediaStateCallback, PlaylistCallbacks<
                     }
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
-                    Log.d("TAGTAG", "TAGTAG2")
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
                     booleanViewModel.isBottomSheetOpen = true
-                    Log.d("TAGTAG", "TAGTAG3")
                 }
             }
 
