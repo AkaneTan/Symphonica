@@ -296,12 +296,11 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize loading sequence.
         coroutineScope.launch {
-            loadDataFromDisk()
+            if (libraryViewModel.librarySongList.isEmpty()) {
+                loadDataFromDisk()
+            }
 
             if (!isForceLoadingEnabled) {
-                // Look, listen.
-                // I know what you're thinking.
-                // Let me explain. Go to sortAlbumListByTrackNumber's define page.
                 withContext(Dispatchers.IO) {
                     libraryViewModel.librarySortedAlbumList = sortAlbumListByTrackNumber(
                         libraryViewModel.libraryAlbumList
