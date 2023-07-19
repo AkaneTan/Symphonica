@@ -873,7 +873,7 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             bottomSheetControlButton.icon =
                     ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
-            fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
+            fullSheetControlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_refresh)
             fullSheetSlider.isEnabled = false
             fullSheetSlider.value = 0f
             fullSheetTimeStamp.text = convertDurationToTimeStamp("0")
