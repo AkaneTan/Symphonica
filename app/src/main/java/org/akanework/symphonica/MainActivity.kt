@@ -30,6 +30,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -40,6 +41,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -338,6 +340,13 @@ class MainActivity : AppCompatActivity() {
         bottomFullSizePlayerPreview = findViewById(R.id.full_size_sheet_player)
         playerBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.standard_bottom_sheet))
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val params = window.attributes
+            params.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            window.attributes = params
+        }
 
         checkIfSquigglyProgressBarEnabled()
         if (isSquigglyProgressBarEnabled) {
