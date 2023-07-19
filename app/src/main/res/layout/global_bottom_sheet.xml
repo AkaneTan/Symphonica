@@ -55,6 +55,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="48dp">
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/sheet_extract_player"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:backgroundTint="?attr/colorSurface"
+                            android:elevation="0dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/ic_expand_more"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="30sp"
+                            app:iconTint="?attr/colorOnSurface" />
+
                     </LinearLayout>
 
                 </FrameLayout>
@@ -146,6 +162,14 @@
                                 android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="16sp" />
 
+                            <org.akanework.symphonica.ui.component.MarqueeTextView
+                                android:id="@+id/sheet_album"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="@string/library_album_view_unknown_album"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
 

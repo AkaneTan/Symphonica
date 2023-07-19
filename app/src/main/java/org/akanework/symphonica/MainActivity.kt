@@ -21,6 +21,7 @@ package org.akanework.symphonica
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -148,6 +149,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetArtistAndAlbum: TextView
     private lateinit var fullSheetSongName: TextView
     private lateinit var fullSheetArtist: TextView
+    private lateinit var fullSheetAlbum: TextView
     private lateinit var fullSheetDuration: TextView
     private lateinit var fullSheetTimeStamp: TextView
     private lateinit var bottomSheetControlButton: MaterialButton
@@ -312,6 +314,7 @@ class MainActivity : AppCompatActivity() {
 
         // Find the views.
         val bottomSheetNextButton = findViewById<MaterialButton>(R.id.bottom_sheet_next)
+        val fullSheetBackButton = findViewById<MaterialButton>(R.id.sheet_extract_player)
         val fullSheetNextButton = findViewById<MaterialButton>(R.id.sheet_next_song)
         val fullSheetPrevButton = findViewById<MaterialButton>(R.id.sheet_previous_song)
 
@@ -323,6 +326,7 @@ class MainActivity : AppCompatActivity() {
         bottomSheetSongName = findViewById(R.id.bottom_sheet_song_name)
         fullSheetSongName = findViewById(R.id.sheet_song_name)
         fullSheetArtist = findViewById(R.id.sheet_author)
+        fullSheetAlbum = findViewById(R.id.sheet_album)
         fullSheetLoopButton = findViewById(R.id.sheet_loop)
         fullSheetShuffleButton = findViewById(R.id.sheet_random)
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
@@ -499,6 +503,16 @@ class MainActivity : AppCompatActivity() {
             ) {
                 thisSong()
             }
+        }
+
+        fullSheetBackButton.setOnClickListener {
+            playerBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+            ObjectAnimator.ofFloat(bottomFullSizePlayerPreview, "alpha", 1f, 0f)
+                .setDuration(FULL_PLAYER_FADE_ANIMATION_DURATION)
+                .start()
+
+            bottomPlayerPreview.visibility = VISIBLE
         }
 
         findViewById<ImageView>(R.id.sheet_cover).setOnLongClickListener {
@@ -805,7 +819,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverPlay] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetArtist].
+     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
      * It also uses [updateAlbumView].
      */
     inner class SheetPlayReceiver : BroadcastReceiver() {
@@ -823,6 +837,8 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
+                fullSheetAlbum.text =
+                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =
@@ -910,7 +926,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverUpdate] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetArtist].
+     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
      * This receiver is used when resuming the activity.
      */
     inner class SheetUpdateReceiver : BroadcastReceiver() {
@@ -926,6 +942,8 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
+                fullSheetAlbum.text =
+                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =
@@ -956,6 +974,8 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
+                fullSheetAlbum.text =
+                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =
