@@ -15,7 +15,18 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <dimen name="bottom_sheet_height">76dp</dimen>
-    <dimen name="widget_margin">0dp</dimen>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape
+            android:shape="oval"
+            android:tint="@android:color/system_neutral2_100">
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_note_widget"
+        android:end="16dp"
+        android:start="16dp"
+        android:top="16dp" />
+</layer-list>
