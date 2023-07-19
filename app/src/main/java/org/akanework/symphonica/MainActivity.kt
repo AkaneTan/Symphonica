@@ -149,7 +149,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetArtistAndAlbum: TextView
     private lateinit var fullSheetSongName: TextView
     private lateinit var fullSheetArtist: TextView
-    private lateinit var fullSheetAlbum: TextView
     private lateinit var fullSheetDuration: TextView
     private lateinit var fullSheetTimeStamp: TextView
     private lateinit var bottomSheetControlButton: MaterialButton
@@ -326,7 +325,6 @@ class MainActivity : AppCompatActivity() {
         bottomSheetSongName = findViewById(R.id.bottom_sheet_song_name)
         fullSheetSongName = findViewById(R.id.sheet_song_name)
         fullSheetArtist = findViewById(R.id.sheet_author)
-        fullSheetAlbum = findViewById(R.id.sheet_album)
         fullSheetLoopButton = findViewById(R.id.sheet_loop)
         fullSheetShuffleButton = findViewById(R.id.sheet_random)
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
@@ -819,7 +817,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverPlay] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
+     * [fullSheetSongName], [fullSheetArtist].
      * It also uses [updateAlbumView].
      */
     inner class SheetPlayReceiver : BroadcastReceiver() {
@@ -837,8 +835,6 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =
@@ -926,7 +922,7 @@ class MainActivity : AppCompatActivity() {
      * It receives a broadcast from [receiverUpdate] and involves
      * changes of various UI components including:
      * [bottomSheetSongName], [bottomSheetArtistAndAlbum],
-     * [fullSheetSongName], [fullSheetAlbum], [fullSheetArtist].
+     * [fullSheetSongName], [fullSheetArtist].
      * This receiver is used when resuming the activity.
      */
     inner class SheetUpdateReceiver : BroadcastReceiver() {
@@ -942,8 +938,6 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =
@@ -974,8 +968,6 @@ class MainActivity : AppCompatActivity() {
                         )
                 fullSheetSongName.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].title
-                fullSheetAlbum.text =
-                        playlistViewModel.playList[playlistViewModel.currentLocation].album
                 fullSheetArtist.text =
                         playlistViewModel.playList[playlistViewModel.currentLocation].artist
                 fullSheetDuration.text =

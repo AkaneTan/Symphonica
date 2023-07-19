@@ -161,15 +161,6 @@
                                 android:text="@string/library_album_view_unknown_artist"
                                 android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="16sp" />
-
-                            <org.akanework.symphonica.ui.component.MarqueeTextView
-                                android:id="@+id/sheet_album"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="@string/library_album_view_unknown_album"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
 
