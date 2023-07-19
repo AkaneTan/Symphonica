@@ -1,0 +1,59 @@
+<!--
+  ~     Copyright (C) 2023  Akane Foundation
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_widget_default_cover"
+        android:clipToOutline="true">
+        <ImageView
+            android:id="@+id/widget_album_cover"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_widget_default_cover"
+            android:importantForAccessibility="no"/>
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/widget_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_sheet_play"
+        android:layout_gravity="center"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="50dp"
+        android:tint="@android:color/system_accent1_900"
+        android:background="@drawable/widget_button_round_corner"/>
+
+    <ImageButton
+        android:id="@+id/widget_button_next"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_sheet_next"
+        android:layout_gravity="center"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:tint="@android:color/system_accent3_900"
+        android:background="@drawable/widget_button_round_corner_secondary"/>
+
+</FrameLayout>

@@ -31,6 +31,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -1071,6 +1072,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        var currentMusicDrawable: Bitmap? = null
+
         var isMainActivityActive: Boolean? = null
         var isDBSafe = false
         private val historyDatabase = Room.databaseBuilder(

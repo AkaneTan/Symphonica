@@ -20,7 +20,9 @@ package org.akanework.symphonica.logic.util
 import android.content.Intent
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.PlayerPreviewWidget
 import org.akanework.symphonica.SymphonicaApplication
+import org.akanework.symphonica.WIDGET_UPDATE_PLAYER_BUTTON_STATUS
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.userRequestedAudioFocus
@@ -139,4 +141,7 @@ fun userChangedPlayerStatus() {
         resumePlayer()
         true
     }
+    val intentWidget = Intent(SymphonicaApplication.context, PlayerPreviewWidget::class.java)
+    intentWidget.action = WIDGET_UPDATE_PLAYER_BUTTON_STATUS
+    SymphonicaApplication.context.sendBroadcast(intentWidget)
 }

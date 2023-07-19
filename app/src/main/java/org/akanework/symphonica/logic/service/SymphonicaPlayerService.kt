@@ -49,13 +49,17 @@ import kotlinx.coroutines.withContext
 import org.akanework.symphonica.LOCK_AUDIO_FOCUS_INTERVAL
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.controllerViewModel
+import org.akanework.symphonica.MainActivity.Companion.currentMusicDrawable
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.isMainActivityActive
 import org.akanework.symphonica.MainActivity.Companion.musicPlayer
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.PlayerPreviewWidget
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
+import org.akanework.symphonica.WIDGET_UPDATE_PLAYER_ALBUM_STATUS
+import org.akanework.symphonica.WIDGET_UPDATE_PLAYER_BUTTON_STATUS
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.notification
 import org.akanework.symphonica.logic.service.SymphonicaPlayerService.Companion.updateMetadata
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
@@ -99,6 +103,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
     private fun pausePlayer() {
         musicPlayer!!.pause()
         broadcastPlayPaused()
+        updateWidget()
     }
 
     private fun resumePlayer() {
@@ -109,6 +114,13 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             mediaSession.setCallback(mediaSessionCallback)
         }
         killMiniPlayer()
+        updateWidget()
+    }
+
+    private fun updateWidget() {
+        val intent = Intent(context, PlayerPreviewWidget::class.java)
+        intent.action = WIDGET_UPDATE_PLAYER_BUTTON_STATUS
+        context.sendBroadcast(intent)
     }
 
     /**
@@ -549,6 +561,11 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                                     )
                                     .build()
                             )
+                            currentMusicDrawable = bitmapResource
+                            managerSymphonica!!.notify(1, notification)
+                            val intent = Intent(context, PlayerPreviewWidget::class.java)
+                            intent.action = WIDGET_UPDATE_PLAYER_ALBUM_STATUS
+                            context.sendBroadcast(intent)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
@@ -587,6 +604,9 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 )
             }
             managerSymphonica!!.notify(1, notification)
+            val intent = Intent(context, PlayerPreviewWidget::class.java)
+            intent.action = WIDGET_UPDATE_PLAYER_ALBUM_STATUS
+            context.sendBroadcast(intent)
         }
     }
 }

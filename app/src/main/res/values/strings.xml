@@ -115,4 +115,6 @@
     <string name="settings_enable_squiggly_progress_bar">Enable squiggly progress bar</string>
     <string name="settings_enable_squiggly_progress_bar_summary">Come up with the flow</string>
     <string name="dialog_timer_title">Timer</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Control Symphonica at your homepage!</string>
 </resources>
