@@ -64,7 +64,7 @@
     <string name="library_album_view_shuffle">Shuffle</string>
     <string name="library_album_view_album_art">Album art</string>
     <string name="settings_symphonica_icon">Symphonica Icon</string>
-    <string name="settings_contributors_content" translatable="false">AkaneTan, Nift4, NurKeinNeid</string>
+    <string name="settings_contributors_content" translatable="false">AkaneTan, CrisBalGreece, Nift4, NurKeinNeid</string>
     <string name="settings_contributors_content_alphabet">(Alphabetic Order)</string>
     <string name="settings_contributors">Contributors</string>
     <string name="settings_media">Media</string>
