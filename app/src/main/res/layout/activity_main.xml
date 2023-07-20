@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         app:headerLayout="@layout/navigation_view_header"
-        app:menu="@menu/navigation_view_menu" />
+        app:menu="@menu/navigation_view_menu"
+        tools:visibility="visible" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"

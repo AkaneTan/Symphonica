@@ -17,6 +17,7 @@
 
 package org.akanework.symphonica.logic.util
 
+import android.content.res.Resources.getSystem
 import org.akanework.symphonica.FORMAT_ZERO_APPEND
 import org.akanework.symphonica.HOUR_IN_MINUTES
 import org.akanework.symphonica.MILLISECOND
@@ -37,3 +38,5 @@ fun convertDurationToTimeStamp(duration: String): String {
     }
     return "$minutes:$seconds"
 }
+
+val Int.px: Int get() = (this * getSystem().displayMetrics.density).toInt()

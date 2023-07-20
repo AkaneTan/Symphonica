@@ -27,3 +27,5 @@ const val WIDGET_UPDATE_PLAYER_STATUS = "internal.widget_change_player"
 const val WIDGET_UPDATE_PLAYER_ALBUM_STATUS = "internal.widget_update_album"
 const val WIDGET_UPDATE_PLAYER_BUTTON_STATUS = "internal.widget_update_button"
 const val WIDGET_UPDATE_PLAYER_NEXT_SONG = "internal.widget_next_song"
+
+const val NAVIGATION_VIEW_WIDTH = 190

@@ -89,6 +89,7 @@ import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
+import org.akanework.symphonica.logic.util.px
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.logic.util.userChangedPlayerStatus
@@ -354,14 +355,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
-        animator = ValueAnimator.ofFloat(0f, 600f)
+        animator = ValueAnimator.ofFloat(0f, NAVIGATION_VIEW_WIDTH.px.toFloat())
         animator.addUpdateListener { animation ->
             fragmentContainerView.translationX = animation.animatedValue as Float
         }
         animator.interpolator = AccelerateDecelerateInterpolator()
         animator.duration = DRAWER_ANIMATION_DURATION
 
-        animatorReverse = ValueAnimator.ofFloat(600f, 0f)
+        animatorReverse = ValueAnimator.ofFloat(NAVIGATION_VIEW_WIDTH.px.toFloat(), 0f)
         animatorReverse.addUpdateListener { animation ->
             fragmentContainerView.translationX = animation.animatedValue as Float
         }
