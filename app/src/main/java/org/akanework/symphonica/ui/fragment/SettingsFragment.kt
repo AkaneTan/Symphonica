@@ -129,7 +129,7 @@ class SettingsFragment : Fragment() {
         val enableSquigglyProgressbarSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_squiggly_progress_bar)
 
-        val contributorString = getString(R.string.settings_contributors_content) +
+        val contributorString = getString(R.string.settings_contributors_content) + ' ' +
                 getString(R.string.settings_contributors_content_alphabet)
         contributors.text = contributorString
 
