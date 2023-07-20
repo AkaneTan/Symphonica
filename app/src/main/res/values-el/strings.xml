@@ -60,7 +60,7 @@
 	<string name="library_album_view_shuffle">Τυχαία</string>
 	<string name="library_album_view_album_art">Καλλιτεχνικό άλμπουμ</string>
 	<string name="settings_symphonica_icon">Εικονίδιο Μουσικής</string>
-	<string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid, CrisBalGreece(Αλφαβητική σειρά)</string>
+	<string name="settings_contributors_content_alphabet">(Αλφαβητική σειρά)</string>
 	<string name="settings_contributors">Συντελεστές</string>
 	<string name="settings_media">Μέσο</string>
 	<string name="settings_glide_enable_cache">Ενεργοποίηση cache</string>

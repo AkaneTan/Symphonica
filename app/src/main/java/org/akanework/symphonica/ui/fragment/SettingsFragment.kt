@@ -114,6 +114,7 @@ class SettingsFragment : Fragment() {
         // Define the topAppBar behavior.
         val topAppBar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
         val versionTag = rootView.findViewById<TextView>(R.id.version_tag)
+        val contributors = rootView.findViewById<TextView>(R.id.contributors)
         val cacheSwitch = rootView.findViewById<MaterialSwitch>(R.id.cache_reading_switch)
         val colorfulButtonSwitch = rootView.findViewById<MaterialSwitch>(R.id.home_colorful_button)
         val reorderSwitch = rootView.findViewById<MaterialSwitch>(R.id.reading_order_switch)
@@ -127,6 +128,10 @@ class SettingsFragment : Fragment() {
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
         val enableSquigglyProgressbarSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_squiggly_progress_bar)
+
+        val contributorString = getString(R.string.settings_contributors_content) +
+                getString(R.string.settings_contributors_content_alphabet)
+        contributors.text = contributorString
 
         cacheSwitch.isChecked = isGlideCacheEnabled
         colorfulButtonSwitch.isChecked = isColorfulButtonEnabled

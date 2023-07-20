@@ -59,7 +59,7 @@
     <string name="library_album_view_shuffle">Acak</string>
     <string name="library_album_view_album_art">Art Album</string>
     <string name="settings_symphonica_icon">Symphonica Ikon</string>
-    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (Alphabetic Order)</string>
+    <string name="settings_contributors_content_alphabet">(Alphabetic Order)</string>
     <string name="settings_contributors">Contributors</string>
     <string name="settings_media">Media</string>
     <string name="settings_glide_enable_cache">Nyalakan Cache</string>

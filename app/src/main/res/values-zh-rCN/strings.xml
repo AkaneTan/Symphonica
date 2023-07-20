@@ -59,7 +59,7 @@
     <string name="library_album_view_shuffle">随机播放</string>
     <string name="library_album_view_album_art">专辑封面</string>
     <string name="settings_symphonica_icon">Symphonica 图标</string>
-    <string name="settings_contributors_content">AkaneTan, Nift4, NurKeinNeid (字母表顺序)</string>
+    <string name="settings_contributors_content_alphabet">(字母表顺序)</string>
     <string name="settings_contributors">贡献者</string>
     <string name="settings_media">媒体</string>
     <string name="settings_glide_enable_cache">开启缓存</string>
