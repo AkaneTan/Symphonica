@@ -17,16 +17,12 @@
 
 <resources>
     <string name="app_name">Symphonica</string>
-    <string name="default_album_number">0</string>
-    <string name="default_play_time">0:00</string>
     <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
-    <string name="playlist_metadata_information">%1$s • %2$s</string>
     <string name="library_album_view_album">Album</string>
     <string name="library_album_view_more_information">Informasi</string>
     <string name="library_album_view_unknown_album">Album Tidak Diketahui</string>
     <string name="library_album_view_unknown_artist">Artist Tidak Diketahui</string>
     <string name="library_album_view_unknown_year">Tahun Tidak Diketahui</string>
-    <string name="library_list_metadata">%1$s - %2$s</string>
     <string name="library_tab_album">Album</string>
     <string name="library_tab_list">Daftar</string>
     <string name="loading_your_library">Memuat Library Music</string>
@@ -35,7 +31,6 @@
     <string name="navigation_view_subtitle">Selamat Datang Kembali</string>
     <string name="settings_app_name">Nama Aplikasi</string>
     <string name="settings_version">Versi</string>
-    <string name="settings_version_format">%1$s(%2$s)</string>
     <string name="settings_version_tag">Versi Tidak Diketahui (Versi VSC Tidak Diketahui)</string>
     <string name="sheet_no_playing">Musik Tidak Diputar</string>
     <string name="sheet_now_playing">Diputar Sekarang</string>

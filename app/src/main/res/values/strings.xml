@@ -17,10 +17,10 @@
 
 <resources>
     <string name="app_name">Symphonica</string>
-    <string name="default_album_number" translatable="false">•</string>
+    <string name="default_album_number" translatable="false">0</string>
     <string name="default_play_time" translatable="false">0:00</string>
     <string name="full_sheet_playlist_location">%1$s in %2$s songs</string>
-    <string name="playlist_metadata_information">%1$s • %2$s</string>
+    <string name="playlist_metadata_information" translatable="false">%1$s • %2$s</string>
     <string name="library_album_view_album">Album</string>
     <string name="library_album_view_more_information">Information</string>
     <string name="library_album_view_unknown_album">Unknown Album</string>
@@ -35,7 +35,7 @@
     <string name="navigation_view_subtitle">Welcome back!</string>
     <string name="settings_app_name">App Name</string>
     <string name="settings_version">Version</string>
-    <string name="settings_version_format">%1$s(%2$s)</string>
+    <string name="settings_version_format" translatable="false">%1$s(%2$s)</string>
     <string name="settings_version_tag">Unknown Version (Unknown VSC Version)</string>
     <string name="sheet_no_playing">No Song Playing</string>
     <string name="sheet_now_playing">Now Playing</string>

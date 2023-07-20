@@ -17,16 +17,12 @@
 
 <resources>
     <string name="app_name">和弦</string>
-    <string name="default_album_number">0</string>
-    <string name="default_play_time">0:00</string>
     <string name="full_sheet_playlist_location">%2$s队列中的%1$s首</string>
-    <string name="playlist_metadata_information">%1$s • %2$s</string>
     <string name="library_album_view_album">专辑</string>
     <string name="library_album_view_more_information">信息</string>
     <string name="library_album_view_unknown_album">未知专辑</string>
     <string name="library_album_view_unknown_artist">未知创作者</string>
     <string name="library_album_view_unknown_year">未知年份</string>
-    <string name="library_list_metadata">%1$s - %2$s</string>
     <string name="library_tab_album">专辑</string>
     <string name="library_tab_list">列表</string>
     <string name="loading_your_library">正在加载你的专辑库。</string>
@@ -35,7 +31,6 @@
     <string name="navigation_view_subtitle">欢迎回来!</string>
     <string name="settings_app_name">应用名称</string>
     <string name="settings_version">版本</string>
-    <string name="settings_version_format">%1$s(%2$s)</string>
     <string name="settings_version_tag">未知版本 (未知版本控制哈希)</string>
     <string name="sheet_no_playing">不在播放</string>
     <string name="sheet_now_playing">现在播放</string>
