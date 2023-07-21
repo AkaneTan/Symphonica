@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -47,18 +46,15 @@ import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
 import org.akanework.symphonica.MainActivity.Companion.fullSheetShuffleButton
 import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
 import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
-import org.akanework.symphonica.MainActivity.Companion.isDrawerOpen
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
 import org.akanework.symphonica.ui.adapter.SongHorizontalRecyclerViewAdapter
 import org.akanework.symphonica.ui.adapter.SongRecyclerViewAdapter
-import kotlin.math.abs
 
 /**
  * [HomeFragment] is homepage fragment.
@@ -79,35 +75,6 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
-
-        var initialX = 0f
-
-        rootView.setOnTouchListener { view, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    initialX = event.x
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    view.performClick()
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val currentX = event.x
-                    val deltaX = currentX - initialX
-
-                    if (abs(deltaX) > 100) {
-                        if (deltaX > 0 && !isDrawerOpen) {
-                            switchDrawer()
-                        } else if (deltaX < 0 && isDrawerOpen) {
-                            switchDrawer()
-                        }
-                    }
-
-                    true
-                }
-                else -> false
-            }
-        }
 
         if (isAkaneVisible) {
             rootView.findViewById<ImageView>(R.id.akane).visibility = VISIBLE
@@ -240,7 +207,7 @@ class HomeFragment : Fragment() {
         topAppBar.setNavigationOnClickListener {
             // Allow open drawer if only initialization have been completed.
             if (isInitialized) {
-                switchDrawer()
+                MainActivity.switchDrawer()
             }
         }
 

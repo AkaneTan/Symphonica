@@ -1115,7 +1115,7 @@ class MainActivity : AppCompatActivity() {
 
         // This is drawer needed in companion functions to decide
         // whether the drawer is open.
-        var isDrawerOpen = false
+        private var isDrawerOpen = false
 
         // Below is the custom variables that can be changed throughout
         // the settings.
