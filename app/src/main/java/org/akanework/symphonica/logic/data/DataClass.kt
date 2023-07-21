@@ -113,3 +113,10 @@ data class Lyric(
         return minutes * 60000 + seconds * 1000 + milliseconds * 10
     }
 }
+
+data class Playlist(
+    val id: Long,
+    val title: String,
+    val desc: String,
+    val songList: MutableList<Song>
+)

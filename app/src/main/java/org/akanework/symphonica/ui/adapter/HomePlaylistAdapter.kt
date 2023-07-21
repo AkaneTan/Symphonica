@@ -31,12 +31,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.logic.data.Playlist
 
 /**
  * [HomePlaylistAdapter] is used for displaying song lists
  * inside an album. Used in library album display fragment.
  */
-class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
+class HomePlaylistAdapter(private val playlistList: List<Playlist>) :
     RecyclerView.Adapter<HomePlaylistAdapter.ViewHolder>() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -49,7 +50,7 @@ class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
     override fun getItemCount(): Int = playlistList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.playlistTitle.text = playlistList[position].name
+        holder.playlistTitle.text = playlistList[position].title
         if (playlistList[position].desc.isNotEmpty()) {
             holder.playlistDesc.text = playlistList[position].desc
         }

@@ -77,6 +77,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.akanework.symphonica.SymphonicaApplication.Companion.context
 import org.akanework.symphonica.logic.data.Lyric
+import org.akanework.symphonica.logic.data.Playlist
+import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.data.loadDataFromDisk
 import org.akanework.symphonica.logic.database.HistoryDatabase
 import org.akanework.symphonica.logic.database.PlaylistDatabase
@@ -91,6 +93,7 @@ import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.broadcastPlayPaused
 import org.akanework.symphonica.logic.util.broadcastSliderSeek
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
+import org.akanework.symphonica.logic.util.getSongById
 import org.akanework.symphonica.logic.util.nextSong
 import org.akanework.symphonica.logic.util.prevSong
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
@@ -286,7 +289,19 @@ class MainActivity : AppCompatActivity() {
                             historyDao.getAllItems().map { it.value }.toMutableList()
                 }
                 if (playlistViewModel.playlistList.isEmpty()) {
-                    playlistViewModel.playlistList.addAll(playlistDao.getAllPlaylists())
+                    val playlist = playlistDao.getAllPlaylists()
+                    val playlistTransformed: MutableList<Playlist> = mutableListOf()
+                    playlist.forEach {
+                        playlistTransformed.add(Playlist(it.id, it.name, it.desc, mutableListOf()))
+                    }
+                    playlistTransformed.forEachIndexed { index, element ->
+                        val tempSongList: MutableList<Song> = mutableListOf()
+                        playlist[index].songs.forEach {
+                            getSongById(it)?.let { it1 -> tempSongList.add(it1) }
+                        }
+                        element.songList.addAll(tempSongList)
+                    }
+                    playlistViewModel.playlistList.addAll(playlistTransformed)
                 }
 
                 // TODO: Improve this guard implant

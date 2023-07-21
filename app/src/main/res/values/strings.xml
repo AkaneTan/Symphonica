@@ -118,4 +118,5 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Control Symphonica at your homepage!</string>
     <string name="no_lyric_provided">No Lyric provided.</string>
+    <string name="home_playlist_playlist">Playlist</string>
 </resources>

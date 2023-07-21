@@ -46,7 +46,7 @@ data class PlaylistDataEntity(
     val id: Long,
     val name: String,
     val desc: String,
-    val songs: MutableList<Long>
+    var songs: MutableList<Long>
 ) {
     constructor(
         name: String,

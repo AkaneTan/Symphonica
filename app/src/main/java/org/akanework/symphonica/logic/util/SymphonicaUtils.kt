@@ -20,6 +20,8 @@ package org.akanework.symphonica.logic.util
 import org.akanework.symphonica.FORMAT_ZERO_APPEND
 import org.akanework.symphonica.HOUR_IN_MINUTES
 import org.akanework.symphonica.MILLISECOND
+import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.logic.data.Song
 
 /**
  * [convertDurationToTimeStamp] makes a string format
@@ -36,4 +38,10 @@ fun convertDurationToTimeStamp(duration: String): String {
         return "$minutes:0$seconds"
     }
     return "$minutes:$seconds"
+}
+
+fun getSongById(id: Long): Song? {
+    return MainActivity.libraryViewModel.librarySongList.find {
+        it.id == id
+    }
 }
