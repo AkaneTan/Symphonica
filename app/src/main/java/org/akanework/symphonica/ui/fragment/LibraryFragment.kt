@@ -56,18 +56,6 @@ import org.akanework.symphonica.ui.fragment.LibraryListFragment.Companion.update
 class LibraryFragment : Fragment() {
     private lateinit var fragmentPager: ViewPager2
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Set the transition animation.
-        exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                    PAGE_TRANSITION_DURATION)
-        reenterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

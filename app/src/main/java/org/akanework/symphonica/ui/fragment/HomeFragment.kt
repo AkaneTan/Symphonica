@@ -60,13 +60,6 @@ import org.akanework.symphonica.ui.adapter.SongRecyclerViewAdapter
  * [HomeFragment] is homepage fragment.
  */
 class HomeFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        reenterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

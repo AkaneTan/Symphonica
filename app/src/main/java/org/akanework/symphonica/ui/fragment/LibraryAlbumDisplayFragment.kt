@@ -62,7 +62,7 @@ class LibraryAlbumDisplayFragment : Fragment() {
         enterTransition =
                 MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
                     PAGE_TRANSITION_DURATION)
-        returnTransition =
+        exitTransition =
                 MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
                     PAGE_TRANSITION_DURATION)
         albumDisplayViewModel ?: run {
