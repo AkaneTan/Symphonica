@@ -123,8 +123,8 @@ class LibraryFragment : Fragment() {
 
         fragmentPager.adapter = NavFragmentPageAdapter(requireActivity())
 
-        // Set the offscreenPageLimit to 2 to avoid stuttering.
-        fragmentPager.offscreenPageLimit = 2
+        // Set the offscreenPageLimit to 1 to avoid stuttering.
+        fragmentPager.offscreenPageLimit = 1
 
         TabLayoutMediator(libraryTabLayout, fragmentPager) { tab, position ->
             tab.text = when (position) {
