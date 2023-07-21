@@ -28,6 +28,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -148,12 +149,14 @@ class HomeFragment : Fragment() {
         shuffleRecyclerView.layoutManager = shuffleLayoutManager
         shuffleAdapter = SongRecyclerViewAdapter(shuffleList)
         shuffleRecyclerView.adapter = shuffleAdapter
+        ViewCompat.setNestedScrollingEnabled(shuffleRecyclerView, false)
 
         val recentLayoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
         recentRecyclerView.layoutManager = recentLayoutManager
         recentAdapter = SongHorizontalRecyclerViewAdapter(recentList)
         recentRecyclerView.adapter = recentAdapter
         LinearSnapHelper().attachToRecyclerView(recentRecyclerView)
+        ViewCompat.setNestedScrollingEnabled(recentRecyclerView, false)
 
         loadingPrompt = rootView.findViewById(R.id.loading_prompt_list)
 
