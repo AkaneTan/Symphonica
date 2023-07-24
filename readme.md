@@ -4,6 +4,8 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f8fa63a2b74c42d78fbd1f782884b289)](https://app.codacy.com/gh/AkaneTan/Symphonica/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Telegram](https://img.shields.io/badge/-telegram-red?color=white&logo=telegram&logoColor=blue)](https://t.me/AkaneFoundation)
 
+<a href="https://apt.izzysoft.de/fdroid/index/apk/org.akanework.symphonica/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="100"></a>
+
 A simple md3 music player aiming for simplicity and minimal.
 
 *Join our telegram group to get test beta versions.*
