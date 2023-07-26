@@ -3,6 +3,7 @@
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/AkaneTan/Symphonica)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f8fa63a2b74c42d78fbd1f782884b289)](https://app.codacy.com/gh/AkaneTan/Symphonica/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Telegram](https://img.shields.io/badge/-telegram-red?color=white&logo=telegram&logoColor=blue)](https://t.me/AkaneFoundation)
+[![Matrix](https://img.shields.io/badge/-matrix-red?color=white&logo=matrix&logoColor=black)](https://matrix.to/#/#akanefoundation:matrix.org)
 
 <a href="https://apt.izzysoft.de/fdroid/index/apk/org.akanework.symphonica/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="100"></a>
 
