@@ -278,7 +278,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 // this is a generated else block
             }
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
