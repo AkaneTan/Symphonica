@@ -43,7 +43,7 @@ class LibraryViewModel : ViewModel() {
     fun addSongToHistory(song: Song) {
         if (isDBSafe) {
             libraryHistoryList.add(song.id)
-            sessionSongPlayed ++
+            sessionSongPlayed++
         }
     }
 

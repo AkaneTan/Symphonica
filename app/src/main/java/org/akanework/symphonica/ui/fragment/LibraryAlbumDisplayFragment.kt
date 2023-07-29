@@ -60,11 +60,13 @@ class LibraryAlbumDisplayFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
         albumDisplayViewModel ?: run {
             albumDisplayViewModel = ViewModelProvider(this)[AlbumDisplayViewModel::class.java]
         }
@@ -103,7 +105,8 @@ class LibraryAlbumDisplayFragment : Fragment() {
         albumName.text = libraryViewModel.libraryAlbumList[position!!].title
         albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
         if (libraryViewModel.libraryAlbumList[position!!].artist ==
-                requireActivity().getString(R.string.library_album_view_unknown_artist)) {
+            requireActivity().getString(R.string.library_album_view_unknown_artist)
+        ) {
             albumArtist.text = libraryViewModel.libraryAlbumList[position!!].songList.first().artist
         } else {
             albumArtist.text = libraryViewModel.libraryAlbumList[position!!].artist
@@ -123,11 +126,11 @@ class LibraryAlbumDisplayFragment : Fragment() {
         val sortedSongList: List<Song>
         if (libraryViewModel.librarySortedAlbumList.isNotEmpty()) {
             libraryAlbumView.adapter =
-                    LibraryDisplayAdapter(libraryViewModel.librarySortedAlbumList[position!!].songList)
+                LibraryDisplayAdapter(libraryViewModel.librarySortedAlbumList[position!!].songList)
             sortedSongList = libraryViewModel.librarySortedAlbumList[position!!].songList
         } else {
             libraryAlbumView.adapter =
-                    LibraryDisplayAdapter(libraryViewModel.libraryAlbumList[position!!].songList)
+                LibraryDisplayAdapter(libraryViewModel.libraryAlbumList[position!!].songList)
             sortedSongList = libraryViewModel.libraryAlbumList[position!!].songList
         }
         libraryAlbumView.layoutManager = LinearLayoutManager(context)
@@ -180,8 +183,8 @@ class LibraryAlbumDisplayFragment : Fragment() {
 
                     dialogName.setText(libraryViewModel.libraryAlbumList[position!!].title)
                     if (libraryViewModel.libraryAlbumList[position!!].artist == requireActivity().getString(
-                        R.string.library_album_view_unknown_artist
-                    )
+                            R.string.library_album_view_unknown_artist
+                        )
                     ) {
                         dialogArtist.setText(libraryViewModel.libraryAlbumList[position!!].songList.first().artist)
                     } else {

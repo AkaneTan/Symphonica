@@ -18,10 +18,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carousel_item_container"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
     android:layout_width="wrap_content"
     android:layout_height="160dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="16dp"
     app:strokeWidth="0dp">
@@ -32,10 +32,11 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="126dp"
             android:layout_height="126dp"
-            app:cardCornerRadius="12dp"
-            style="?attr/materialCardViewElevatedStyle">
+            app:cardCornerRadius="12dp">
+
             <ImageView
                 android:id="@+id/carousel_image_view"
                 android:layout_width="match_parent"
@@ -47,14 +48,14 @@
 
         <TextView
             android:id="@+id/carousel_song_name"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unknown_song"
-            android:textSize="14sp"
+            android:layout_marginTop="8dp"
             android:singleLine="true"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"/>
+            android:text="@string/unknown_song"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

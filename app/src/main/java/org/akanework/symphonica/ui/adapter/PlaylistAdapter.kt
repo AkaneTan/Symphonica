@@ -58,7 +58,9 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
             .into(holder.songCover)
 
         holder.songTitle.text = songList[position].title
-        "${songList[position].artist} - ${songList[position].album}".also { holder.songMeta.text = it }
+        "${songList[position].artist} - ${songList[position].album}".also {
+            holder.songMeta.text = it
+        }
 
         holder.itemView.setOnClickListener {
             val previousLocation = playlistViewModel.currentLocation
@@ -68,7 +70,8 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
         }
         holder.dismissButton.setOnClickListener {
             if (playlistViewModel.playList.size != 1 &&
-                holder.adapterPosition != playlistViewModel.currentLocation) {
+                holder.adapterPosition != playlistViewModel.currentLocation
+            ) {
                 val buttonPosition = holder.adapterPosition
                 if (buttonPosition != RecyclerView.NO_POSITION) {
                     // Delete the item.
@@ -99,7 +102,8 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                 MaterialColors.getColor(
                     holder.dismissButton,
                     com.google.android.material.R.attr.colorOnPrimaryContainer
-                ))
+                )
+            )
         } else {
             holder.songTitle.setTextColor(
                 MaterialColors.getColor(
@@ -118,7 +122,8 @@ class PlaylistAdapter(private val songList: MutableList<Song>) :
                 MaterialColors.getColor(
                     holder.dismissButton,
                     com.google.android.material.R.attr.colorOnSurface
-                ))
+                )
+            )
         }
     }
 

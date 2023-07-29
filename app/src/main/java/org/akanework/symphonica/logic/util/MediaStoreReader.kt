@@ -215,7 +215,7 @@ fun getTrackNumber(songUri: String): Int {
     cursor?.use {
         if (cursor.moveToFirst()) {
             trackNumber =
-                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK))
         }
     }
 
@@ -255,7 +255,7 @@ fun getYear(songUri: String): String? {
     cursor?.use {
         if (cursor.moveToFirst()) {
             year =
-                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR))
         }
     }
 

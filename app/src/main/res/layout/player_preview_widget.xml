@@ -25,35 +25,36 @@
         android:layout_gravity="center"
         android:background="@drawable/ic_widget_default_cover"
         android:clipToOutline="true">
+
         <ImageView
             android:id="@+id/widget_album_cover"
             android:layout_width="135dp"
             android:layout_height="135dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_widget_default_cover"
-            android:importantForAccessibility="no"/>
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_widget_default_cover" />
     </FrameLayout>
 
     <ImageButton
         android:id="@+id/widget_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_sheet_play"
         android:layout_gravity="center"
-        android:layout_marginEnd="50dp"
         android:layout_marginTop="50dp"
-        android:tint="@android:color/system_accent1_900"
-        android:background="@drawable/widget_button_round_corner"/>
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/widget_button_round_corner"
+        android:src="@drawable/ic_sheet_play"
+        android:tint="@android:color/system_accent1_900" />
 
     <ImageButton
         android:id="@+id/widget_button_next"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_sheet_next"
         android:layout_gravity="center"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:tint="@android:color/system_accent3_900"
-        android:background="@drawable/widget_button_round_corner_secondary"/>
+        android:background="@drawable/widget_button_round_corner_secondary"
+        android:src="@drawable/ic_sheet_next"
+        android:tint="@android:color/system_accent3_900" />
 
 </FrameLayout>

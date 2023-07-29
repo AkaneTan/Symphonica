@@ -43,11 +43,13 @@ class HomePlaylistFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
     }
 
     @SuppressLint("StringFormatMatches")
@@ -75,6 +77,7 @@ class HomePlaylistFragment : Fragment() {
                         .commit()
                     true
                 }
+
                 else ->
                     throw IllegalAccessException()
             }

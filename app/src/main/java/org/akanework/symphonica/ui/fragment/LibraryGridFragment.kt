@@ -43,7 +43,10 @@ class LibraryGridFragment : Fragment() {
 
         val libraryGridView: RecyclerView = rootView.findViewById(R.id.library_gridview)
 
-        val layoutManager = StaggeredGridLayoutManager(MAX_ALBUM_LIBRARY_LAYOUT, StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = StaggeredGridLayoutManager(
+            MAX_ALBUM_LIBRARY_LAYOUT,
+            StaggeredGridLayoutManager.VERTICAL
+        )
 
         libraryGridView.layoutManager = layoutManager
         val adapter = LibraryGridAdapter(libraryViewModel.libraryAlbumList)

@@ -15,8 +15,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,8 +49,8 @@
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp"
                 android:paddingRight="16dp"
+                android:paddingBottom="16dp"
                 tools:ignore="UselessParent">
 
                 <LinearLayout
@@ -88,22 +87,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/home_playlist_add_view_playlist_name"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp"
             android:paddingTop="12dp"
+            android:paddingRight="24dp"
             android:paddingBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/playlist_add_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,14 +111,14 @@
             android:layout_height="wrap_content"
             android:hint="@string/home_playlist_add_view_playlist_desc"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp"
             android:paddingTop="12dp"
+            android:paddingRight="24dp"
             android:paddingBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/playlist_add_desc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,10 +128,10 @@
         android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="48dp"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true"
+        android:src="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

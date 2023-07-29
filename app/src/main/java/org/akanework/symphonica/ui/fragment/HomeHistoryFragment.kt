@@ -29,24 +29,22 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.transition.MaterialSharedAxis
-import org.akanework.symphonica.MainActivity
-import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
-import org.akanework.symphonica.MainActivity.Companion.historyDao
-import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
-import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.Song
-import org.akanework.symphonica.logic.util.replacePlaylist
-import org.akanework.symphonica.ui.adapter.HomeHistoryAdapter
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity
+import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.historyDao
+import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.PAGE_TRANSITION_DURATION
+import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.data.Song
+import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.ui.adapter.HomeHistoryAdapter
 
 /**
  * [HomeHistoryFragment] is the history list
@@ -59,11 +57,13 @@ class HomeHistoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
     }
 
     @SuppressLint("StringFormatMatches")

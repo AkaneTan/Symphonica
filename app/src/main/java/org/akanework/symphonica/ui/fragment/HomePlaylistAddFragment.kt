@@ -23,21 +23,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.transition.MaterialSharedAxis
-import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.R
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
+import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
 import org.akanework.symphonica.PAGE_TRANSITION_DURATION
+import org.akanework.symphonica.R
 
 /**
  * [HomePlaylistAddFragment] is the history list
@@ -49,11 +47,13 @@ class HomePlaylistAddFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enterTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
         exitTransition =
-                MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
-                    PAGE_TRANSITION_DURATION)
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).setDuration(
+                PAGE_TRANSITION_DURATION
+            )
     }
 
     @SuppressLint("StringFormatMatches")
@@ -75,13 +75,19 @@ class HomePlaylistAddFragment : Fragment() {
 
         confirmButton.setOnClickListener {
             if (nameTextBox.text.isNullOrBlank() || nameTextBox.text.isNullOrEmpty()) {
-                Snackbar.make(confirmButton, R.string.home_playlist_add_view_name_empty, Snackbar.LENGTH_SHORT)
+                Snackbar.make(
+                    confirmButton,
+                    R.string.home_playlist_add_view_name_empty,
+                    Snackbar.LENGTH_SHORT
+                )
                     .show()
             } else {
                 coroutineScope.launch {
                     withContext(Dispatchers.IO) {
-                        val newPlaylist = playlistViewModel.createPlaylist(nameTextBox.text.toString(),
-                            descTextBox.text.toString())
+                        val newPlaylist = playlistViewModel.createPlaylist(
+                            nameTextBox.text.toString(),
+                            descTextBox.text.toString()
+                        )
                         playlistViewModel.playlistList.add(newPlaylist)
                     }
                 }

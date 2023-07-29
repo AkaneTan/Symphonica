@@ -62,12 +62,14 @@ class PlayerPreviewWidget : AppWidgetProvider() {
             WIDGET_UPDATE_PLAYER_STATUS -> {
                 userChangedPlayerStatus()
             }
+
             WIDGET_UPDATE_PLAYER_ALBUM_STATUS -> {
                 if (currentMusicDrawable != null) {
                     views.setImageViewBitmap(R.id.widget_album_cover, currentMusicDrawable)
                     appWidgetManager.updateAppWidget(widget, views)
                 }
             }
+
             WIDGET_UPDATE_PLAYER_BUTTON_STATUS -> {
                 if (musicPlayer != null && musicPlayer!!.isPlaying) {
                     views.setImageViewResource(R.id.widget_button, R.drawable.ic_pause)
@@ -76,6 +78,7 @@ class PlayerPreviewWidget : AppWidgetProvider() {
                 }
                 appWidgetManager.updateAppWidget(widget, views)
             }
+
             WIDGET_UPDATE_PLAYER_NEXT_SONG -> {
                 nextSong()
                 appWidgetManager.updateAppWidget(widget, views)
@@ -97,7 +100,8 @@ internal fun updateAppWidget(
     intentChangeStatus.action = WIDGET_UPDATE_PLAYER_STATUS
     intentNextSong.action = WIDGET_UPDATE_PLAYER_NEXT_SONG
 
-    val pendingIntentStatus = PendingIntent.getBroadcast(context, 0,  intentChangeStatus, FLAG_IMMUTABLE)
+    val pendingIntentStatus =
+        PendingIntent.getBroadcast(context, 0, intentChangeStatus, FLAG_IMMUTABLE)
     val pendingIntentNext = PendingIntent.getBroadcast(context, 0, intentNextSong, FLAG_IMMUTABLE)
 
     if (musicPlayer != null && musicPlayer!!.isPlaying) {

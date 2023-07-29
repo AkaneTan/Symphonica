@@ -15,8 +15,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,8 +49,8 @@
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp"
                 android:paddingRight="16dp"
+                android:paddingBottom="16dp"
                 tools:ignore="UselessParent">
 
                 <LinearLayout
@@ -66,7 +65,7 @@
                         android:text="@string/home_playlist_view_title"
                         android:textColor="?attr/colorOnPrimaryContainer"
                         android:textSize="22sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -77,8 +76,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:menu="@menu/home_playlist_view_menu" />
+                app:menu="@menu/home_playlist_view_menu"
+                app:navigationIcon="@drawable/ic_arrow_back" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

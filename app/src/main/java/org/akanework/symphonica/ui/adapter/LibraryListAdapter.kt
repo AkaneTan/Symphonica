@@ -64,7 +64,7 @@ class LibraryListAdapter(private val songList: List<Song>) :
             songList[position].album
         )
         holder.songDuration.text =
-                convertDurationToTimeStamp(songList[position].duration.toString())
+            convertDurationToTimeStamp(songList[position].duration.toString())
 
         try {
             Glide.with(holder.songCover.context)

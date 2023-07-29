@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
-import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.BuildConfig
 import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
 import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
@@ -44,7 +43,6 @@ import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.isSquigglyProgressBarEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
-import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.SymphonicaApplication
 import org.akanework.symphonica.logic.util.broadcastSquigglyUpdate

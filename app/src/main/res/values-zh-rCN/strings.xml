@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~     Copyright (C) 2023  Akane Foundation
   ~
   ~     This program is free software: you can redistribute it and/or modify
@@ -14,7 +13,8 @@
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  --><resources>
+  -->
+<resources>
     <string name="app_name">和弦</string>
     <string name="full_sheet_playlist_location">%2$s队列中的%1$s首</string>
     <string name="library_album_view_album">专辑</string>

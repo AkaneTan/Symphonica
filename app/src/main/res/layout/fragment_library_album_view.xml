@@ -88,8 +88,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/library_album_view_album"
                         android:textColor="?attr/colorPrimary"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/library_album_view_name"

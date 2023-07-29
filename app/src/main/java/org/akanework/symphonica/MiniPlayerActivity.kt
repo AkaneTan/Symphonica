@@ -71,21 +71,29 @@ class MiniPlayerActivity : AppCompatActivity() {
                 slider.valueTo = valueTo
 
                 if (!isUserTracking) {
-                    val addVar = mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
+                    val addVar =
+                        mediaPlayer.currentPosition.toFloat() / PLAYER_SLIDER_VALUE_MULTIPLE
                     if (addVar <= slider.valueTo) {
                         slider.value = addVar
                     }
                     timeStamp.text =
-                            convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
+                        convertDurationToTimeStamp(mediaPlayer.currentPosition.toString())
                 }
 
-                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
+                controlButton.icon =
+                    ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
                 handler.postDelayed(this, SLIDER_UPDATE_INTERVAL)
             } else if (mediaPlayer.currentPosition >= mediaPlayer.duration - 1000) {
                 slider.isEnabled = false
-                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
+                controlButton.icon = ContextCompat.getDrawable(
+                    SymphonicaApplication.context,
+                    R.drawable.ic_sheet_play
+                )
             } else {
-                controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
+                controlButton.icon = ContextCompat.getDrawable(
+                    SymphonicaApplication.context,
+                    R.drawable.ic_sheet_play
+                )
             }
         }
     }
@@ -133,7 +141,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.miniplayer_sheet_author).text = targetSong.artist
                 findViewById<TextView>(R.id.miniplayer_sheet_album).text = targetSong.album
                 findViewById<TextView>(R.id.miniplayer_end_time).text =
-                        convertDurationToTimeStamp(targetSong.duration.toString())
+                    convertDurationToTimeStamp(targetSong.duration.toString())
                 findViewById<TextView>(R.id.miniplayer_song_path).text = targetSong.path
                 val prefs = getSharedPreferences("data", Context.MODE_PRIVATE)
                 MainActivity.isGlideCacheEnabled = prefs.getBoolean("isGlideCacheEnabled", false)
@@ -158,6 +166,7 @@ class MiniPlayerActivity : AppCompatActivity() {
                         override fun onStartTrackingTouch(slider: Slider) {
                             isUserTracking = true
                         }
+
                         override fun onStopTrackingTouch(slider: Slider) {
                             // This value is multiplied by 1000 is because
                             // when the number is too big (like when toValue
@@ -174,7 +183,9 @@ class MiniPlayerActivity : AppCompatActivity() {
                 slider.addOnChangeListener { _, value, fromUser ->
                     if (fromUser) {
                         timeStamp.text =
-                                convertDurationToTimeStamp((value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString())
+                            convertDurationToTimeStamp(
+                                (value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString()
+                            )
                     }
                 }
                 dialogButton.setOnClickListener {
@@ -212,11 +223,17 @@ class MiniPlayerActivity : AppCompatActivity() {
                 controlButton.setOnClickListener {
                     if (mediaPlayer.isPlaying) {
                         mediaPlayer.pause()
-                        controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_sheet_play)
+                        controlButton.icon = ContextCompat.getDrawable(
+                            SymphonicaApplication.context,
+                            R.drawable.ic_sheet_play
+                        )
                     } else {
                         mediaPlayer.start()
                         handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
-                        controlButton.icon = ContextCompat.getDrawable(SymphonicaApplication.context, R.drawable.ic_pause)
+                        controlButton.icon = ContextCompat.getDrawable(
+                            SymphonicaApplication.context,
+                            R.drawable.ic_pause
+                        )
                     }
                 }
                 handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)

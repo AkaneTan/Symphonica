@@ -17,7 +17,6 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -37,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp">
+                android:paddingTop="16dp"
+                android:paddingRight="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -117,8 +116,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="36dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/rp_album_cover"
                 android:clipToOutline="true">
@@ -172,16 +171,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="28dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="22dp">
+                    android:paddingRight="20dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -203,19 +202,19 @@
                             android:id="@+id/miniplayer_sheet_author"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:text="@string/library_album_view_unknown_artist"
                             android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <org.akanework.symphonica.ui.component.MarqueeTextView
                             android:id="@+id/miniplayer_sheet_album"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:text="@string/library_album_view_unknown_album"
                             android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -240,10 +239,10 @@
                         android:value="0"
                         android:valueFrom="0.0"
                         android:valueTo="100.0"
-                        app:thumbRadius="9dp"
+                        app:labelBehavior="gone"
                         app:thumbColor="?attr/colorPrimary"
-                        app:trackColorActive="?attr/colorPrimary"
-                        app:labelBehavior="gone" />
+                        app:thumbRadius="9dp"
+                        app:trackColorActive="?attr/colorPrimary" />
 
                 </FrameLayout>
 
@@ -260,8 +259,8 @@
                         android:layout_gravity="start"
                         android:text="@string/default_play_time"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/miniplayer_end_time"
@@ -270,8 +269,8 @@
                         android:layout_gravity="end"
                         android:text="@string/default_play_time"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -282,9 +281,9 @@
                     android:paddingRight="20dp">
 
                     <LinearLayout
-                        android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <LinearLayout

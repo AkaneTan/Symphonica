@@ -60,7 +60,8 @@ class SquigglyView @JvmOverloads constructor(
         repeatMode = ValueAnimator.RESTART
         repeatCount = ValueAnimator.INFINITE
         addUpdateListener { animation ->
-            xOffset = (animation.currentPlayTime / 10).toFloat() // Here we control the speed of the squiggly line
+            xOffset =
+                (animation.currentPlayTime / 10).toFloat() // Here we control the speed of the squiggly line
             invalidate()
         }
     }

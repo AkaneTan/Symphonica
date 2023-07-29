@@ -54,7 +54,7 @@ class LibraryDisplayAdapter(private val songList: List<Song>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.songTitle.text = songList[position].title
         holder.songDuration.text =
-                convertDurationToTimeStamp(songList[position].duration.toString())
+            convertDurationToTimeStamp(songList[position].duration.toString())
         holder.songUri.text = songList[position].path.toUri().toString()
         val trackNumber = getTrackNumber(songList[position].path)
         if (trackNumber != 0) {

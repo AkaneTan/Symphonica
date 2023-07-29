@@ -40,7 +40,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.customFragmentManager
 import org.akanework.symphonica.MainActivity.Companion.fullSheetLoopButton
@@ -50,7 +49,6 @@ import org.akanework.symphonica.MainActivity.Companion.isColorfulButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.logic.data.Song
 import org.akanework.symphonica.logic.util.replacePlaylist
@@ -151,7 +149,8 @@ class HomeFragment : Fragment() {
         shuffleRecyclerView.adapter = shuffleAdapter
         ViewCompat.setNestedScrollingEnabled(shuffleRecyclerView, false)
 
-        val recentLayoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
+        val recentLayoutManager =
+            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
         recentRecyclerView.layoutManager = recentLayoutManager
         recentAdapter = SongHorizontalRecyclerViewAdapter(recentList)
         recentRecyclerView.adapter = recentAdapter
@@ -223,7 +222,7 @@ class HomeFragment : Fragment() {
                 isShow = true
             } else if (isShow) {
                 collapsingToolbar.title =
-                        getString(R.string.home_greetings)
+                    getString(R.string.home_greetings)
                 isShow = false
             }
         }

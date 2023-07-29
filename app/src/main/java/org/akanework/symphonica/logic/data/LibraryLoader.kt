@@ -17,6 +17,8 @@
 
 package org.akanework.symphonica.logic.data
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.SymphonicaApplication
@@ -25,9 +27,6 @@ import org.akanework.symphonica.logic.util.getAllAlbums
 import org.akanework.symphonica.logic.util.getAllSongs
 import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.ui.fragment.HomeFragment
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  * [loadDataFromDisk] is used when booting up.
@@ -47,14 +46,14 @@ suspend fun loadDataFromDisk() {
     if (isForceLoadingEnabled) {
         withContext(Dispatchers.IO) {
             libraryViewModel.librarySortedAlbumList =
-                    sortAlbumListByTrackNumber(libraryViewModel.libraryAlbumList)
+                sortAlbumListByTrackNumber(libraryViewModel.libraryAlbumList)
         }
     }
 
     withContext(Dispatchers.Main) {
         if (libraryViewModel.libraryNewestAddedList.isEmpty() && libraryViewModel.librarySongList.isNotEmpty()) {
             libraryViewModel.libraryNewestAddedList =
-                    findTopTwelveSongsByAddDate(libraryViewModel.librarySongList)
+                findTopTwelveSongsByAddDate(libraryViewModel.librarySongList)
         }
         HomeFragment.switchPrompt(1)
     }

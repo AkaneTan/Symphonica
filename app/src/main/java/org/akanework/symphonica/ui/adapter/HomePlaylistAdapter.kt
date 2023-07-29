@@ -22,15 +22,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
-import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
-import org.akanework.symphonica.R
-import org.akanework.symphonica.logic.data.PlaylistDataEntity
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.akanework.symphonica.MainActivity.Companion.playlistViewModel
+import org.akanework.symphonica.R
+import org.akanework.symphonica.logic.data.PlaylistDataEntity
 
 /**
  * [HomePlaylistAdapter] is used for displaying song lists
@@ -55,7 +53,7 @@ class HomePlaylistAdapter(private val playlistList: List<PlaylistDataEntity>) :
         }
 
         holder.itemView.setOnClickListener {
-            }
+        }
 
         holder.itemView.setOnLongClickListener {
             val adapterPosition = holder.adapterPosition

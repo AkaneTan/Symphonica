@@ -29,14 +29,12 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.android.material.transition.MaterialSharedAxis
 import org.akanework.symphonica.MainActivity
 import org.akanework.symphonica.MainActivity.Companion.isAkaneVisible
 import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.libraryViewModel
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
-import org.akanework.symphonica.PAGE_TRANSITION_DURATION
 import org.akanework.symphonica.R
 import org.akanework.symphonica.TAB_ALBUM
 import org.akanework.symphonica.TAB_LIST

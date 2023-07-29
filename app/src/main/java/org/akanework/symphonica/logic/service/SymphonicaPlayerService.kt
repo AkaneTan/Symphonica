@@ -171,7 +171,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             if (musicPlayer != null) {
                 userChangedPlayerStatus()
             } else if (playlistViewModel.playList.size != 0 &&
-                    playlistViewModel.currentLocation != playlistViewModel.playList.size
+                playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
                 thisSong()
             }
@@ -181,7 +181,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
             if (musicPlayer != null) {
                 userChangedPlayerStatus()
             } else if (playlistViewModel.playList.size != 0 &&
-                    playlistViewModel.currentLocation != playlistViewModel.playList.size
+                playlistViewModel.currentLocation != playlistViewModel.playList.size
             ) {
                 thisSong()
             }
@@ -191,10 +191,10 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
 
     init {
         playbackStateBuilder =
-                PlaybackState.Builder()
-                    .setActions(
-                        PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO
-                    )
+            PlaybackState.Builder()
+                .setActions(
+                    PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO
+                )
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -221,7 +221,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         if (managerSymphonica == null && channelSymphonica == null) {
             // Initialize notification service.
             managerSymphonica =
-                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             channelSymphonica = NotificationChannel(
                 "channel_symphonica",
                 "Symphonica",
@@ -274,6 +274,7 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
                 setLoopListener()
                 startPlaying()
             }
+
             else -> {
                 // this is a generated else block
             }
@@ -380,30 +381,32 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val previousLocation = playlistViewModel.currentLocation
         if (!isListShuffleEnabled && controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1 &&
-                            !fullSheetShuffleButton!!.isChecked) {
-                        playlistViewModel.playList.size - 1
-                    } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0 &&
-                            !fullSheetShuffleButton!!.isChecked) {
-                        stopPlaying()
-                        0
-                    } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton!!.isChecked) {
-                        playlistViewModel.currentLocation - 1
-                    } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
-                        Random.nextInt(0, playlistViewModel.playList.size)
-                    } else {
-                        0
-                    }
+                if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1 &&
+                    !fullSheetShuffleButton!!.isChecked
+                ) {
+                    playlistViewModel.playList.size - 1
+                } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0 &&
+                    !fullSheetShuffleButton!!.isChecked
+                ) {
+                    stopPlaying()
+                    0
+                } else if (playlistViewModel.currentLocation != 0 && !fullSheetShuffleButton!!.isChecked) {
+                    playlistViewModel.currentLocation - 1
+                } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
+                    Random.nextInt(0, playlistViewModel.playList.size)
+                } else {
+                    0
+                }
         } else if (controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0) {
-                        playlistViewModel.playList.size - 1
-                    } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1) {
-                        stopPlaying()
-                        0
-                    } else {
-                        playlistViewModel.currentLocation - 1
-                    }
+                if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 0) {
+                    playlistViewModel.playList.size - 1
+                } else if (playlistViewModel.currentLocation == 0 && controllerViewModel.loopButtonStatus == 1) {
+                    stopPlaying()
+                    0
+                } else {
+                    playlistViewModel.currentLocation - 1
+                }
         }
 
         // Who the fuck opens the playlist and use media control to select the
@@ -415,43 +418,47 @@ class SymphonicaPlayerService : Service(), MediaPlayer.OnPreparedListener {
         val previousLocation = playlistViewModel.currentLocation
         if (!isListShuffleEnabled && controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && controllerViewModel
-                        .loopButtonStatus == 1 && !fullSheetShuffleButton!!.isChecked) {
-                        0
-                    } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            controllerViewModel
-                                .loopButtonStatus == 0 && !fullSheetShuffleButton!!.isChecked) {
-                        stopPlaying()
-                        0
-                    } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 &&
-                            !fullSheetShuffleButton!!.isChecked) {
-                        playlistViewModel.currentLocation + 1
-                    } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
-                        Random.nextInt(0, playlistViewModel.playList.size)
-                    } else {
-                        0
-                    }
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 && controllerViewModel
+                        .loopButtonStatus == 1 && !fullSheetShuffleButton!!.isChecked
+                ) {
+                    0
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
+                    controllerViewModel
+                        .loopButtonStatus == 0 && !fullSheetShuffleButton!!.isChecked
+                ) {
+                    stopPlaying()
+                    0
+                } else if (playlistViewModel.currentLocation != playlistViewModel.playList.size - 1 &&
+                    !fullSheetShuffleButton!!.isChecked
+                ) {
+                    playlistViewModel.currentLocation + 1
+                } else if (fullSheetShuffleButton!!.isChecked && playlistViewModel.playList.size != 1) {
+                    Random.nextInt(0, playlistViewModel.playList.size)
+                } else {
+                    0
+                }
         } else if (controllerViewModel.loopButtonStatus != 2) {
             playlistViewModel.currentLocation =
-                    if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            controllerViewModel.loopButtonStatus == 1
-                    ) {
-                        0
-                    } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
-                            controllerViewModel.loopButtonStatus == 0
-                    ) {
-                        stopPlaying()
-                        0
-                    } else {
-                        playlistViewModel.currentLocation + 1
-                    }
+                if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
+                    controllerViewModel.loopButtonStatus == 1
+                ) {
+                    0
+                } else if (playlistViewModel.currentLocation == playlistViewModel.playList.size - 1 &&
+                    controllerViewModel.loopButtonStatus == 0
+                ) {
+                    stopPlaying()
+                    0
+                } else {
+                    playlistViewModel.currentLocation + 1
+                }
         }
         updatePlaylistSheetLocation(previousLocation)
     }
 
-    private val audioFocusRequest: AudioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-        .setOnAudioFocusChangeListener(focusChangeListener)
-        .build()
+    private val audioFocusRequest: AudioFocusRequest =
+        AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            .setOnAudioFocusChangeListener(focusChangeListener)
+            .build()
 
     private fun requestAudioFocus() {
         userRequestedAudioFocus = true

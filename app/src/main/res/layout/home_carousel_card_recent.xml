@@ -18,9 +18,9 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carousel_item_container"
-    android:layout_marginStart="4dp"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:strokeWidth="0dp">
@@ -31,10 +31,11 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            app:cardCornerRadius="6dp"
-            style="?attr/materialCardViewElevatedStyle">
+            app:cardCornerRadius="6dp">
+
             <ImageView
                 android:id="@+id/carousel_image_view"
                 android:layout_width="match_parent"
@@ -45,30 +46,31 @@
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/carousel_song_name"
-                android:layout_marginStart="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/unknown_song"
+                android:layout_marginStart="16dp"
                 android:singleLine="true"
+                android:text="@string/unknown_song"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/carousel_author_name"
-                android:layout_marginStart="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/unknown_song"
+                android:layout_marginStart="16dp"
                 android:singleLine="true"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant"/>
+                android:text="@string/unknown_song"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
