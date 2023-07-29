@@ -580,9 +580,6 @@ class MainActivity : AppCompatActivity() {
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     bottomFullSizePlayerPreview.visibility = VISIBLE
                     bottomPlayerPreview.visibility = VISIBLE
-                    if (isSquigglyProgressBarEnabled) {
-                        trackSquigglyProgressBar()
-                    }
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomPlayerPreview.visibility = GONE
                     controllerViewModel.isBottomSheetOpen = true
