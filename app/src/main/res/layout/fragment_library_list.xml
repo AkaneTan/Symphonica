@@ -23,14 +23,15 @@
     android:fitsSystemWindows="false"
     tools:context=".ui.fragment.LibraryListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <org.akanework.symphonica.ui.component.FastScrollRecyclerView
         android:id="@+id/library_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:fastScrollEnabled="true"
-        app:fastScrollHorizontalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-        app:fastScrollHorizontalTrackDrawable="@drawable/fastscroll_line_drawable"
-        app:fastScrollVerticalThumbDrawable="@drawable/fastscroll_thumb_drawable"
-        app:fastScrollVerticalTrackDrawable="@drawable/fastscroll_line_drawable" />
+        app:fastScrollAutoHide="true"
+        app:fastScrollAutoHideDelay="500"
+        app:fastScrollPopupBgColor="?attr/colorPrimary"
+        app:fastScrollPopupTextColor="?attr/colorOnPrimary"
+        app:fastScrollThumbColor="?attr/colorPrimary"
+        app:fastScrollThumbInactiveColor="?attr/colorPrimary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

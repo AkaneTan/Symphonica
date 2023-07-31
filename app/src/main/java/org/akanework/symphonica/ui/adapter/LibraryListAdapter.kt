@@ -40,6 +40,7 @@ import org.akanework.symphonica.logic.util.addToNext
 import org.akanework.symphonica.logic.util.broadcastMetaDataUpdate
 import org.akanework.symphonica.logic.util.convertDurationToTimeStamp
 import org.akanework.symphonica.logic.util.replacePlaylist
+import org.akanework.symphonica.ui.component.FastScrollRecyclerView
 import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
 
 /**
@@ -47,7 +48,9 @@ import org.akanework.symphonica.ui.fragment.LibraryAlbumDisplayFragment
  * list fragment.
  */
 class LibraryListAdapter(private val songList: List<Song>) :
-    RecyclerView.Adapter<LibraryListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<LibraryListAdapter.ViewHolder>(),
+    FastScrollRecyclerView.SectionedAdapter {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.library_list_card, parent, false)
@@ -148,5 +151,9 @@ class LibraryListAdapter(private val songList: List<Song>) :
         val songTitle: TextView = view.findViewById(R.id.song_title)
         val songMeta: TextView = view.findViewById(R.id.song_meta)
         val songDuration: TextView = view.findViewById(R.id.song_duration)
+    }
+
+    override fun getSectionName(position: Int): String {
+        return libraryViewModel.librarySongList[position].title.first().toString()
     }
 }
