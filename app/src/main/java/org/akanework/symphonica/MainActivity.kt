@@ -94,7 +94,6 @@ import org.akanework.symphonica.logic.util.sortAlbumListByTrackNumber
 import org.akanework.symphonica.logic.util.thisSong
 import org.akanework.symphonica.logic.util.userChangedPlayerStatus
 import org.akanework.symphonica.ui.component.PlaylistBottomSheet
-import org.akanework.symphonica.ui.component.SquigglyView
 import org.akanework.symphonica.ui.fragment.HomeFragment
 import org.akanework.symphonica.ui.fragment.LibraryFragment
 import org.akanework.symphonica.ui.fragment.SettingsFragment
@@ -160,15 +159,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetControlButton: MaterialButton
     private lateinit var fullSheetControlButton: MaterialButton
     private lateinit var fullSheetSlider: Slider
-    private lateinit var fullSheetSquigglyView: SquigglyView
-    private lateinit var fullSheetSquigglyViewFrame: FrameLayout
     private lateinit var fullSheetTimerButton: MaterialButton
     private lateinit var receiverPlay: SheetPlayReceiver
     private lateinit var receiverStop: SheetStopReceiver
     private lateinit var receiverPause: SheetPauseReceiver
     private lateinit var receiverSeek: SheetSeekReceiver
     private lateinit var receiverUpdate: SheetUpdateReceiver
-    private lateinit var receiverSquigglyUpdate: SheetSquigglyReceiver
     private lateinit var playlistButton: MaterialButton
     private lateinit var fragmentContainerView: FragmentContainerView
     private lateinit var playerBottomSheetBehavior: BottomSheetBehavior<View>
@@ -210,7 +206,6 @@ class MainActivity : AppCompatActivity() {
         isListShuffleEnabled = prefs.getBoolean("isListShuffleEnabled", true)
         isEasterEggDiscovered = prefs.getBoolean("isEasterEggDiscovered", false)
         isAkaneVisible = prefs.getBoolean("isAkaneVisible", false)
-        isSquigglyProgressBarEnabled = prefs.getBoolean("isSquigglyProgressBarEnabled", false)
 
         // Go to dark mode if force dark mode is on.
         if (isForceDarkModeEnabled) {
@@ -233,7 +228,6 @@ class MainActivity : AppCompatActivity() {
         receiverStop = SheetStopReceiver()
         receiverSeek = SheetSeekReceiver()
         receiverUpdate = SheetUpdateReceiver()
-        receiverSquigglyUpdate = SheetSquigglyReceiver()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
@@ -261,11 +255,6 @@ class MainActivity : AppCompatActivity() {
                 IntentFilter("internal.play_update"),
                 RECEIVER_NOT_EXPORTED
             )
-            registerReceiver(
-                receiverSquigglyUpdate,
-                IntentFilter("internal.play_squiggly_update"),
-                RECEIVER_NOT_EXPORTED
-            )
         } else {
             registerReceiver(receiverPause, IntentFilter("internal.play_pause"))
             registerReceiver(receiverPlay, IntentFilter("internal.play_start"))
@@ -274,10 +263,6 @@ class MainActivity : AppCompatActivity() {
             registerReceiver(
                 receiverUpdate,
                 IntentFilter("internal.play_update")
-            )
-            registerReceiver(
-                receiverSquigglyUpdate,
-                IntentFilter("internal.play_squiggly_update")
             )
         }
 
@@ -350,8 +335,6 @@ class MainActivity : AppCompatActivity() {
         fullSheetShuffleButton = findViewById(R.id.sheet_random)
         fullSheetControlButton = findViewById(R.id.sheet_mid_button)
         fullSheetSlider = findViewById(R.id.sheet_slider)
-        fullSheetSquigglyView = findViewById(R.id.squiggly)
-        fullSheetSquigglyViewFrame = findViewById(R.id.squiggly_frame)
         fullSheetDuration = findViewById(R.id.sheet_end_time)
         fullSheetTimeStamp = findViewById(R.id.sheet_now_time)
         fullSheetTimerButton = findViewById(R.id.full_timer)
@@ -365,11 +348,6 @@ class MainActivity : AppCompatActivity() {
             params.layoutInDisplayCutoutMode =
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.attributes = params
-        }
-
-        checkIfSquigglyProgressBarEnabled()
-        if (isSquigglyProgressBarEnabled) {
-            trackSquigglyProgressBar()
         }
 
         // Initialize the animator. (Since we can't acquire fragmentContainer inside switchDrawer.)
@@ -706,9 +684,6 @@ class MainActivity : AppCompatActivity() {
                         (value * PLAYER_SLIDER_VALUE_MULTIPLE).toInt().toString()
                     )
             }
-            if (isSquigglyProgressBarEnabled) {
-                trackSquigglyProgressBar()
-            }
         }
         // Slider behavior ends here.
 
@@ -822,7 +797,6 @@ class MainActivity : AppCompatActivity() {
                 convertDurationToTimeStamp(musicPlayer!!.currentPosition.toString())
         }
 
-        checkIfSquigglyProgressBarEnabled()
     }
 
     override fun onDestroy() {
@@ -834,7 +808,6 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiverPlay)
         unregisterReceiver(receiverSeek)
         unregisterReceiver(receiverUpdate)
-        unregisterReceiver(receiverSquigglyUpdate)
         navigationView = null
         fullSheetLoopButton = null
         fullSheetShuffleButton = null
@@ -882,7 +855,6 @@ class MainActivity : AppCompatActivity() {
                 setPlaybackState(OPERATION_PLAY)
                 handler.postDelayed(sliderTask, SLIDER_UPDATE_INTERVAL)
             }
-            checkIfSquigglyProgressBarEnabled()
         }
     }
 
@@ -903,7 +875,6 @@ class MainActivity : AppCompatActivity() {
             fullSheetSlider.value = 0f
             fullSheetTimeStamp.text = convertDurationToTimeStamp("0")
             setPlaybackState(OPERATION_PAUSE)
-            checkIfSquigglyProgressBarEnabled()
             if (musicPlayer != null) {
                 updateMetadata()
             }
@@ -1018,87 +989,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * This is the [SheetSquigglyReceiver]
-     * It receives a broadcast from [receiverSquigglyUpdate].
-     */
-    inner class SheetSquigglyReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            checkIfSquigglyProgressBarEnabled()
-        }
-    }
-
-
-    private fun checkIfSquigglyProgressBarEnabled() {
-        if (isSquigglyProgressBarEnabled && musicPlayer != null) {
-            // When player is active.
-            setSquigglyActive()
-            if (libraryViewModel.sessionSongPlayed <= 1 && !fullSheetSlider.isEnabled &&
-                !controllerViewModel.hasInitializedSquigglyView
-            ) {
-                fullSheetSquigglyView.visibility = GONE
-                controllerViewModel.hasInitializedSquigglyView = true
-            }
-        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value != 0f && musicPlayer == null) {
-            // When stopped at last song in the list.
-            setSquigglyInactive()
-            trackSquigglyProgressBar()
-        } else if (isSquigglyProgressBarEnabled && fullSheetSlider.value == 0f && musicPlayer == null) {
-            // When no music is played and no progress is set.
-            setSquigglyGone()
-        } else if (isSquigglyProgressBarEnabled) {
-            trackSquigglyProgressBar()
-        } else {
-            setSquigglyGone()
-        }
-    }
-
-    private fun setSquigglyInactive() {
-        fullSheetSquigglyView.visibility = VISIBLE
-        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
-            resources.getColor(android.R.color.transparent, theme)
-        )
-    }
-
-    private fun setSquigglyActive() {
-        fullSheetSquigglyView.visibility = VISIBLE
-        fullSheetSquigglyView.paint.color = MaterialColors.getColor(
-            fullSheetSquigglyView,
-            com.google.android.material.R.attr.colorPrimary
-        )
-        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
-            resources.getColor(android.R.color.transparent, theme)
-        )
-    }
-
-    private fun setSquigglyGone() {
-        fullSheetSquigglyView.visibility = GONE
-        fullSheetSlider.trackActiveTintList = ColorStateList.valueOf(
-            MaterialColors.getColor(
-                fullSheetSlider,
-                com.google.android.material.R.attr.colorPrimary
-            )
-        )
-    }
-
-    private fun trackSquigglyProgressBar() {
-        val params = fullSheetSquigglyView.layoutParams as? ViewGroup.MarginLayoutParams
-        params?.let {
-            val marginVal = (fullSheetSquigglyViewFrame.width *
-                    (fullSheetSlider.valueTo - fullSheetSlider.value) / fullSheetSlider.valueTo).toInt()
-            if (marginVal != 0) {
-                it.marginEnd = marginVal
-                controllerViewModel.squigglyViewMargin = marginVal
-            } else {
-                it.marginEnd = controllerViewModel.squigglyViewMargin
-            }
-            if (controllerViewModel.squigglyViewMargin != 0) {
-                fullSheetSquigglyView.visibility = VISIBLE
-            }
-            fullSheetSquigglyView.layoutParams = it
-        }
-    }
-
     companion object {
         var currentMusicDrawable: Bitmap? = null
 
@@ -1136,7 +1026,6 @@ class MainActivity : AppCompatActivity() {
         var isListShuffleEnabled: Boolean = true
         var isEasterEggDiscovered: Boolean = false
         var isAkaneVisible: Boolean = false
-        var isSquigglyProgressBarEnabled: Boolean = false
 
         // This is the core of Symphonica, the music player.
         var musicPlayer: MediaPlayer? = null

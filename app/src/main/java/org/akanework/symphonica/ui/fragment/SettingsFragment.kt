@@ -40,7 +40,6 @@ import org.akanework.symphonica.MainActivity.Companion.isForceLoadingEnabled
 import org.akanework.symphonica.MainActivity.Companion.isGlideCacheEnabled
 import org.akanework.symphonica.MainActivity.Companion.isLibraryShuffleButtonEnabled
 import org.akanework.symphonica.MainActivity.Companion.isListShuffleEnabled
-import org.akanework.symphonica.MainActivity.Companion.isSquigglyProgressBarEnabled
 import org.akanework.symphonica.MainActivity.Companion.switchDrawer
 import org.akanework.symphonica.MainActivity.Companion.switchNavigationViewIndex
 import org.akanework.symphonica.R
@@ -81,8 +80,6 @@ class SettingsFragment : Fragment() {
             rootView.findViewById<MaterialSwitch>(R.id.library_shuffle_button_switch)
         val enableListShuffleSwitch =
             rootView.findViewById<MaterialSwitch>(R.id.enable_list_shuffle)
-        val enableSquigglyProgressbarSwitch =
-            rootView.findViewById<MaterialSwitch>(R.id.enable_squiggly_progress_bar)
 
         val contributorString = getString(R.string.settings_contributors_content) + ' ' +
                 getString(R.string.settings_contributors_content_alphabet)
@@ -95,7 +92,6 @@ class SettingsFragment : Fragment() {
         enableListShuffleSwitch.isChecked = isListShuffleEnabled
         akaneDisplaySwitch.isChecked = isAkaneVisible
         libraryShuffleButtonSwitch.isChecked = isLibraryShuffleButtonEnabled
-        enableSquigglyProgressbarSwitch.isChecked = isSquigglyProgressBarEnabled
 
         if (isEasterEggDiscovered) {
             akanePreference.visibility = VISIBLE
@@ -174,23 +170,6 @@ class SettingsFragment : Fragment() {
             } else {
                 editor.putBoolean("isListShuffleEnabled", false)
                 editor.apply()
-                false
-            }
-        }
-
-        enableSquigglyProgressbarSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val editor =
-                SymphonicaApplication.context.getSharedPreferences("data", Context.MODE_PRIVATE)
-                    .edit()
-            isSquigglyProgressBarEnabled = if (isChecked) {
-                editor.putBoolean("isSquigglyProgressBarEnabled", true)
-                editor.apply()
-                broadcastSquigglyUpdate()
-                true
-            } else {
-                editor.putBoolean("isSquigglyProgressBarEnabled", false)
-                editor.apply()
-                broadcastSquigglyUpdate()
                 false
             }
         }

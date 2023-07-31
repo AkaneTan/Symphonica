@@ -160,21 +160,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <FrameLayout
-                            android:id="@+id/squiggly_frame"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginEnd="24dp">
-
-                            <org.akanework.symphonica.ui.component.SquigglyView
-                                android:id="@+id/squiggly"
-                                android:layout_width="match_parent"
-                                android:layout_height="15dp"
-                                android:layout_gravity="start|center" />
-                        </FrameLayout>
-
                         <com.google.android.material.slider.Slider
                             android:id="@+id/sheet_slider"
                             android:layout_width="match_parent"
