@@ -17,7 +17,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="77dp"
+    android:layout_height="72dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
@@ -31,8 +31,8 @@
 
         <ImageView
             android:id="@+id/song_cover"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:background="@drawable/rp_album_cover"
@@ -58,7 +58,7 @@
                 android:singleLine="true"
                 android:text="@string/unknown_song"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/song_meta"
