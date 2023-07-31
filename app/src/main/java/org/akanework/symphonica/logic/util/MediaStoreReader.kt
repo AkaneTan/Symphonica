@@ -35,7 +35,7 @@ import org.akanework.symphonica.logic.data.Song
  * This is called when first booting up.
  *
  * @param externalSongList
- * @return
+ * @return sorted list of [Album]s based on title's first letter
  */
 fun getAllAlbums(externalSongList: List<Song>): List<Album> {
     val albumsMap = mutableMapOf<String, MutableList<Song>>()
@@ -52,11 +52,27 @@ fun getAllAlbums(externalSongList: List<Song>): List<Album> {
         val (albumTitle, albumArtist) = albumKey.split("_")
         val cover = null
         val album = Album(albumTitle, albumArtist, cover, songList)
-        albums.add(album)
+        insertSorted(albums, album) // Insert the album in the sorted order
     }
 
     return albums
 }
+
+/**
+ * Helper function to insert an Album into the sorted position in a list.
+ * @param albums The list of albums where the album should be inserted.
+ * @param album The album to be inserted.
+ */
+private fun insertSorted(albums: MutableList<Album>, album: Album) {
+    val insertionIndex = albums.binarySearchBy(album.title, selector = { it.title })
+
+    if (insertionIndex < 0) {
+        albums.add(-(insertionIndex + 1), album)
+    } else {
+        albums.add(insertionIndex, album)
+    }
+}
+
 
 /**
  * [sortAlbumListByTrackNumber]:
