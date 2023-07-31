@@ -19,6 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="bottom"
     android:fitsSystemWindows="true">
 
@@ -28,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:behavior_peekHeight="@dimen/bottom_sheet_height"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:behavior_peekHeight="1000dp">
 
         <LinearLayout
             android:id="@+id/full_size_sheet_player"
@@ -36,7 +38,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -395,6 +398,7 @@
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
                         android:saveEnabled="false"
+                        android:visibility="gone"
                         app:icon="@drawable/ic_favourite_border"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
@@ -414,6 +418,7 @@
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
                         android:saveEnabled="false"
+                        android:visibility="gone"
                         app:icon="@drawable/ic_playlist_add"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
@@ -430,7 +435,7 @@
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
-                        app:icon="@drawable/ic_queue_music"
+                        app:icon="@drawable/ic_playlist_play"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="24dp"
