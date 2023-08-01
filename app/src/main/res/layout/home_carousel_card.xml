@@ -54,8 +54,7 @@
             android:singleLine="true"
             android:text="@string/unknown_song"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
