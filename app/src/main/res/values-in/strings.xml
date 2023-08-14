@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~     Copyright (C) 2023  Akane Foundation
   ~
@@ -13,22 +14,20 @@
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">Symphonica</string>
-    <string name="full_sheet_playlist_location">%1$s in %2$s song(s)</string>
+    <string name="full_sheet_playlist_location">%1$s dalam %2$s lagu</string>
     <string name="library_album_view_album">Album</string>
     <string name="library_album_view_more_information">Informasi</string>
     <string name="library_album_view_unknown_album">Album Tidak Diketahui</string>
-    <string name="library_album_view_unknown_artist">Artist Tidak Diketahui</string>
+    <string name="library_album_view_unknown_artist">Artis Tidak Diketahui</string>
     <string name="library_album_view_unknown_year">Tahun Tidak Diketahui</string>
     <string name="library_tab_album">Album</string>
     <string name="library_tab_list">Daftar</string>
-    <string name="loading_your_library">Memuat Library Music</string>
-    <string name="navigation_view_all_song">Semua Lagu</string>
-    <string name="navigation_view_settings">Setting</string>
-    <string name="navigation_view_subtitle">Selamat Datang Kembali</string>
+    <string name="loading_your_library">Memuat pustaka musik.</string>
+    <string name="navigation_view_all_song">Pustaka Musik</string>
+    <string name="navigation_view_settings">Setelan</string>
+    <string name="navigation_view_subtitle">Selamat datang kembali!</string>
     <string name="settings_app_name">Nama Aplikasi</string>
     <string name="settings_version">Versi</string>
     <string name="settings_version_tag">Versi Tidak Diketahui (Versi VSC Tidak Diketahui)</string>
@@ -67,4 +66,12 @@
     <string name="dialog_album_info">Informasi Album</string>
     <string name="dialog_album_year">Tahun</string>
     <string name="library_view_filter">Saring</string>
+    <string name="app_widget_description">Kontrol Symphonica di layar utama Anda!</string>
+    <string name="home_playlist_view_title">Daftar putar</string>
+    <string name="default_description">Tidak ada deskripsi</string>
+    <string name="home_playlist_add_view_playlist_desc">Deskripsi</string>
+    <string name="add_widget">Tambahkan widget</string>
+    <string name="home_history_counter_song">%1$s Lagu</string>
+    <string name="home_history_counter_songs">%1$s Lagu</string>
+    <string name="unknown_playlist">Daftar putar tidak diketahui</string>
 </resources>
