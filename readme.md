@@ -1,3 +1,9 @@
+# DEPRECATION NOTICE
+
+I ditched symphonica because google has made new libraries and symphonica is just too messy to 
+get started with. Kindly consider checking [Gramophone](https://github.com/AkaneTan/Gramophone)
+instead, a successor of **phonograph**'s spirit with newest designs and libraries.
+
 # Symphonica
 ![GitHub](https://img.shields.io/github/license/AkaneTan/Symphonica)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/AkaneTan/Symphonica)
